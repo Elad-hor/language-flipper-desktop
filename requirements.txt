@@ -2,11 +2,15 @@ pynput>=1.7
 pystray>=0.19
 Pillow>=10.0
 pyperclip>=1.8
-# AT-SPI (install via system package manager, not pip):
-#   sudo apt install python3-pyatspi   (Debian/Ubuntu)
-#   sudo dnf install python3-atspi     (Fedora)
-# xdg-portal backend (optional, Wayland):
+pyautogui>=0.9
+
+# macOS only — install via pip:
+#   pip install pyobjc-framework-ApplicationServices pyobjc-framework-Quartz
+
+# Linux only — install via system package manager:
+#   sudo apt install python3-pyatspi xdotool
+#   (or: sudo dnf install python3-atspi xdotool)
+
+# Linux Wayland hotkey (optional):
 #   pip install dbus-python
 #   sudo apt install python3-gi gir1.2-glib-2.0
-# xdotool (clipboard fallback keystrokes):
-#   sudo apt install xdotool

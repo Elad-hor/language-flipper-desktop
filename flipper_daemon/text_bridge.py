@@ -1,96 +1,124 @@
 """
-Text read/replace via AT-SPI with clipboard fallback.
+Text read/replace — platform-aware.
 
-AT-SPI path  — zero clipboard touch, works in any GTK/Qt/Electron app.
-Clipboard fallback — Ctrl+C → flip → Ctrl+V, used when AT-SPI is unavailable
-                     or the focused element is a canvas (Figma, games, etc.).
+macOS  → Accessibility API (ApplicationServices via pyobjc)
+Linux  → AT-SPI
+Both   → clipboard fallback if native path fails
 """
 
-import subprocess
+import platform
 import time
 
-try:
-    import pyatspi
-    _ATSPI_AVAILABLE = True
-except ImportError:
-    _ATSPI_AVAILABLE = False
-
-try:
-    import pyperclip
-    _CLIPBOARD_AVAILABLE = True
-except ImportError:
-    _CLIPBOARD_AVAILABLE = False
+_PLATFORM = platform.system()  # 'Darwin' | 'Linux' | 'Windows'
 
 
 # ---------------------------------------------------------------------------
-# AT-SPI helpers
+# macOS — Accessibility API
 # ---------------------------------------------------------------------------
 
-def _get_focused_text_iface():
-    """Return the pyatspi Text interface for the currently focused element, or None."""
-    if not _ATSPI_AVAILABLE:
-        return None
+def _mac_replace(flipped_fn) -> bool:
     try:
+        import ApplicationServices as AS
+
+        system = AS.AXUIElementCreateSystemWide()
+        err, focused = AS.AXUIElementCopyAttributeValue(
+            system, AS.kAXFocusedUIElementAttribute, None
+        )
+        if err or focused is None:
+            return False
+
+        # Try to get selected text
+        err, selected = AS.AXUIElementCopyAttributeValue(
+            focused, AS.kAXSelectedTextAttribute, None
+        )
+
+        if err or not selected:
+            # No selection — get word at cursor
+            err2, full = AS.AXUIElementCopyAttributeValue(
+                focused, AS.kAXValueAttribute, None
+            )
+            err3, range_val = AS.AXUIElementCopyAttributeValue(
+                focused, AS.kAXSelectedTextRangeAttribute, None
+            )
+            if err2 or err3 or not full:
+                return False
+
+            import CoreFoundation as CF
+            loc = CF.CFRangeMake(0, 0)
+            AS.AXValueGetValue(range_val, AS.kAXValueCFRangeType, loc)
+            caret = loc.location
+
+            start, end = _word_bounds(str(full), caret)
+            selected = str(full)[start:end]
+
+            if not selected:
+                return False
+
+            flipped = flipped_fn(selected)
+            if flipped == selected:
+                return False
+
+            # Select the word range, then replace
+            new_range = CF.CFRangeMake(start, end - start)
+            range_ref = AS.AXValueCreate(AS.kAXValueCFRangeType, new_range)
+            AS.AXUIElementSetAttributeValue(
+                focused, AS.kAXSelectedTextRangeAttribute, range_ref
+            )
+
+        else:
+            flipped = flipped_fn(str(selected))
+            if flipped == str(selected):
+                return False
+
+        # Replace selected text by setting kAXSelectedTextAttribute
+        err = AS.AXUIElementSetAttributeValue(
+            focused, AS.kAXSelectedTextAttribute, flipped
+        )
+        return err == AS.kAXErrorSuccess
+
+    except Exception:
+        return False
+
+
+# ---------------------------------------------------------------------------
+# Linux — AT-SPI
+# ---------------------------------------------------------------------------
+
+def _atspi_replace(flipped_fn) -> bool:
+    try:
+        import pyatspi
+
+        def find_focused(node, depth=0):
+            if depth > 12:
+                return None
+            try:
+                if node.getState().contains(pyatspi.STATE_FOCUSED):
+                    return node
+                for child in node:
+                    r = find_focused(child, depth + 1)
+                    if r:
+                        return r
+            except Exception:
+                pass
+            return None
+
         desktop = pyatspi.Registry.getDesktop(0)
+        focused = None
         for app in desktop:
             if app is None:
                 continue
-            focused = _find_focused(app)
+            focused = find_focused(app)
             if focused:
-                try:
-                    return focused.queryText()
-                except Exception:
-                    return None
-    except Exception:
-        return None
-    return None
+                break
 
+        if focused is None:
+            return False
 
-def _find_focused(node, depth=0):
-    if depth > 12:
-        return None
-    try:
-        state = node.getState()
-        if state.contains(pyatspi.STATE_FOCUSED):
-            return node
-        for child in node:
-            result = _find_focused(child, depth + 1)
-            if result:
-                return result
-    except Exception:
-        pass
-    return None
+        text_iface = focused.queryText()
 
-
-# ---------------------------------------------------------------------------
-# Public API
-# ---------------------------------------------------------------------------
-
-def read_and_replace(flipped_fn) -> bool:
-    """
-    Read the current selection (or word at cursor), flip it via flipped_fn,
-    and write it back. Returns True on success.
-    """
-    if _ATSPI_AVAILABLE:
-        success = _atspi_replace(flipped_fn)
-        if success:
-            return True
-
-    # Fallback: clipboard-based swap
-    return _clipboard_replace(flipped_fn)
-
-
-def _atspi_replace(flipped_fn) -> bool:
-    text_iface = _get_focused_text_iface()
-    if text_iface is None:
-        return False
-
-    try:
-        sel_count = text_iface.getNSelections()
-        if sel_count > 0:
+        if text_iface.getNSelections() > 0:
             start, end = text_iface.getSelection(0)
         else:
-            # No selection — grab word at cursor
             caret = text_iface.caretOffset
             full = text_iface.getText(0, -1)
             start, end = _word_bounds(full, caret)
@@ -111,32 +139,39 @@ def _atspi_replace(flipped_fn) -> bool:
         return False
 
 
+# ---------------------------------------------------------------------------
+# Clipboard fallback (both platforms)
+# ---------------------------------------------------------------------------
+
 def _clipboard_replace(flipped_fn) -> bool:
-    if not _CLIPBOARD_AVAILABLE:
-        return False
     try:
-        # Save clipboard
+        import pyperclip
+        import pyautogui
+
         saved = pyperclip.paste()
 
-        # Copy selection
-        _send_keys(["ctrl", "c"])
+        if _PLATFORM == "Darwin":
+            pyautogui.hotkey("command", "c")
+        else:
+            pyautogui.hotkey("ctrl", "c")
         time.sleep(0.08)
-        selected = pyperclip.paste()
 
+        selected = pyperclip.paste()
         if not selected or selected == saved:
-            pyperclip.copy(saved)
             return False
 
         flipped = flipped_fn(selected)
         if flipped == selected:
-            pyperclip.copy(saved)
             return False
 
         pyperclip.copy(flipped)
-        _send_keys(["ctrl", "v"])
+
+        if _PLATFORM == "Darwin":
+            pyautogui.hotkey("command", "v")
+        else:
+            pyautogui.hotkey("ctrl", "v")
         time.sleep(0.08)
 
-        # Restore clipboard
         pyperclip.copy(saved)
         return True
 
@@ -144,12 +179,19 @@ def _clipboard_replace(flipped_fn) -> bool:
         return False
 
 
-def _send_keys(keys: list):
-    """Send a key combo via xdotool (X11) — simple and reliable."""
-    try:
-        subprocess.run(["xdotool", "key", "+".join(keys)], check=True)
-    except Exception:
-        pass
+# ---------------------------------------------------------------------------
+# Public
+# ---------------------------------------------------------------------------
+
+def read_and_replace(flipped_fn) -> bool:
+    if _PLATFORM == "Darwin":
+        if _mac_replace(flipped_fn):
+            return True
+    elif _PLATFORM == "Linux":
+        if _atspi_replace(flipped_fn):
+            return True
+
+    return _clipboard_replace(flipped_fn)
 
 
 # ---------------------------------------------------------------------------
@@ -157,17 +199,13 @@ def _send_keys(keys: list):
 # ---------------------------------------------------------------------------
 
 def _word_bounds(text: str, pos: int) -> tuple[int, int]:
-    """Return (start, end) of the word that contains position pos."""
     if not text:
         return (0, 0)
     pos = max(0, min(pos, len(text) - 1))
-
     start = pos
     while start > 0 and not text[start - 1].isspace():
         start -= 1
-
     end = pos
     while end < len(text) and not text[end].isspace():
         end += 1
-
     return (start, end)
