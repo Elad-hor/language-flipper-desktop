@@ -4,10 +4,15 @@ from pathlib import Path
 import pystray
 from PIL import Image, ImageDraw
 
+import platform as _platform_mod
+
 from .flipper import flip_text
 from .text_bridge import read_and_replace
 from . import hotkey as hotkey_mod
 from . import storage, gumroad, paywall
+
+if _platform_mod.system() == "Darwin":
+    from . import login_item, onboarding
 
 _in_flight = False
 _in_flight_lock = threading.Lock()
@@ -75,6 +80,14 @@ def _build_menu() -> pystray.Menu:
             pystray.MenuItem("Deactivate License", _deactivate),
             pystray.Menu.SEPARATOR,
         ]
+
+    if _platform_mod.system() == "Darwin":
+        auto = login_item.is_enabled()
+        items.append(pystray.MenuItem(
+            "✓ Start at Login" if auto else "Start at Login",
+            _toggle_login_item,
+        ))
+
     items.append(pystray.MenuItem("Quit", lambda icon, _: icon.stop()))
     return pystray.Menu(*items)
 
@@ -86,6 +99,14 @@ def _refresh_tray_menu():
 
 def _deactivate(_icon=None, _item=None):
     gumroad.deactivate()
+    _refresh_tray_menu()
+
+
+def _toggle_login_item(_icon=None, _item=None):
+    if login_item.is_enabled():
+        login_item.disable()
+    else:
+        login_item.enable()
     _refresh_tray_menu()
 
 
@@ -104,10 +125,13 @@ def run():
     )
     _tray_icon = icon
 
+    if _platform_mod.system() == "Darwin":
+        import threading as _t
+        _t.Thread(target=onboarding.run_if_needed, daemon=True).start()
+
     _hotkey_handle = hotkey_mod.register(_on_flip)  # noqa: F841
 
-    import platform
-    hotkey = "Cmd+Shift+Y" if platform.system() == "Darwin" else "Ctrl+Shift+Y"
+    hotkey = "Cmd+Shift+Y" if _platform_mod.system() == "Darwin" else "Ctrl+Shift+Y"
     print(f"[language-flipper] running. Press {hotkey} to flip.")
     icon.run()
 

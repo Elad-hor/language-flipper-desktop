@@ -12,7 +12,7 @@ import time
 
 _PLATFORM = platform.system()
 
-DEBUG = True
+DEBUG = False
 
 def _dbg(msg):
     if DEBUG:
