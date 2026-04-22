@@ -28,6 +28,11 @@ def _mac_replace(flipped_fn) -> bool:
     try:
         import ApplicationServices as AS
 
+        trusted = AS.AXIsProcessTrusted()
+        _dbg(f"AX: process trusted = {trusted}")
+        if not trusted:
+            return False
+
         system = AS.AXUIElementCreateSystemWide()
         err, focused = AS.AXUIElementCopyAttributeValue(
             system, AS.kAXFocusedUIElementAttribute, None
