@@ -12,7 +12,7 @@ from typing import Callable
 _PLATFORM = platform.system()
 
 # Hotkey expressed in pynput format
-_HOTKEY = "<ctrl>+<shift>+space"
+_HOTKEY = "<ctrl>+<shift>+<space>"
 
 
 # ---------------------------------------------------------------------------
