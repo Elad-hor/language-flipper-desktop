@@ -5,7 +5,7 @@ pyperclip>=1.8
 pyautogui>=0.9
 
 # macOS only — install via pip:
-#   pip install pyobjc-framework-ApplicationServices pyobjc-framework-Quartz
+#   pip install pyobjc-framework-ApplicationServices pyobjc-framework-Quartz pyobjc-framework-AppKit
 
 # Linux only — install via system package manager:
 #   sudo apt install python3-pyatspi xdotool

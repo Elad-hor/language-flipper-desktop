@@ -1,18 +1,17 @@
 """
 Text read/replace — platform-aware.
 
-macOS  → Accessibility API (ApplicationServices via pyobjc)
-Linux  → AT-SPI
-Both   → clipboard fallback if native path fails or AX succeeds but app ignores it
-         (React/web inputs don't respond to AX writes — clipboard is the only option)
+macOS  → Accessibility API via AXUIElementCreateApplication(pid) using
+         NSWorkspace.frontmostApplication() to get the correct target.
+         Falls back to clipboard (Cmd+C / Cmd+V via CGEventPostToPid).
+Linux  → AT-SPI, falls back to clipboard via pyautogui.
 """
 
 import platform
 import time
 
-_PLATFORM = platform.system()  # 'Darwin' | 'Linux' | 'Windows'
+_PLATFORM = platform.system()
 
-# Set to True to print which path fired — useful for diagnosing new failure sites
 DEBUG = True
 
 def _dbg(msg):
@@ -21,54 +20,96 @@ def _dbg(msg):
 
 
 # ---------------------------------------------------------------------------
-# macOS — Accessibility API
+# macOS helpers
 # ---------------------------------------------------------------------------
 
-def _mac_replace(flipped_fn) -> bool:
+def _get_frontmost_app():
+    """Return (pid, app_name) of the current frontmost application."""
+    try:
+        from AppKit import NSWorkspace
+        app = NSWorkspace.sharedWorkspace().frontmostApplication()
+        if app:
+            return app.processIdentifier(), str(app.localizedName() or "")
+    except Exception as e:
+        _dbg(f"NSWorkspace error: {e}")
+    return None, None
+
+
+def _clipboard_copy_from_pid(pid: int):
+    """Send Cmd+C directly to a specific process via Quartz CGEventPostToPid."""
+    try:
+        import Quartz
+        src = Quartz.CGEventSourceCreate(Quartz.kCGEventSourceStatePrivate)
+        # key code 8 = 'c'
+        down = Quartz.CGEventCreateKeyboardEvent(src, 8, True)
+        up   = Quartz.CGEventCreateKeyboardEvent(src, 8, False)
+        Quartz.CGEventSetFlags(down, Quartz.kCGEventFlagMaskCommand)
+        Quartz.CGEventSetFlags(up,   Quartz.kCGEventFlagMaskCommand)
+        Quartz.CGEventPostToPid(pid, down)
+        Quartz.CGEventPostToPid(pid, up)
+        return True
+    except Exception as e:
+        _dbg(f"CGEventPostToPid copy failed: {e}")
+        return False
+
+
+def _clipboard_paste_to_pid(pid: int):
+    """Send Cmd+V directly to a specific process via Quartz CGEventPostToPid."""
+    try:
+        import Quartz
+        src = Quartz.CGEventSourceCreate(Quartz.kCGEventSourceStatePrivate)
+        # key code 9 = 'v'
+        down = Quartz.CGEventCreateKeyboardEvent(src, 9, True)
+        up   = Quartz.CGEventCreateKeyboardEvent(src, 9, False)
+        Quartz.CGEventSetFlags(down, Quartz.kCGEventFlagMaskCommand)
+        Quartz.CGEventSetFlags(up,   Quartz.kCGEventFlagMaskCommand)
+        Quartz.CGEventPostToPid(pid, down)
+        Quartz.CGEventPostToPid(pid, up)
+        return True
+    except Exception as e:
+        _dbg(f"CGEventPostToPid paste failed: {e}")
+        return False
+
+
+# ---------------------------------------------------------------------------
+# macOS — Accessibility API path
+# ---------------------------------------------------------------------------
+
+_WEB_BROWSERS = {
+    "Google Chrome", "Chromium", "Firefox", "Brave Browser",
+    "Microsoft Edge", "Arc", "Opera", "Safari",
+}
+
+def _mac_replace(flipped_fn, pid: int, app_name: str) -> bool:
+    if app_name in _WEB_BROWSERS:
+        _dbg(f"AX: {app_name} is a browser — skip to clipboard")
+        return False
+
     try:
         import ApplicationServices as AS
 
-        trusted = AS.AXIsProcessTrusted()
-        _dbg(f"AX: process trusted = {trusted}")
-        if not trusted:
+        if not AS.AXIsProcessTrusted():
+            _dbg("AX: process not trusted")
             return False
 
-        system = AS.AXUIElementCreateSystemWide()
+        # Query the specific app by PID — avoids the CGEventTap focus problem
+        app_elem = AS.AXUIElementCreateApplication(pid)
         err, focused = AS.AXUIElementCopyAttributeValue(
-            system, AS.kAXFocusedUIElementAttribute, None
+            app_elem, AS.kAXFocusedUIElementAttribute, None
         )
         if err or focused is None:
-            _dbg("AX: no focused element")
+            _dbg(f"AX: no focused element in {app_name} (err={err})")
             return False
 
-        # Identify the app so we can skip known-broken cases (Chrome web content)
-        try:
-            err_app, app_elem = AS.AXUIElementCopyAttributeValue(
-                focused, AS.kAXApplicationAttribute, None
-            )
-            err_title, app_title = AS.AXUIElementCopyAttributeValue(
-                app_elem, AS.kAXTitleAttribute, None
-            ) if not err_app and app_elem else (1, None)
-            _dbg(f"AX: focused app = {app_title}")
-        except Exception:
-            app_title = None
+        _dbg(f"AX: got focused element in {app_name}")
 
-        # Chrome/Firefox/Brave/Edge render web content in a process that exposes AX
-        # but silently ignores writes to kAXSelectedTextAttribute for web inputs.
-        # Skip straight to clipboard for those apps.
-        _WEB_BROWSERS = {"Google Chrome", "Chromium", "Firefox", "Brave Browser",
-                         "Microsoft Edge", "Arc", "Opera"}
-        if app_title in _WEB_BROWSERS:
-            _dbg("AX: browser web content — skipping to clipboard fallback")
-            return False
-
-        # Try to get selected text
+        # Read selection
         err, selected = AS.AXUIElementCopyAttributeValue(
             focused, AS.kAXSelectedTextAttribute, None
         )
 
         if err or not selected:
-            # No selection — get word at cursor
+            # No selection — grab word at cursor
             err2, full = AS.AXUIElementCopyAttributeValue(
                 focused, AS.kAXValueAttribute, None
             )
@@ -83,37 +124,33 @@ def _mac_replace(flipped_fn) -> bool:
             loc = CF.CFRangeMake(0, 0)
             AS.AXValueGetValue(range_val, AS.kAXValueCFRangeType, loc)
             caret = loc.location
-
             start, end = _word_bounds(str(full), caret)
             selected = str(full)[start:end]
-
             if not selected:
                 _dbg("AX: empty word at cursor")
                 return False
 
             flipped = flipped_fn(selected)
             if flipped == selected:
-                _dbg("AX: nothing to flip")
                 return False
 
+            import CoreFoundation as CF
             new_range = CF.CFRangeMake(start, end - start)
             range_ref = AS.AXValueCreate(AS.kAXValueCFRangeType, new_range)
             AS.AXUIElementSetAttributeValue(
                 focused, AS.kAXSelectedTextRangeAttribute, range_ref
             )
-
         else:
             flipped = flipped_fn(str(selected))
             if flipped == str(selected):
-                _dbg("AX: nothing to flip")
                 return False
 
         err = AS.AXUIElementSetAttributeValue(
             focused, AS.kAXSelectedTextAttribute, flipped
         )
-        success = (err == AS.kAXErrorSuccess)
-        _dbg(f"AX: write {'ok' if success else 'failed'} (err={err})")
-        return success
+        ok = (err == AS.kAXErrorSuccess)
+        _dbg(f"AX: write {'ok' if ok else f'failed err={err}'}")
+        return ok
 
     except Exception as e:
         _dbg(f"AX: exception — {e}")
@@ -121,7 +158,47 @@ def _mac_replace(flipped_fn) -> bool:
 
 
 # ---------------------------------------------------------------------------
-# Linux — AT-SPI
+# macOS — clipboard path
+# ---------------------------------------------------------------------------
+
+def _mac_clipboard_replace(flipped_fn, pid: int) -> bool:
+    try:
+        import pyperclip
+
+        saved = str(pyperclip.paste() or "")
+        _dbg(f"clipboard: saved = {repr(saved[:40])}")
+
+        ok = _clipboard_copy_from_pid(pid)
+        _dbg(f"clipboard: Cmd+C sent to pid={pid} ok={ok}")
+        time.sleep(0.18)
+
+        selected = str(pyperclip.paste() or "")
+        _dbg(f"clipboard: after copy = {repr(selected[:40])}")
+
+        if not selected or selected == saved:
+            _dbg("clipboard: clipboard unchanged — nothing selected?")
+            return False
+
+        flipped = flipped_fn(selected)
+        if flipped == selected:
+            _dbg("clipboard: nothing to flip")
+            pyperclip.copy(saved)
+            return False
+
+        pyperclip.copy(flipped)
+        _clipboard_paste_to_pid(pid)
+        time.sleep(0.1)
+        pyperclip.copy(saved)
+        _dbg("clipboard: done")
+        return True
+
+    except Exception as e:
+        _dbg(f"clipboard: exception — {e}")
+        return False
+
+
+# ---------------------------------------------------------------------------
+# Linux — AT-SPI path
 # ---------------------------------------------------------------------------
 
 def _atspi_replace(flipped_fn) -> bool:
@@ -156,7 +233,6 @@ def _atspi_replace(flipped_fn) -> bool:
             return False
 
         text_iface = focused.queryText()
-
         if text_iface.getNSelections() > 0:
             start, end = text_iface.getSelection(0)
         else:
@@ -165,13 +241,11 @@ def _atspi_replace(flipped_fn) -> bool:
             start, end = _word_bounds(full, caret)
 
         if start == end:
-            _dbg("AT-SPI: empty selection/word")
             return False
 
         original = text_iface.getText(start, end)
         flipped = flipped_fn(original)
         if flipped == original:
-            _dbg("AT-SPI: nothing to flip")
             return False
 
         text_iface.deleteText(start, end)
@@ -184,54 +258,26 @@ def _atspi_replace(flipped_fn) -> bool:
         return False
 
 
-# ---------------------------------------------------------------------------
-# Clipboard fallback (both platforms)
-# Works for: browser web inputs, React/Angular apps, any app that ignores AX writes
-# ---------------------------------------------------------------------------
-
-def _clipboard_replace(flipped_fn) -> bool:
+def _linux_clipboard_replace(flipped_fn) -> bool:
     try:
-        import pyperclip
-        import pyautogui
-
+        import pyperclip, pyautogui
         saved = str(pyperclip.paste() or "")
-        _dbg(f"clipboard: saved = {repr(saved[:40])}")
-
-        if _PLATFORM == "Darwin":
-            pyautogui.hotkey("command", "c")
-        else:
-            pyautogui.hotkey("ctrl", "c")
-
-        # Wait for the browser/app to update the clipboard.
+        pyautogui.hotkey("ctrl", "c")
         time.sleep(0.15)
-
         selected = str(pyperclip.paste() or "")
-        _dbg(f"clipboard: copied = {repr(selected[:40])}")
-
         if not selected or selected == saved:
-            _dbg("clipboard: nothing new in clipboard — no selection?")
             return False
-
         flipped = flipped_fn(selected)
         if flipped == selected:
-            _dbg("clipboard: nothing to flip")
             pyperclip.copy(saved)
             return False
-
         pyperclip.copy(flipped)
-
-        if _PLATFORM == "Darwin":
-            pyautogui.hotkey("command", "v")
-        else:
-            pyautogui.hotkey("ctrl", "v")
-
+        pyautogui.hotkey("ctrl", "v")
         time.sleep(0.1)
-        pyperclip.copy(saved)  # restore clipboard
-        _dbg("clipboard: done")
+        pyperclip.copy(saved)
         return True
-
     except Exception as e:
-        _dbg(f"clipboard: exception — {e}")
+        _dbg(f"linux clipboard: exception — {e}")
         return False
 
 
@@ -240,20 +286,27 @@ def _clipboard_replace(flipped_fn) -> bool:
 # ---------------------------------------------------------------------------
 
 def read_and_replace(flipped_fn) -> bool:
-    # Brief pause so the hotkey keys are fully released and the OS has
-    # settled focus back to the target app before we query anything.
+    # Let hotkey keys fully release and OS settle focus back to target app.
     time.sleep(0.08)
 
     if _PLATFORM == "Darwin":
-        if _mac_replace(flipped_fn):
+        pid, app_name = _get_frontmost_app()
+        _dbg(f"frontmost: {app_name!r} pid={pid}")
+
+        if pid and _mac_replace(flipped_fn, pid, app_name):
             return True
-        _dbg("AX failed — trying clipboard fallback")
+        _dbg("AX failed — trying clipboard")
+        if pid:
+            return _mac_clipboard_replace(flipped_fn, pid)
+        return False
+
     elif _PLATFORM == "Linux":
         if _atspi_replace(flipped_fn):
             return True
-        _dbg("AT-SPI failed — trying clipboard fallback")
+        _dbg("AT-SPI failed — trying clipboard")
+        return _linux_clipboard_replace(flipped_fn)
 
-    return _clipboard_replace(flipped_fn)
+    return False
 
 
 # ---------------------------------------------------------------------------
