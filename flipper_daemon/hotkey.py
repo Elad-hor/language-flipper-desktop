@@ -12,7 +12,8 @@ from typing import Callable
 _PLATFORM = platform.system()
 
 # Hotkey expressed in pynput format
-_HOTKEY = "<cmd>+<shift>+y"
+# macOS: Cmd+Shift+Y  |  Windows/Linux: Ctrl+Shift+Y
+_HOTKEY = "<cmd>+<shift>+y" if platform.system() == "Darwin" else "<ctrl>+<shift>+y"
 
 
 # ---------------------------------------------------------------------------

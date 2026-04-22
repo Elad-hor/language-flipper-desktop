@@ -106,7 +106,9 @@ def run():
 
     _hotkey_handle = hotkey_mod.register(_on_flip)  # noqa: F841
 
-    print("[language-flipper] running. Press Cmd+Shift+Y to flip.")
+    import platform
+    hotkey = "Cmd+Shift+Y" if platform.system() == "Darwin" else "Ctrl+Shift+Y"
+    print(f"[language-flipper] running. Press {hotkey} to flip.")
     icon.run()
 
 

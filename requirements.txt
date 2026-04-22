@@ -4,13 +4,14 @@ Pillow>=10.0
 pyperclip>=1.8
 pyautogui>=0.9
 
-# macOS only — install via pip:
+# macOS only:
 #   pip install pyobjc-framework-ApplicationServices pyobjc-framework-Quartz pyobjc-framework-AppKit
 
-# Linux only — install via system package manager:
+# Windows only — no extra system packages needed; all via pip above
+
+# Linux only — system packages:
 #   sudo apt install python3-pyatspi xdotool
 #   (or: sudo dnf install python3-atspi xdotool)
-
 # Linux Wayland hotkey (optional):
 #   pip install dbus-python
 #   sudo apt install python3-gi gir1.2-glib-2.0

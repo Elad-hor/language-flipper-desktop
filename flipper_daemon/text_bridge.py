@@ -314,6 +314,15 @@ def _linux_clipboard_replace(flipped_fn) -> bool:
         time.sleep(0.15)
         selected = str(pyperclip.paste() or "")
         if not selected or selected == saved:
+            _dbg("linux clipboard: nothing selected — selecting current line")
+            pyautogui.hotkey("home")
+            time.sleep(0.05)
+            pyautogui.hotkey("shift", "end")
+            time.sleep(0.06)
+            pyautogui.hotkey("ctrl", "c")
+            time.sleep(0.15)
+            selected = str(pyperclip.paste() or "")
+        if not selected or selected == saved:
             return False
         flipped = flipped_fn(selected)
         if flipped == selected:
@@ -330,6 +339,55 @@ def _linux_clipboard_replace(flipped_fn) -> bool:
 
 
 # ---------------------------------------------------------------------------
+# Windows — clipboard path (pyautogui works reliably without extra perms)
+# ---------------------------------------------------------------------------
+
+def _windows_replace(flipped_fn) -> bool:
+    try:
+        import pyperclip, pyautogui
+
+        saved = str(pyperclip.paste() or "")
+        _dbg(f"windows clipboard: saved = {repr(saved[:40])}")
+
+        pyautogui.hotkey("ctrl", "c")
+        time.sleep(0.15)
+        selected = str(pyperclip.paste() or "")
+        _dbg(f"windows clipboard: after copy = {repr(selected[:40])}")
+
+        if not selected or selected == saved:
+            # Nothing selected — select current line: Home then Shift+End
+            _dbg("windows clipboard: nothing selected — selecting current line")
+            pyautogui.hotkey("home")
+            time.sleep(0.05)
+            pyautogui.hotkey("shift", "end")
+            time.sleep(0.06)
+            pyautogui.hotkey("ctrl", "c")
+            time.sleep(0.15)
+            selected = str(pyperclip.paste() or "")
+            _dbg(f"windows clipboard: after line select = {repr(selected[:40])}")
+
+        if not selected or selected == saved:
+            _dbg("windows clipboard: still nothing")
+            return False
+
+        flipped = flipped_fn(selected)
+        if flipped == selected:
+            pyperclip.copy(saved)
+            return False
+
+        pyperclip.copy(flipped)
+        pyautogui.hotkey("ctrl", "v")
+        time.sleep(0.1)
+        pyperclip.copy(saved)
+        _dbg("windows clipboard: done")
+        return True
+
+    except Exception as e:
+        _dbg(f"windows clipboard: exception — {e}")
+        return False
+
+
+# ---------------------------------------------------------------------------
 # Public
 # ---------------------------------------------------------------------------
 
@@ -340,13 +398,15 @@ def read_and_replace(flipped_fn) -> bool:
     if _PLATFORM == "Darwin":
         pid, app_name = _get_frontmost_app()
         _dbg(f"frontmost: {app_name!r} pid={pid}")
-
         if pid and _mac_replace(flipped_fn, pid, app_name):
             return True
         _dbg("AX failed — trying clipboard")
         if pid:
             return _mac_clipboard_replace(flipped_fn, pid)
         return False
+
+    elif _PLATFORM == "Windows":
+        return _windows_replace(flipped_fn)
 
     elif _PLATFORM == "Linux":
         if _atspi_replace(flipped_fn):
