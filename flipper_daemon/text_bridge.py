@@ -189,7 +189,7 @@ def _clipboard_replace(flipped_fn) -> bool:
         import pyperclip
         import pyautogui
 
-        saved = pyperclip.paste()
+        saved = str(pyperclip.paste() or "")
         _dbg(f"clipboard: saved = {repr(saved[:40])}")
 
         if _PLATFORM == "Darwin":
@@ -198,10 +198,9 @@ def _clipboard_replace(flipped_fn) -> bool:
             pyautogui.hotkey("ctrl", "c")
 
         # Wait for the browser/app to update the clipboard.
-        # 150ms is enough for Chrome; bump to 200ms if still flaky.
         time.sleep(0.15)
 
-        selected = pyperclip.paste()
+        selected = str(pyperclip.paste() or "")
         _dbg(f"clipboard: copied = {repr(selected[:40])}")
 
         if not selected or selected == saved:
@@ -236,6 +235,10 @@ def _clipboard_replace(flipped_fn) -> bool:
 # ---------------------------------------------------------------------------
 
 def read_and_replace(flipped_fn) -> bool:
+    # Brief pause so the hotkey keys are fully released and the OS has
+    # settled focus back to the target app before we query anything.
+    time.sleep(0.08)
+
     if _PLATFORM == "Darwin":
         if _mac_replace(flipped_fn):
             return True
