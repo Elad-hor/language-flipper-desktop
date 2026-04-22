@@ -75,14 +75,23 @@ def _clipboard_paste_to_pid(pid: int):
 # macOS — Accessibility API path
 # ---------------------------------------------------------------------------
 
-_WEB_BROWSERS = {
+# Apps that expose AX but silently ignore writes (Electron / web-rendered).
+# Strip directional unicode marks before comparing.
+_CLIPBOARD_ONLY_APPS = {
     "Google Chrome", "Chromium", "Firefox", "Brave Browser",
     "Microsoft Edge", "Arc", "Opera", "Safari",
+    "WhatsApp", "Slack", "Discord", "Notion", "Figma",
+    "Microsoft Teams", "Zoom",
 }
 
+def _normalize_app_name(name: str) -> str:
+    """Strip leading/trailing Unicode directional marks that some apps inject."""
+    return name.strip("\u200f\u200e\u202a\u202b\u202c\u202d\u202e\u2066\u2067\u2068\u2069")
+
 def _mac_replace(flipped_fn, pid: int, app_name: str) -> bool:
-    if app_name in _WEB_BROWSERS:
-        _dbg(f"AX: {app_name} is a browser — skip to clipboard")
+    clean_name = _normalize_app_name(app_name)
+    if clean_name in _CLIPBOARD_ONLY_APPS:
+        _dbg(f"AX: {clean_name!r} is Electron/browser — skip to clipboard")
         return False
 
     try:
