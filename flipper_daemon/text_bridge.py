@@ -53,6 +53,37 @@ def _clipboard_copy_from_pid(pid: int):
         return False
 
 
+def _send_key_to_pid(pid: int, keycode: int, flags: int = 0):
+    """Send a single key down+up to a specific process."""
+    try:
+        import Quartz
+        src = Quartz.CGEventSourceCreate(Quartz.kCGEventSourceStatePrivate)
+        down = Quartz.CGEventCreateKeyboardEvent(src, keycode, True)
+        up   = Quartz.CGEventCreateKeyboardEvent(src, keycode, False)
+        if flags:
+            Quartz.CGEventSetFlags(down, flags)
+            Quartz.CGEventSetFlags(up,   flags)
+        Quartz.CGEventPostToPid(pid, down)
+        Quartz.CGEventPostToPid(pid, up)
+    except Exception as e:
+        _dbg(f"_send_key_to_pid failed: {e}")
+
+
+def _select_current_line(pid: int):
+    """
+    Select the current line (matches Chrome extension no-selection behaviour):
+      Cmd+Left        → jump to start of line
+      Cmd+Shift+Right → extend selection to end of line
+    """
+    import Quartz
+    CMD       = Quartz.kCGEventFlagMaskCommand
+    CMD_SHIFT = Quartz.kCGEventFlagMaskCommand | Quartz.kCGEventFlagMaskShift
+    _send_key_to_pid(pid, 123, CMD)        # Cmd+Left  (keycode 123)
+    time.sleep(0.05)
+    _send_key_to_pid(pid, 124, CMD_SHIFT)  # Cmd+Shift+Right (keycode 124)
+    time.sleep(0.06)
+
+
 def _clipboard_paste_to_pid(pid: int):
     """Send Cmd+V directly to a specific process via Quartz CGEventPostToPid."""
     try:
@@ -133,7 +164,7 @@ def _mac_replace(flipped_fn, pid: int, app_name: str) -> bool:
             loc = CF.CFRangeMake(0, 0)
             AS.AXValueGetValue(range_val, AS.kAXValueCFRangeType, loc)
             caret = loc.location
-            start, end = _word_bounds(str(full), caret)
+            start, end = _line_bounds(str(full), caret)
             selected = str(full)[start:end]
             if not selected:
                 _dbg("AX: empty word at cursor")
@@ -177,15 +208,23 @@ def _mac_clipboard_replace(flipped_fn, pid: int) -> bool:
         saved = str(pyperclip.paste() or "")
         _dbg(f"clipboard: saved = {repr(saved[:40])}")
 
-        ok = _clipboard_copy_from_pid(pid)
-        _dbg(f"clipboard: Cmd+C sent to pid={pid} ok={ok}")
+        _clipboard_copy_from_pid(pid)
         time.sleep(0.18)
 
         selected = str(pyperclip.paste() or "")
         _dbg(f"clipboard: after copy = {repr(selected[:40])}")
 
         if not selected or selected == saved:
-            _dbg("clipboard: clipboard unchanged — nothing selected?")
+            # Nothing selected — select current line and try again
+            _dbg("clipboard: nothing selected — selecting current line")
+            _select_current_line(pid)
+            _clipboard_copy_from_pid(pid)
+            time.sleep(0.18)
+            selected = str(pyperclip.paste() or "")
+            _dbg(f"clipboard: after word select+copy = {repr(selected[:40])}")
+
+        if not selected or selected == saved:
+            _dbg("clipboard: still nothing — cursor not in a word?")
             return False
 
         flipped = flipped_fn(selected)
@@ -332,4 +371,16 @@ def _word_bounds(text: str, pos: int) -> tuple[int, int]:
     end = pos
     while end < len(text) and not text[end].isspace():
         end += 1
+    return (start, end)
+
+
+def _line_bounds(text: str, pos: int) -> tuple[int, int]:
+    """Return (start, end) of the line containing pos (split on newlines)."""
+    if not text:
+        return (0, 0)
+    pos = max(0, min(pos, len(text)))
+    start = text.rfind("\n", 0, pos)
+    start = 0 if start == -1 else start + 1
+    end = text.find("\n", pos)
+    end = len(text) if end == -1 else end
     return (start, end)
