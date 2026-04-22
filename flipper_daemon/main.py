@@ -65,7 +65,7 @@ def run():
     # Register hotkey before showing tray
     _hotkey_handle = hotkey_mod.register(_on_flip)  # noqa: F841 — keep alive
 
-    print("[language-flipper] running. Press Ctrl+Shift+Space to flip.")
+    print("[language-flipper] running. Press Cmd+Shift+Y to flip.")
     icon.run()
 
 

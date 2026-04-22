@@ -12,7 +12,7 @@ from typing import Callable
 _PLATFORM = platform.system()
 
 # Hotkey expressed in pynput format
-_HOTKEY = "<ctrl>+<shift>+f"
+_HOTKEY = "<cmd>+<shift>+y"
 
 
 # ---------------------------------------------------------------------------
@@ -67,7 +67,7 @@ def _start_xdg_portal(callback: Callable):
             "flip",
             {
                 "description": dbus.String("Flip keyboard layout", variant_level=1),
-                "preferred-trigger": dbus.String("<Control><Shift>space", variant_level=1),
+                "preferred-trigger": dbus.String("<Super><Shift>y", variant_level=1),
             },
         )]
 
