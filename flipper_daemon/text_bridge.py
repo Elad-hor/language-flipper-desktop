@@ -13,7 +13,7 @@ import time
 _PLATFORM = platform.system()  # 'Darwin' | 'Linux' | 'Windows'
 
 # Set to True to print which path fired — useful for diagnosing new failure sites
-DEBUG = False
+DEBUG = True
 
 def _dbg(msg):
     if DEBUG:
