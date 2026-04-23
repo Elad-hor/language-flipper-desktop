@@ -13,6 +13,8 @@ from . import storage, gumroad, paywall
 
 if _platform_mod.system() == "Darwin":
     from . import login_item, onboarding
+elif _platform_mod.system() == "Windows":
+    from . import win_login_item
 
 _in_flight = False
 _in_flight_lock = threading.Lock()
@@ -87,6 +89,12 @@ def _build_menu() -> pystray.Menu:
             "✓ Start at Login" if auto else "Start at Login",
             _toggle_login_item,
         ))
+    elif _platform_mod.system() == "Windows":
+        auto = win_login_item.is_enabled()
+        items.append(pystray.MenuItem(
+            "✓ Start at Login" if auto else "Start at Login",
+            _toggle_login_item,
+        ))
 
     items.append(pystray.MenuItem("Quit", lambda icon, _: icon.stop()))
     return pystray.Menu(*items)
@@ -103,10 +111,16 @@ def _deactivate(_icon=None, _item=None):
 
 
 def _toggle_login_item(_icon=None, _item=None):
-    if login_item.is_enabled():
-        login_item.disable()
-    else:
-        login_item.enable()
+    if _platform_mod.system() == "Darwin":
+        if login_item.is_enabled():
+            login_item.disable()
+        else:
+            login_item.enable()
+    elif _platform_mod.system() == "Windows":
+        if win_login_item.is_enabled():
+            win_login_item.disable()
+        else:
+            win_login_item.enable()
     _refresh_tray_menu()
 
 
@@ -131,10 +145,8 @@ def run():
 
     _hotkey_handle = hotkey_mod.register(_on_flip)  # noqa: F841
 
-    hotkey = "Cmd+Shift+Y" if _platform_mod.system() == "Darwin" else "Ctrl+Shift+Y (Windows: suppressed via RegisterHotKey)"
+    hotkey = "Cmd+Shift+Y" if _platform_mod.system() == "Darwin" else "Ctrl+Shift+Y"
     print(f"[language-flipper] running. Press {hotkey} to flip.")
-    print(f"[storage] data file: {storage._DATA_FILE}")
-    print(f"[storage] current data: {storage._load()}")
     icon.run()
 
 
