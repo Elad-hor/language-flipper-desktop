@@ -30,7 +30,7 @@ Name: "{group}\Language Flipper"; Filename: "{app}\Language Flipper.exe"
 Name: "{group}\Uninstall Language Flipper"; Filename: "{uninstallexe}"
 
 [Tasks]
-Name: "startup"; Description: "Start Language Flipper automatically when Windows starts"; GroupDescription: "Startup options:"; Flags: checked
+Name: "startup"; Description: "Start Language Flipper automatically when Windows starts"; GroupDescription: "Startup options:"
 
 [Registry]
 Root: HKCU; Subkey: "Software\Microsoft\Windows\CurrentVersion\Run"; ValueType: string; ValueName: "LanguageFlipper"; ValueData: """{app}\Language Flipper.exe"""; Tasks: startup; Flags: uninsdeletevalue
