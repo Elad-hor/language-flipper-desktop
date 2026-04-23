@@ -1,4 +1,3 @@
-import subprocess
 import threading
 from pathlib import Path
 
@@ -7,10 +6,10 @@ from PIL import Image, ImageDraw
 
 import platform as _platform_mod
 
-from .flipper import flip_text
+from .flipper import flip_text, detect_layout
 from .text_bridge import read_and_replace
 from . import hotkey as hotkey_mod
-from . import storage, gumroad, paywall, updater
+from . import storage, gumroad, paywall, updater, layout_switch, flip_log
 
 if _platform_mod.system() == "Darwin":
     from . import login_item, onboarding
@@ -21,6 +20,15 @@ _in_flight = False
 _in_flight_lock = threading.Lock()
 _tray_icon = None
 _pending_update = None  # (version_str, download_url) when an update is available
+
+# Captures flip direction inside the flipped_fn closure so main can act on it
+_last_flip_info: dict = {"source": None, "chars": 0}
+
+
+def _flip_and_track(text: str) -> str:
+    _last_flip_info["source"] = detect_layout(text)
+    _last_flip_info["chars"] = len(text)
+    return flip_text(text)
 
 
 def _on_flip():
@@ -33,10 +41,15 @@ def _on_flip():
         if not paywall.check_and_maybe_block():
             return
 
-        replaced = read_and_replace(flip_text)
+        replaced = read_and_replace(_flip_and_track)
 
         if replaced:
             storage.increment_lifetime_flips()
+            source = _last_flip_info.get("source")
+            if source:
+                target = "he_il" if source == "en_us" else "en_us"
+                layout_switch.switch_to(target)
+                flip_log.log_flip(source, _last_flip_info.get("chars", 0))
             _refresh_tray_menu()
 
     finally:
@@ -141,6 +154,8 @@ def _on_update_available(version: str, url: str):
 
 
 def _do_update(_icon=None, _item=None):
+    import subprocess
+
     def _run():
         try:
             _, url = _pending_update
