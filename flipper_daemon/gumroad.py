@@ -79,11 +79,13 @@ def get_premium_status() -> bool:
     Fails open (returns True) if offline and cache says premium.
     """
     info = storage.get_license_info()
+    print(f"[gumroad] get_premium_status: info={info}")
     if not info or not info.get("success"):
         return False
 
     # Master key never expires
     if info.get("master"):
+        print("[gumroad] master key — premium OK")
         return True
 
     age = time.time() - info.get("verified_at", 0)

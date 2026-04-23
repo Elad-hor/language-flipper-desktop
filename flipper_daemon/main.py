@@ -133,6 +133,8 @@ def run():
 
     hotkey = "Cmd+Shift+Y" if _platform_mod.system() == "Darwin" else "Ctrl+Alt+Y"
     print(f"[language-flipper] running. Press {hotkey} to flip.")
+    print(f"[storage] data file: {storage._DATA_FILE}")
+    print(f"[storage] current data: {storage._load()}")
     icon.run()
 
 
