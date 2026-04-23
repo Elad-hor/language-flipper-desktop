@@ -343,12 +343,7 @@ def _linux_clipboard_replace(flipped_fn) -> bool:
 # ---------------------------------------------------------------------------
 
 def _release_modifiers():
-    """
-    Release modifier keys still physically held from the hotkey.
-    We deliberately skip Alt — releasing Alt on Windows activates the
-    menu bar and steals focus from the active text field.
-    Ctrl and Shift release cleanly without side effects.
-    """
+    """Release modifier keys still held from the hotkey."""
     try:
         from pynput.keyboard import Controller, Key
         kb = Controller()
@@ -363,32 +358,72 @@ def _release_modifiers():
         pass
 
 
+# ---------------------------------------------------------------------------
+# Windows — low-level keyboard injection (works from any thread)
+# ---------------------------------------------------------------------------
+
+# VK codes for navigation keys that require EXTENDEDKEY flag
+_WIN_EXTENDED_VK = {
+    0x21, 0x22, 0x23, 0x24,  # PgUp, PgDn, End, Home
+    0x25, 0x26, 0x27, 0x28,  # Left, Up, Right, Down
+    0x2D, 0x2E,              # Insert, Delete
+}
+
+def _win_key(vk: int, down: bool):
+    """Inject one key event via keybd_event — works from any background thread."""
+    import ctypes
+    KEYEVENTF_KEYUP       = 0x0002
+    KEYEVENTF_EXTENDEDKEY = 0x0001
+    flags = 0
+    if not down:
+        flags |= KEYEVENTF_KEYUP
+    if vk in _WIN_EXTENDED_VK:
+        flags |= KEYEVENTF_EXTENDEDKEY
+    ctypes.windll.user32.keybd_event(vk, 0, flags, 0)
+
+
+def _win_tap(vk: int):
+    _win_key(vk, True)
+    _win_key(vk, False)
+
+
+def _win_ctrl_c():
+    _win_key(0x11, True);  _win_tap(0x43);  _win_key(0x11, False)   # Ctrl+C
+
+
+def _win_ctrl_v():
+    _win_key(0x11, True);  _win_tap(0x56);  _win_key(0x11, False)   # Ctrl+V
+
+
+def _win_select_line():
+    """Home → Shift+End to select the current line."""
+    _win_tap(0x24)                                   # VK_HOME
+    time.sleep(0.05)
+    _win_key(0x10, True);  _win_tap(0x23);  _win_key(0x10, False)   # Shift+End
+    time.sleep(0.06)
+
+
 def _windows_replace(flipped_fn) -> bool:
     try:
-        import pyperclip, pyautogui
+        import pyperclip
 
-        # Release hotkey modifiers BEFORE sending any keys — critical on Windows.
-        # If Ctrl/Alt are still held, our Ctrl+C becomes Ctrl+Alt+C, etc.
+        # Release hotkey modifiers before injecting any keys.
         _release_modifiers()
         time.sleep(0.05)
 
         saved = str(pyperclip.paste() or "")
         _dbg(f"windows clipboard: saved = {repr(saved[:40])}")
 
-        pyautogui.hotkey("ctrl", "c")
+        _win_ctrl_c()
         time.sleep(0.18)
         selected = str(pyperclip.paste() or "")
         _dbg(f"windows clipboard: after copy = {repr(selected[:40])}")
 
         if not selected or selected == saved:
-            # Nothing selected — select current line then copy
             _dbg("windows clipboard: nothing selected — selecting current line")
             _release_modifiers()
-            pyautogui.hotkey("home")
-            time.sleep(0.05)
-            pyautogui.hotkey("shift", "end")
-            time.sleep(0.06)
-            pyautogui.hotkey("ctrl", "c")
+            _win_select_line()
+            _win_ctrl_c()
             time.sleep(0.18)
             selected = str(pyperclip.paste() or "")
             _dbg(f"windows clipboard: after line select = {repr(selected[:40])}")
@@ -405,7 +440,7 @@ def _windows_replace(flipped_fn) -> bool:
 
         pyperclip.copy(flipped)
         _release_modifiers()
-        pyautogui.hotkey("ctrl", "v")
+        _win_ctrl_v()
         time.sleep(0.1)
         pyperclip.copy(saved)
         _dbg("windows clipboard: done")
