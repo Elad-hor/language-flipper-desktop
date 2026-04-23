@@ -19,6 +19,8 @@ WizardStyle=modern
 DisableProgramGroupPage=yes
 UninstallDisplayIcon={app}\Language Flipper.exe
 UninstallDisplayName=Language Flipper
+CloseApplications=yes
+RestartApplications=yes
 
 [Files]
 Source: "dist\Language Flipper.exe"; DestDir: "{app}"; Flags: ignoreversion
