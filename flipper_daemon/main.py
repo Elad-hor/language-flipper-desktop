@@ -1,3 +1,4 @@
+import subprocess
 import threading
 from pathlib import Path
 
@@ -9,7 +10,7 @@ import platform as _platform_mod
 from .flipper import flip_text
 from .text_bridge import read_and_replace
 from . import hotkey as hotkey_mod
-from . import storage, gumroad, paywall
+from . import storage, gumroad, paywall, updater
 
 if _platform_mod.system() == "Darwin":
     from . import login_item, onboarding
@@ -18,7 +19,8 @@ elif _platform_mod.system() == "Windows":
 
 _in_flight = False
 _in_flight_lock = threading.Lock()
-_tray_icon = None  # set in run(), used by _refresh_tray_menu
+_tray_icon = None
+_pending_update = None  # (version_str, download_url) when an update is available
 
 
 def _on_flip():
@@ -71,6 +73,14 @@ def _build_menu() -> pystray.Menu:
         pystray.MenuItem(_status_label(), None, enabled=False),
         pystray.Menu.SEPARATOR,
     ]
+
+    if _pending_update:
+        version, _ = _pending_update
+        items += [
+            pystray.MenuItem(f"⬆ Update available (v{version}) — click to install", _do_update),
+            pystray.Menu.SEPARATOR,
+        ]
+
     if not is_premium:
         items += [
             pystray.MenuItem("Buy Premium ($9.99/year)", lambda: paywall.open_purchase_page()),
@@ -124,6 +134,24 @@ def _toggle_login_item(_icon=None, _item=None):
     _refresh_tray_menu()
 
 
+def _on_update_available(version: str, url: str):
+    global _pending_update
+    _pending_update = (version, url)
+    _refresh_tray_menu()
+
+
+def _do_update(_icon=None, _item=None):
+    def _run():
+        try:
+            _, url = _pending_update
+            updater.download_and_run(url)
+            if _tray_icon:
+                _tray_icon.stop()
+        except Exception:
+            pass
+    threading.Thread(target=_run, daemon=True).start()
+
+
 # ---------------------------------------------------------------------------
 # Entry point
 # ---------------------------------------------------------------------------
@@ -142,6 +170,8 @@ def run():
     if _platform_mod.system() == "Darwin":
         import threading as _t
         _t.Thread(target=onboarding.run_if_needed, daemon=True).start()
+
+    updater.start(_on_update_available)
 
     _hotkey_handle = hotkey_mod.register(_on_flip)  # noqa: F841
 
