@@ -1,8 +1,11 @@
 """
 Global hotkey registration.
 
-macOS + X11  → pynput
-Wayland      → xdg-desktop-portal (GNOME 44+ / KDE 5.27+), falls back to pynput
+Windows  → RegisterHotKey (Win32 via ctypes) — suppresses the key combo
+           so it never reaches apps or the language switcher. No extra deps.
+macOS    → pynput
+Wayland  → xdg-desktop-portal, falls back to pynput
+X11      → pynput
 """
 
 import platform
@@ -11,19 +14,62 @@ from typing import Callable
 
 _PLATFORM = platform.system()
 
-# Hotkey expressed in pynput format
-# macOS: Cmd+Shift+Y  |  Windows/Linux: Ctrl+Shift+Y
-_HOTKEY = "<cmd>+<shift>+y" if platform.system() == "Darwin" else "<ctrl>+<shift>+y"
+# Hotkey in pynput format (macOS + Linux)
+_PYNPUT_HOTKEY = "<cmd>+<shift>+y" if _PLATFORM == "Darwin" else "<ctrl>+<shift>+y"
 
 
 # ---------------------------------------------------------------------------
-# pynput backend (macOS + X11)
+# Windows — RegisterHotKey (ctypes, no extra deps)
+# Suppresses the hotkey before any app or language switcher sees it.
+# ---------------------------------------------------------------------------
+
+def _start_windows_hotkey(callback: Callable):
+    import ctypes
+    import ctypes.wintypes
+
+    _WM_HOTKEY   = 0x0312
+    _MOD_CONTROL = 0x0002
+    _MOD_SHIFT   = 0x0004
+    _MOD_NOREPEAT= 0x4000   # don't fire repeatedly while held
+    _HOTKEY_ID   = 9001
+    _VK_Y        = ord('Y')
+
+    def loop():
+        ok = ctypes.windll.user32.RegisterHotKey(
+            None,
+            _HOTKEY_ID,
+            _MOD_CONTROL | _MOD_SHIFT | _MOD_NOREPEAT,
+            _VK_Y,
+        )
+        if not ok:
+            print("[hotkey] RegisterHotKey failed — falling back to pynput")
+            _start_pynput(callback)
+            return
+
+        print("[hotkey] RegisterHotKey (Windows) — Ctrl+Shift+Y")
+
+        msg = ctypes.wintypes.MSG()
+        while ctypes.windll.user32.GetMessageW(ctypes.byref(msg), None, 0, 0) != 0:
+            if msg.message == _WM_HOTKEY and msg.wParam == _HOTKEY_ID:
+                callback()
+            ctypes.windll.user32.TranslateMessage(ctypes.byref(msg))
+            ctypes.windll.user32.DispatchMessageW(ctypes.byref(msg))
+
+        ctypes.windll.user32.UnregisterHotKey(None, _HOTKEY_ID)
+
+    t = threading.Thread(target=loop, daemon=True)
+    t.start()
+    return t
+
+
+# ---------------------------------------------------------------------------
+# pynput backend (macOS + X11/Linux)
 # ---------------------------------------------------------------------------
 
 def _start_pynput(callback: Callable):
     from pynput import keyboard
 
-    hotkey = keyboard.HotKey(keyboard.HotKey.parse(_HOTKEY), callback)
+    hotkey = keyboard.HotKey(keyboard.HotKey.parse(_PYNPUT_HOTKEY), callback)
 
     def on_press(key):
         try:
@@ -40,6 +86,7 @@ def _start_pynput(callback: Callable):
     listener = keyboard.Listener(on_press=on_press, on_release=on_release)
     listener.daemon = True
     listener.start()
+    print(f"[hotkey] pynput ({_PLATFORM})")
     return listener
 
 
@@ -68,7 +115,7 @@ def _start_xdg_portal(callback: Callable):
             "flip",
             {
                 "description": dbus.String("Flip keyboard layout", variant_level=1),
-                "preferred-trigger": dbus.String("<Super><Shift>y", variant_level=1),
+                "preferred-trigger": dbus.String("<Control><Shift>y", variant_level=1),
             },
         )]
 
@@ -86,6 +133,7 @@ def _start_xdg_portal(callback: Callable):
         loop = GLib.MainLoop()
         t = threading.Thread(target=loop.run, daemon=True)
         t.start()
+        print("[hotkey] xdg-desktop-portal (Wayland)")
         return loop
 
     except Exception:
@@ -97,12 +145,12 @@ def _start_xdg_portal(callback: Callable):
 # ---------------------------------------------------------------------------
 
 def register(callback: Callable):
+    if _PLATFORM == "Windows":
+        return _start_windows_hotkey(callback)
+
     if _PLATFORM == "Linux":
         handle = _start_xdg_portal(callback)
         if handle:
-            print("[hotkey] xdg-desktop-portal (Wayland)")
             return handle
 
-    handle = _start_pynput(callback)
-    print(f"[hotkey] pynput ({_PLATFORM})")
-    return handle
+    return _start_pynput(callback)
