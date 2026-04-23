@@ -5,6 +5,7 @@ if a newer release is found. Silent — never raises to the caller.
 """
 
 import json
+import platform
 import subprocess
 import tempfile
 import threading
@@ -13,7 +14,11 @@ import urllib.request
 from .version import VERSION
 
 _GITHUB_API = "https://api.github.com/repos/Elad-hor/language-flipper-desktop/releases/latest"
-_ASSET_NAME = "Language-Flipper-Setup.exe"
+
+_PLATFORM_ASSET = {
+    "Windows": "Language-Flipper-Setup.exe",
+    "Darwin":  "Language.Flipper.dmg",
+}
 
 
 def _parse_version(tag: str) -> tuple:
@@ -26,12 +31,21 @@ def _parse_version(tag: str) -> tuple:
 
 
 def download_and_run(url: str) -> None:
-    tmp = tempfile.mktemp(suffix=".exe", prefix="lf-setup-")
+    system = platform.system()
+    suffix = ".exe" if system == "Windows" else ".dmg"
+    tmp = tempfile.mktemp(suffix=suffix, prefix="lf-setup-")
     urllib.request.urlretrieve(url, tmp)
-    subprocess.Popen([tmp, "/SILENT"])
+    if system == "Windows":
+        subprocess.Popen([tmp, "/SILENT"])
+    elif system == "Darwin":
+        subprocess.Popen(["open", tmp])
 
 
 def start(on_available) -> None:
+    asset_name = _PLATFORM_ASSET.get(platform.system())
+    if not asset_name:
+        return
+
     def _check():
         try:
             req = urllib.request.Request(
@@ -46,7 +60,7 @@ def start(on_available) -> None:
                 return
 
             for asset in release.get("assets", []):
-                if asset["name"] == _ASSET_NAME:
+                if asset["name"] == asset_name:
                     version_str = latest_tag.lstrip("v").split("-")[0]
                     on_available(version_str, asset["browser_download_url"])
                     break
