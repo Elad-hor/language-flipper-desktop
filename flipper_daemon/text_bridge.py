@@ -12,7 +12,7 @@ import time
 
 _PLATFORM = platform.system()
 
-DEBUG = False
+DEBUG = True
 
 def _dbg(msg):
     if DEBUG:
@@ -339,30 +339,57 @@ def _linux_clipboard_replace(flipped_fn) -> bool:
 
 
 # ---------------------------------------------------------------------------
-# Windows — clipboard path (pyautogui works reliably without extra perms)
+# Windows — clipboard path
 # ---------------------------------------------------------------------------
+
+def _release_modifiers():
+    """
+    Release common modifier keys that may still be physically held
+    from the hotkey combo. Must be called before sending any pyautogui
+    keystrokes, otherwise Ctrl/Alt bleed into our synthetic keys.
+    """
+    try:
+        from pynput.keyboard import Controller, Key
+        kb = Controller()
+        for k in (Key.ctrl, Key.ctrl_l, Key.ctrl_r,
+                  Key.alt, Key.alt_l, Key.alt_r,
+                  Key.shift, Key.shift_l, Key.shift_r,
+                  Key.cmd, Key.cmd_l, Key.cmd_r):
+            try:
+                kb.release(k)
+            except Exception:
+                pass
+    except Exception:
+        pass
+
 
 def _windows_replace(flipped_fn) -> bool:
     try:
         import pyperclip, pyautogui
 
+        # Release hotkey modifiers BEFORE sending any keys — critical on Windows.
+        # If Ctrl/Alt are still held, our Ctrl+C becomes Ctrl+Alt+C, etc.
+        _release_modifiers()
+        time.sleep(0.05)
+
         saved = str(pyperclip.paste() or "")
         _dbg(f"windows clipboard: saved = {repr(saved[:40])}")
 
         pyautogui.hotkey("ctrl", "c")
-        time.sleep(0.15)
+        time.sleep(0.18)
         selected = str(pyperclip.paste() or "")
         _dbg(f"windows clipboard: after copy = {repr(selected[:40])}")
 
         if not selected or selected == saved:
-            # Nothing selected — select current line: Home then Shift+End
+            # Nothing selected — select current line then copy
             _dbg("windows clipboard: nothing selected — selecting current line")
+            _release_modifiers()
             pyautogui.hotkey("home")
             time.sleep(0.05)
             pyautogui.hotkey("shift", "end")
             time.sleep(0.06)
             pyautogui.hotkey("ctrl", "c")
-            time.sleep(0.15)
+            time.sleep(0.18)
             selected = str(pyperclip.paste() or "")
             _dbg(f"windows clipboard: after line select = {repr(selected[:40])}")
 
@@ -373,9 +400,11 @@ def _windows_replace(flipped_fn) -> bool:
         flipped = flipped_fn(selected)
         if flipped == selected:
             pyperclip.copy(saved)
+            _dbg("windows clipboard: nothing to flip")
             return False
 
         pyperclip.copy(flipped)
+        _release_modifiers()
         pyautogui.hotkey("ctrl", "v")
         time.sleep(0.1)
         pyperclip.copy(saved)
@@ -406,6 +435,7 @@ def read_and_replace(flipped_fn) -> bool:
         return False
 
     elif _PLATFORM == "Windows":
+        _release_modifiers()
         return _windows_replace(flipped_fn)
 
     elif _PLATFORM == "Linux":
