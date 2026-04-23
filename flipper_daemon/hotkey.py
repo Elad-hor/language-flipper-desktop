@@ -12,9 +12,8 @@ from typing import Callable
 _PLATFORM = platform.system()
 
 # Hotkey expressed in pynput format
-# macOS: Cmd+Shift+Y  |  Windows/Linux: Ctrl+Alt+Y
-# Ctrl+Shift is a system shortcut for switching input languages on Windows/Linux
-_HOTKEY = "<cmd>+<shift>+y" if platform.system() == "Darwin" else "<ctrl>+<alt>+y"
+# macOS: Cmd+Shift+Y  |  Windows/Linux: Ctrl+Shift+Y
+_HOTKEY = "<cmd>+<shift>+y" if platform.system() == "Darwin" else "<ctrl>+<shift>+y"
 
 
 # ---------------------------------------------------------------------------

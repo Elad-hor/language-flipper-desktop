@@ -344,15 +344,15 @@ def _linux_clipboard_replace(flipped_fn) -> bool:
 
 def _release_modifiers():
     """
-    Release common modifier keys that may still be physically held
-    from the hotkey combo. Must be called before sending any pyautogui
-    keystrokes, otherwise Ctrl/Alt bleed into our synthetic keys.
+    Release modifier keys still physically held from the hotkey.
+    We deliberately skip Alt — releasing Alt on Windows activates the
+    menu bar and steals focus from the active text field.
+    Ctrl and Shift release cleanly without side effects.
     """
     try:
         from pynput.keyboard import Controller, Key
         kb = Controller()
         for k in (Key.ctrl, Key.ctrl_l, Key.ctrl_r,
-                  Key.alt, Key.alt_l, Key.alt_r,
                   Key.shift, Key.shift_l, Key.shift_r,
                   Key.cmd, Key.cmd_l, Key.cmd_r):
             try:

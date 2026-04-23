@@ -131,7 +131,7 @@ def run():
 
     _hotkey_handle = hotkey_mod.register(_on_flip)  # noqa: F841
 
-    hotkey = "Cmd+Shift+Y" if _platform_mod.system() == "Darwin" else "Ctrl+Alt+Y"
+    hotkey = "Cmd+Shift+Y" if _platform_mod.system() == "Darwin" else "Ctrl+Shift+Y"
     print(f"[language-flipper] running. Press {hotkey} to flip.")
     print(f"[storage] data file: {storage._DATA_FILE}")
     print(f"[storage] current data: {storage._load()}")
