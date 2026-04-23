@@ -7,7 +7,9 @@ _HE2EN = None
 _EN_SET = None
 _HE_SET = None
 
-_MAP_PATH = Path(__file__).parent / "layouts" / "en_he_map.json"
+import sys as _sys
+_BASE = Path(getattr(_sys, "_MEIPASS", Path(__file__).parent))
+_MAP_PATH = _BASE / "layouts" / "en_he_map.json"
 
 _NORMALIZE = {
     "\u2018": "'", "\u2019": "'",
