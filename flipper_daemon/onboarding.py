@@ -2,8 +2,10 @@
 First-launch onboarding for macOS.
 Checks Accessibility + Input Monitoring permissions and guides the user
 to grant them if missing. Re-runs if permissions are revoked.
+After Input Monitoring is granted, restarts the app so pynput picks it up.
 """
 
+import os
 import subprocess
 import time
 from . import storage
@@ -104,8 +106,13 @@ def _finish():
     _osascript(
         'display dialog '
         '"You\'re all set!\\n\\n'
-        'Language Flipper is running in your menu bar.\\n'
-        'Select any text and press Cmd+Shift+Y to flip it." '
-        'buttons {"Got it!"} default button "Got it!" '
+        'Language Flipper will restart now to activate the hotkey.\\n'
+        'It will reappear in your menu bar automatically." '
+        'buttons {"Restart Now"} default button "Restart Now" '
         'with title "Language Flipper"'
     )
+
+    # Relaunch the app so pynput picks up the new Input Monitoring permission
+    subprocess.Popen(["open", "-a", "Language Flipper"])
+    time.sleep(0.5)
+    os._exit(0)
