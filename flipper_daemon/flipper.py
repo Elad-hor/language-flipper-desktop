@@ -9,7 +9,9 @@ _HE_SET = None
 
 import sys as _sys
 if getattr(_sys, "frozen", False):
-    _MAP_PATH = Path(_sys._MEIPASS) / "flipper_daemon" / "layouts" / "en_he_map.json"
+    # sys.executable = Contents/MacOS/Language Flipper
+    # datas land in   Contents/Resources/
+    _MAP_PATH = Path(_sys.executable).parent.parent / "Resources" / "flipper_daemon" / "layouts" / "en_he_map.json"
 else:
     _MAP_PATH = Path(__file__).parent / "layouts" / "en_he_map.json"
 
