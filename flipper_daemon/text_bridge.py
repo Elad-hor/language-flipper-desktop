@@ -12,13 +12,11 @@ import time
 
 _PLATFORM = platform.system()
 
-DEBUG = True
-_LOG = open("/tmp/lf_debug.txt", "a", buffering=1)
+DEBUG = False
 
 def _dbg(msg):
     if DEBUG:
-        import datetime
-        _LOG.write(f"[{datetime.datetime.now().strftime('%H:%M:%S')}] {msg}\n")
+        print(f"[text_bridge] {msg}")
 
 
 # ---------------------------------------------------------------------------
