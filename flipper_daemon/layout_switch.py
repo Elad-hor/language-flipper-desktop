@@ -11,10 +11,23 @@ _LAYOUTS = {
     "he_il": "0000040d",
 }
 
-# macOS input source identifiers — en_us lists candidates in priority order
+# macOS input source identifiers — listed in priority order
 _MAC_SOURCES = {
-    "en_us": ["com.apple.keylayout.ABC", "com.apple.keylayout.US", "com.apple.keylayout.USInternational-PC"],
-    "he_il": ["com.apple.keylayout.Hebrew"],
+    "en_us": [
+        "com.apple.keylayout.ABC",
+        "com.apple.keylayout.US",
+        "com.apple.keylayout.USInternational-PC",
+        "com.apple.keylayout.British",
+        "com.apple.keylayout.Australian",
+        "com.apple.keylayout.Canadian",
+        "com.apple.keylayout.ABC-QWERTY",
+    ],
+    "he_il": [
+        "com.apple.keylayout.Hebrew",
+        "com.apple.keylayout.Hebrew-PC",
+        "com.apple.keylayout.Hebrew-QWERTY",
+        "com.apple.keylayout.Hebrew-Left-Hand",
+    ],
 }
 
 _WM_INPUTLANGCHANGEREQUEST = 0x0050
