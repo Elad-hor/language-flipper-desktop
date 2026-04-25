@@ -36,17 +36,33 @@ def _switch_mac(layout_id: str) -> None:
     source_id = _MAC_SOURCES.get(layout_id)
     if not source_id:
         return
-    import subprocess
-    script = (
-        f'tell application "System Events" to '
-        f'set the input source to first input source '
-        f'whose input source id is "{source_id}"'
-    )
-    subprocess.Popen(
-        ["osascript", "-e", script],
-        stdout=subprocess.DEVNULL,
-        stderr=subprocess.DEVNULL,
-    )
+
+    def _do():
+        try:
+            from Foundation import NSBundle
+            import objc
+            HIToolbox = NSBundle.bundleWithIdentifier_("com.apple.HIToolbox")
+            g = {}
+            objc.loadBundleFunctions(HIToolbox, g, [
+                ("TISCreateInputSourceList", b"@@B"),
+                ("TISGetInputSourceProperty", b"@@@"),
+                ("TISSelectInputSource",     b"i@"),
+            ])
+            objc.loadBundleVariables(HIToolbox, g, [
+                ("kTISPropertyInputSourceID", b"@"),
+            ])
+            sources = g["TISCreateInputSourceList"](None, False)
+            for src in sources:
+                sid = g["TISGetInputSourceProperty"](src, g["kTISPropertyInputSourceID"])
+                if sid == source_id:
+                    g["TISSelectInputSource"](src)
+                    break
+        except Exception:
+            pass
+
+    # TIS APIs require the AppKit run loop — dispatch to main thread
+    from Foundation import NSOperationQueue
+    NSOperationQueue.mainQueue().addOperationWithBlock_(_do)
 
 
 
