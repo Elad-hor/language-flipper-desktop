@@ -33,6 +33,8 @@ def _flip_and_track(text: str) -> str:
 
 def _on_flip():
     global _in_flight
+    with open("/tmp/lf_debug.txt", "a") as _f:
+        _f.write("hotkey fired\n")
     with _in_flight_lock:
         if _in_flight:
             return
