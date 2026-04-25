@@ -37,8 +37,8 @@ def _ax_trusted() -> bool:
 
 
 def run_if_needed():
-    """Call on startup. Shows onboarding only on first launch or if permissions are missing."""
-    if storage._load().get("onboarding_done") and _ax_trusted():
+    """Call on startup. Shows onboarding only on first launch."""
+    if storage._load().get("onboarding_done"):
         return
 
     _show_welcome()
@@ -103,7 +103,7 @@ def _check_input_monitoring():
 
 
 def _finish():
-    import subprocess, os as _os
+    import os as _os
     data = storage._load()
     data["onboarding_done"] = True
     storage._save(data)
@@ -111,11 +111,9 @@ def _finish():
     _osascript('''
         display dialog ¬
             "You're all set!\\n\\n" & ¬
-            "Language Flipper will now restart so the hotkey is active." ¬
-            buttons {"Got it!"} default button "Got it!" ¬
+            "Please quit and reopen Language Flipper from the menu bar \\n" & ¬
+            "so the hotkey becomes active." ¬
+            buttons {"Quit Now"} default button "Quit Now" ¬
             with title "Language Flipper"
     ''')
-
-    # Relaunch so pynput picks up Input Monitoring permission immediately.
-    subprocess.Popen(["/usr/bin/open", "-a", "Language Flipper"])
     _os._exit(0)
