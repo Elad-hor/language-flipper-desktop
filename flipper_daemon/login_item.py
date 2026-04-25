@@ -12,14 +12,14 @@ _PLIST_LABEL = "com.languageflipper.desktop"
 _PLIST_PATH  = Path.home() / "Library/LaunchAgents" / f"{_PLIST_LABEL}.plist"
 
 
-def _get_executable() -> str:
-    """Return the path to the running executable or 'python3 run.py'."""
+def _get_program_arguments() -> list:
+    """Return the ProgramArguments list for the LaunchAgent plist."""
     import sys
-    # When bundled by PyInstaller, sys.frozen is True
     if getattr(sys, "frozen", False):
-        return sys.executable
+        # Use `open -a` so macOS launches the .app with proper app context
+        return ["/usr/bin/open", "-a", "Language Flipper"]
     # Running from source
-    return f"{sys.executable} {Path(__file__).parent.parent / 'run.py'}"
+    return [sys.executable, str(Path(__file__).parent.parent / "run.py")]
 
 
 def is_enabled() -> bool:
@@ -27,7 +27,8 @@ def is_enabled() -> bool:
 
 
 def enable():
-    exe = _get_executable()
+    args = _get_program_arguments()
+    args_xml = "".join(f"        <string>{p}</string>\n" for p in args)
     plist = f"""<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
   "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
@@ -37,7 +38,7 @@ def enable():
     <string>{_PLIST_LABEL}</string>
     <key>ProgramArguments</key>
     <array>
-        {"".join(f"<string>{p}</string>" for p in exe.split())}
+{args_xml.rstrip()}
     </array>
     <key>RunAtLoad</key>
     <true/>

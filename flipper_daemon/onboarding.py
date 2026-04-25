@@ -1,11 +1,9 @@
 """
 First-launch onboarding for macOS.
 Checks Accessibility + Input Monitoring permissions and guides the user
-to grant them if missing. Re-runs if permissions are revoked.
-After Input Monitoring is granted, restarts the app so pynput picks it up.
+to grant them if missing. Runs once; marks completion in storage.
 """
 
-import os
 import subprocess
 import time
 from . import storage
@@ -39,25 +37,28 @@ def _ax_trusted() -> bool:
 
 
 def run_if_needed():
-    """Call on startup. Shows onboarding if permissions are missing."""
-    if _ax_trusted() and storage._load().get("onboarding_done"):
+    """Call on startup. Shows onboarding only on first launch or if permissions are missing."""
+    if storage._load().get("onboarding_done") and _ax_trusted():
         return
+
     _show_welcome()
 
 
 def _show_welcome():
-    result = _osascript(
-        'button returned of (display dialog '
-        '"Welcome to Language Flipper!\\n\\n'
-        'To flip text anywhere on your Mac, Language Flipper needs two permissions:\\n\\n'
-        '  • Accessibility — to read and replace text\\n'
-        '  • Input Monitoring — to detect the hotkey\\n\\n'
-        'Click Continue to grant them now." '
-        'buttons {"Quit", "Continue"} default button "Continue" '
-        'with title "Language Flipper Setup")'
-    )
+    result = _osascript('''
+        button returned of (display dialog ¬
+            "Welcome to Language Flipper!\\n\\n" & ¬
+            "To flip text anywhere on your Mac, Language Flipper needs two permissions:\\n\\n" & ¬
+            "  • Accessibility — to read and replace text\\n" & ¬
+            "  • Input Monitoring — to detect the hotkey\\n\\n" & ¬
+            "Click Continue to grant them now." ¬
+            buttons {"Quit", "Continue"} default button "Continue" ¬
+            with title "Language Flipper Setup")
+    ''')
+
     if result != "Continue":
         import sys; sys.exit(0)
+
     _check_accessibility()
 
 
@@ -66,16 +67,17 @@ def _check_accessibility():
         _check_input_monitoring()
         return
 
-    _osascript(
-        'display dialog '
-        '"Step 1 of 2 — Accessibility\\n\\n'
-        'System Settings will open. Find Language Flipper in the list,\\n'
-        'enable it, then come back here and click OK." '
-        'buttons {"OK"} default button "OK" '
-        'with title "Language Flipper Setup"'
-    )
+    _osascript('''
+        display dialog ¬
+            "Step 1 of 2 — Accessibility\\n\\n" & ¬
+            "System Settings will open. Add Language Flipper (or Terminal) \\n" & ¬
+            "to the Accessibility list, then come back here." ¬
+            buttons {"OK"} default button "OK" ¬
+            with title "Language Flipper Setup"
+    ''')
     _open_privacy_pane("Accessibility")
 
+    # Wait up to 60s for the user to grant it
     for _ in range(30):
         time.sleep(2)
         if _ax_trusted():
@@ -85,34 +87,35 @@ def _check_accessibility():
 
 
 def _check_input_monitoring():
-    _osascript(
-        'display dialog '
-        '"Step 2 of 2 — Input Monitoring\\n\\n'
-        'System Settings will open. Find Language Flipper in the list,\\n'
-        'enable it, then come back here and click OK." '
-        'buttons {"OK"} default button "OK" '
-        'with title "Language Flipper Setup"'
-    )
+    # We can't programmatically detect Input Monitoring status — just prompt.
+    _osascript('''
+        display dialog ¬
+            "Step 2 of 2 — Input Monitoring\\n\\n" & ¬
+            "System Settings will open. Add Language Flipper (or Terminal) \\n" & ¬
+            "to the Input Monitoring list, then come back here." ¬
+            buttons {"OK"} default button "OK" ¬
+            with title "Language Flipper Setup"
+    ''')
     _open_privacy_pane("ListenEvent")
+
     time.sleep(3)
     _finish()
 
 
 def _finish():
+    import subprocess, os as _os
     data = storage._load()
     data["onboarding_done"] = True
     storage._save(data)
 
-    _osascript(
-        'display dialog '
-        '"You\'re all set!\\n\\n'
-        'Language Flipper will restart now to activate the hotkey.\\n'
-        'It will reappear in your menu bar automatically." '
-        'buttons {"Restart Now"} default button "Restart Now" '
-        'with title "Language Flipper"'
-    )
+    _osascript('''
+        display dialog ¬
+            "You're all set!\\n\\n" & ¬
+            "Language Flipper will now restart so the hotkey is active." ¬
+            buttons {"Got it!"} default button "Got it!" ¬
+            with title "Language Flipper"
+    ''')
 
-    # Relaunch the app so pynput picks up the new Input Monitoring permission
-    subprocess.Popen(["open", "-a", "Language Flipper"])
-    time.sleep(0.5)
-    os._exit(0)
+    # Relaunch so pynput picks up Input Monitoring permission immediately.
+    subprocess.Popen(["/usr/bin/open", "-a", "Language Flipper"])
+    _os._exit(0)

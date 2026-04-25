@@ -1,35 +1,28 @@
 #!/bin/bash
-# Builds Language Flipper.app and packages it into a proper DMG
-# with a drag-to-Applications installer UI.
-#
-# Requirements:
-#   brew install create-dmg
-#
-# Usage:
-#   chmod +x build_mac.sh
-#   ./build_mac.sh
-
 set -e
 
-APP_NAME="Language Flipper"
-DMG_NAME="Language.Flipper.dmg"
+# 1. Kill any running instance
+pkill -x "Language Flipper" 2>/dev/null || true
 
-echo "==> Building .app with PyInstaller..."
-python3 -m PyInstaller language_flipper.spec --noconfirm
+# 2. Build .app with PyInstaller
+python3 -m PyInstaller language_flipper.spec
 
-echo "==> Removing old DMG if present..."
-rm -f "dist/$DMG_NAME"
+# 3. Strip quarantine flags (avoids Gatekeeper blocking the DMG contents)
+xattr -cr "dist/Language Flipper.app"
 
-echo "==> Creating DMG..."
+# 4. Remove old DMG if it exists
+rm -f "dist/Language.Flipper.dmg"
+
+# 5. Package into a drag-to-Applications DMG
 create-dmg \
-  --volname "$APP_NAME" \
+  --volname "Language Flipper" \
   --window-pos 200 120 \
   --window-size 600 400 \
   --icon-size 100 \
-  --icon "$APP_NAME.app" 175 190 \
-  --hide-extension "$APP_NAME.app" \
+  --icon "Language Flipper.app" 175 190 \
+  --hide-extension "Language Flipper.app" \
   --app-drop-link 425 190 \
-  "dist/$DMG_NAME" \
-  "dist/$APP_NAME.app"
+  "dist/Language.Flipper.dmg" \
+  "dist/Language Flipper.app"
 
-echo "==> Done! Output: dist/$DMG_NAME"
+echo "Done — dist/Language.Flipper.dmg is ready"
