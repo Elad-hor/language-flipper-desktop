@@ -52,13 +52,17 @@ def _switch_mac(layout_id: str) -> None:
                 ("kTISPropertyInputSourceID", b"@"),
             ])
             sources = g["TISCreateInputSourceList"](None, False)
+            print(f"[layout_switch] switching to {source_id}, found {len(sources)} sources")
             for src in sources:
                 sid = g["TISGetInputSourceProperty"](src, g["kTISPropertyInputSourceID"])
                 if sid == source_id:
-                    g["TISSelectInputSource"](src)
+                    result = g["TISSelectInputSource"](src)
+                    print(f"[layout_switch] TISSelectInputSource({source_id}) = {result}")
                     break
-        except Exception:
-            pass
+            else:
+                print(f"[layout_switch] source {source_id} not found in list")
+        except Exception as e:
+            print(f"[layout_switch] error: {e}")
 
     # TIS APIs require the AppKit run loop — dispatch to main thread
     from Foundation import NSOperationQueue
