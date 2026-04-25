@@ -37,50 +37,46 @@ def _switch_mac(layout_id: str) -> None:
     if not source_id:
         return
     try:
-        from ctypes import cdll, c_void_p, c_char_p
+        import ctypes
         import ctypes.util
-        carbon = cdll.LoadLibrary(ctypes.util.find_library("Carbon"))
 
-        # Get all input sources
-        tid = carbon.TISCreateInputSourceList(None, False)
-        count = carbon.CFArrayGetCount(tid)
+        carbon = ctypes.cdll.LoadLibrary(ctypes.util.find_library("Carbon"))
+        cf     = ctypes.cdll.LoadLibrary(ctypes.util.find_library("CoreFoundation"))
+
+        # Must declare restypes — without this, 64-bit pointers get truncated to int
+        carbon.TISCreateInputSourceList.restype   = ctypes.c_void_p
+        carbon.TISCreateInputSourceList.argtypes  = [ctypes.c_void_p, ctypes.c_bool]
+        carbon.TISGetInputSourceProperty.restype  = ctypes.c_void_p
+        carbon.TISGetInputSourceProperty.argtypes = [ctypes.c_void_p, ctypes.c_void_p]
+        carbon.TISSelectInputSource.restype       = ctypes.c_int
+        carbon.TISSelectInputSource.argtypes      = [ctypes.c_void_p]
+        cf.CFArrayGetCount.restype                = ctypes.c_long
+        cf.CFArrayGetCount.argtypes               = [ctypes.c_void_p]
+        cf.CFArrayGetValueAtIndex.restype         = ctypes.c_void_p
+        cf.CFArrayGetValueAtIndex.argtypes        = [ctypes.c_void_p, ctypes.c_long]
+        cf.CFStringGetCString.restype             = ctypes.c_bool
+        cf.CFStringGetCString.argtypes            = [ctypes.c_void_p, ctypes.c_char_p, ctypes.c_long, ctypes.c_int]
+        cf.CFRelease.argtypes                     = [ctypes.c_void_p]
+
+        # kTISPropertyInputSourceID is a global CFStringRef symbol in Carbon
+        prop_key = ctypes.c_void_p.in_dll(carbon, "kTISPropertyInputSourceID")
+
+        sources = carbon.TISCreateInputSourceList(None, False)
+        count   = cf.CFArrayGetCount(sources)
         for i in range(count):
-            src = carbon.CFArrayGetValueAtIndex(tid, i)
-            prop = carbon.TISGetInputSourceProperty(
-                src,
-                carbon.kTISPropertyInputSourceID
-            )
-            sid = _cf_string_to_str(prop)
-            if sid == source_id:
+            src  = cf.CFArrayGetValueAtIndex(sources, i)
+            prop = carbon.TISGetInputSourceProperty(src, prop_key)
+            if not prop:
+                continue
+            buf = ctypes.create_string_buffer(256)
+            cf.CFStringGetCString(prop, buf, 256, 0x08000100)
+            if buf.value.decode("utf-8", errors="ignore") == source_id:
                 carbon.TISSelectInputSource(src)
                 break
-        carbon.CFRelease(tid)
+        cf.CFRelease(sources)
     except Exception:
-        # Fallback: AppleScript
-        import subprocess
-        script = f'''
-        tell application "System Events"
-            set the input source to input source "{source_id}"
-        end tell
-        '''
-        subprocess.Popen(
-            ["osascript", "-e", script],
-            stdout=subprocess.DEVNULL,
-            stderr=subprocess.DEVNULL
-        )
+        pass
 
-
-def _cf_string_to_str(cf_string) -> str:
-    try:
-        from ctypes import cdll, c_char_p, c_long
-        import ctypes.util
-        cf = cdll.LoadLibrary(ctypes.util.find_library("CoreFoundation"))
-        length = cf.CFStringGetLength(cf_string)
-        buf = (c_char_p * (length * 4 + 1))()
-        cf.CFStringGetCString(cf_string, buf, len(buf), 0x08000100)
-        return buf.value.decode("utf-8", errors="ignore")
-    except Exception:
-        return ""
 
 
 def switch_to(layout_id: str) -> None:
