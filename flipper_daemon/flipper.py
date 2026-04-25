@@ -8,8 +8,10 @@ _EN_SET = None
 _HE_SET = None
 
 import sys as _sys
-_BASE = Path(getattr(_sys, "_MEIPASS", Path(__file__).parent))
-_MAP_PATH = _BASE / "layouts" / "en_he_map.json"
+if getattr(_sys, "frozen", False):
+    _MAP_PATH = Path(_sys._MEIPASS) / "flipper_daemon" / "layouts" / "en_he_map.json"
+else:
+    _MAP_PATH = Path(__file__).parent / "layouts" / "en_he_map.json"
 
 _NORMALIZE = {
     "\u2018": "'", "\u2019": "'",
