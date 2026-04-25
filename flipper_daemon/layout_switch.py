@@ -52,15 +52,17 @@ def _switch_mac(layout_id: str) -> None:
                 ("kTISPropertyInputSourceID", b"@"),
             ])
             sources = g["TISCreateInputSourceList"](None, False)
-            print(f"[layout_switch] switching to {source_id}, found {len(sources)} sources")
+            print(f"[layout_switch] switching to {source_id}, found {len(sources)} sources:")
+            found = False
             for src in sources:
                 sid = g["TISGetInputSourceProperty"](src, g["kTISPropertyInputSourceID"])
+                print(f"  {sid}")
                 if sid == source_id:
                     result = g["TISSelectInputSource"](src)
                     print(f"[layout_switch] TISSelectInputSource({source_id}) = {result}")
-                    break
-            else:
-                print(f"[layout_switch] source {source_id} not found in list")
+                    found = True
+            if not found:
+                print(f"[layout_switch] source {source_id} not found")
         except Exception as e:
             print(f"[layout_switch] error: {e}")
 
