@@ -11,10 +11,10 @@ _LAYOUTS = {
     "he_il": "0000040d",
 }
 
-# macOS input source identifiers
+# macOS input source identifiers — en_us lists candidates in priority order
 _MAC_SOURCES = {
-    "en_us": "com.apple.keylayout.US",
-    "he_il": "com.apple.keylayout.Hebrew",
+    "en_us": ["com.apple.keylayout.ABC", "com.apple.keylayout.US", "com.apple.keylayout.USInternational-PC"],
+    "he_il": ["com.apple.keylayout.Hebrew"],
 }
 
 _WM_INPUTLANGCHANGEREQUEST = 0x0050
@@ -33,8 +33,8 @@ def _switch_windows(layout_id: str) -> None:
 
 
 def _switch_mac(layout_id: str) -> None:
-    source_id = _MAC_SOURCES.get(layout_id)
-    if not source_id:
+    candidates = _MAC_SOURCES.get(layout_id)
+    if not candidates:
         return
 
     def _do():
@@ -52,19 +52,19 @@ def _switch_mac(layout_id: str) -> None:
                 ("kTISPropertyInputSourceID", b"@"),
             ])
             sources = g["TISCreateInputSourceList"](None, False)
-            print(f"[layout_switch] switching to {source_id}, found {len(sources)} sources:")
-            found = False
+            # Build a map of available source IDs → source objects
+            available = {}
             for src in sources:
                 sid = g["TISGetInputSourceProperty"](src, g["kTISPropertyInputSourceID"])
-                print(f"  {sid}")
-                if sid == source_id:
-                    result = g["TISSelectInputSource"](src)
-                    print(f"[layout_switch] TISSelectInputSource({source_id}) = {result}")
-                    found = True
-            if not found:
-                print(f"[layout_switch] source {source_id} not found")
-        except Exception as e:
-            print(f"[layout_switch] error: {e}")
+                if sid:
+                    available[sid] = src
+            # Try candidates in order until one is found
+            for candidate in candidates:
+                if candidate in available:
+                    g["TISSelectInputSource"](available[candidate])
+                    break
+        except Exception:
+            pass
 
     # TIS APIs require the AppKit run loop — dispatch to main thread
     from Foundation import NSOperationQueue
