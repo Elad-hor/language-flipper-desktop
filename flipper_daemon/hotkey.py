@@ -66,6 +66,14 @@ def _start_windows_hotkey(callback: Callable):
 # pynput backend (macOS + X11/Linux)
 # ---------------------------------------------------------------------------
 
+def _log(msg):
+    try:
+        with open("/tmp/lf_debug.txt", "a") as f:
+            f.write(f"[hotkey] {msg}\n")
+    except Exception:
+        pass
+
+
 def _start_pynput(callback: Callable):
     from pynput import keyboard
 
@@ -73,9 +81,10 @@ def _start_pynput(callback: Callable):
 
     def on_press(key):
         try:
+            _log(f"key pressed: {key}")
             hotkey.press(listener.canonical(key))
-        except Exception:
-            pass
+        except Exception as e:
+            _log(f"on_press error: {e}")
 
     def on_release(key):
         try:
@@ -83,10 +92,15 @@ def _start_pynput(callback: Callable):
         except Exception:
             pass
 
-    listener = keyboard.Listener(on_press=on_press, on_release=on_release)
-    listener.daemon = True
-    listener.start()
-    print(f"[hotkey] pynput ({_PLATFORM})")
+    try:
+        listener = keyboard.Listener(on_press=on_press, on_release=on_release)
+        listener.daemon = True
+        listener.start()
+        import time; time.sleep(0.5)
+        _log(f"pynput listener started, alive={listener.is_alive()}")
+    except Exception as e:
+        _log(f"pynput failed to start: {e}")
+        return None
     return listener
 
 
