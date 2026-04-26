@@ -13,9 +13,9 @@ import urllib.request
 
 from . import storage
 
-_PRODUCT_PERMALINK = "languageflipper"
-_VERIFY_URL        = "https://api.gumroad.com/v2/licenses/verify"
-_CACHE_TTL         = 86400  # 24 hours
+_PRODUCT_ID  = "4ibkrpNt-FvgO4QYvaFbog=="
+_VERIFY_URL  = "https://api.gumroad.com/v2/licenses/verify"
+_CACHE_TTL   = 86400  # 24 hours
 
 # SHA256 of the developer master key — plaintext never stored in source.
 _MASTER_HASH = "75314de6aec366736e1bd9b695d87b3e85577d05f107b45010d07daaef4e5138"
@@ -28,7 +28,7 @@ def _is_master_key(key: str) -> bool:
 
 def _call_api(key: str) -> dict:
     body = urllib.parse.urlencode({
-        "product_permalink": _PRODUCT_PERMALINK,
+        "product_id": _PRODUCT_ID,
         "license_key": key.strip(),
         "increment_uses_count": "false",
     }).encode()
