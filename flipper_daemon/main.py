@@ -1,23 +1,10 @@
 import threading
-import sys as _startup_sys
 from pathlib import Path
 
 import pystray
 from PIL import Image, ImageDraw
 
 import platform as _platform_mod
-
-# Startup diagnostic — written before anything else
-try:
-    from .flipper import _MAP_PATH as _diag_map
-    with open("/tmp/lf_debug.txt", "w") as _f:
-        _f.write(f"frozen: {getattr(_startup_sys, 'frozen', False)}\n")
-        _f.write(f"executable: {_startup_sys.executable}\n")
-        _f.write(f"map_path: {_diag_map}\n")
-        _f.write(f"map_exists: {Path(_diag_map).exists()}\n")
-except Exception as _e:
-    with open("/tmp/lf_debug.txt", "w") as _f:
-        _f.write(f"startup error: {_e}\n")
 
 from .flipper import flip_text, detect_layout
 from .text_bridge import read_and_replace

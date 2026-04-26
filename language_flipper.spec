@@ -3,6 +3,7 @@
 # Run: pyinstaller language_flipper.spec
 
 from PyInstaller.utils.hooks import collect_data_files
+import certifi
 import sys
 
 a = Analysis(
@@ -14,6 +15,7 @@ a = Analysis(
         ("assets/icon.png",   "assets"),
         ("assets/icon_32.png","assets"),
         ("assets/icon_16.png","assets"),
+        (certifi.where(), "certifi"),
     ],
     hiddenimports=[
         "pynput.keyboard._darwin",

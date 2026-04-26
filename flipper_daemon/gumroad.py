@@ -7,9 +7,29 @@ If the entered key matches the hash it is accepted without an API call.
 
 import hashlib
 import json
+import ssl
 import time
 import urllib.parse
 import urllib.request
+
+import sys as _sys
+from pathlib import Path as _Path
+
+def _make_ssl_context():
+    # In a frozen PyInstaller bundle the certifi .pem is bundled under
+    # Contents/Resources/certifi/cacert.pem — certifi.where() returns the
+    # wrong path (inside the non-existent site-packages), so override it.
+    if getattr(_sys, "frozen", False):
+        pem = _Path(_sys.executable).parent.parent / "Resources" / "certifi" / "cacert.pem"
+        if pem.exists():
+            return ssl.create_default_context(cafile=str(pem))
+    try:
+        import certifi
+        return ssl.create_default_context(cafile=certifi.where())
+    except Exception:
+        return None
+
+_SSL_CONTEXT = _make_ssl_context()
 
 from . import storage
 
@@ -33,7 +53,7 @@ def _call_api(key: str) -> dict:
         "increment_uses_count": "false",
     }).encode()
     req = urllib.request.Request(_VERIFY_URL, data=body, method="POST")
-    with urllib.request.urlopen(req, timeout=10) as resp:
+    with urllib.request.urlopen(req, timeout=10, context=_SSL_CONTEXT) as resp:
         return json.loads(resp.read())
 
 
