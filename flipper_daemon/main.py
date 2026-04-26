@@ -38,10 +38,17 @@ def _on_flip():
             return
         _in_flight = True
     try:
+        with open("/tmp/lf_debug.txt", "a") as _f:
+            _f.write("[main] _on_flip triggered\n")
+
         if not paywall.check_and_maybe_block():
+            with open("/tmp/lf_debug.txt", "a") as _f:
+                _f.write("[main] blocked by paywall\n")
             return
 
         replaced = read_and_replace(_flip_and_track)
+        with open("/tmp/lf_debug.txt", "a") as _f:
+            _f.write(f"[main] read_and_replace returned {replaced}\n")
 
         if replaced:
             storage.increment_lifetime_flips()

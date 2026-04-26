@@ -12,11 +12,12 @@ import time
 
 _PLATFORM = platform.system()
 
-DEBUG = False
+DEBUG = True
 
 def _dbg(msg):
     if DEBUG:
-        print(f"[text_bridge] {msg}")
+        with open("/tmp/lf_debug.txt", "a") as _f:
+            _f.write(f"[text_bridge] {msg}\n")
 
 
 # ---------------------------------------------------------------------------
