@@ -10,15 +10,18 @@ if [ -z "$VERSION" ]; then
   exit 1
 fi
 
-# 1. Update version in spec
+# 1. Pull latest code
+git pull
+
+# 2. Update version in spec
 sed -i '' "s/\"CFBundleShortVersionString\": \".*\"/\"CFBundleShortVersionString\": \"$VERSION\"/" language_flipper.spec
 
 echo "→ Version set to $VERSION"
 
-# 2. Build
+# 3. Build
 ./build_mac.sh
 
-# 3. Release to GitHub
+# 4. Release to GitHub
 NOTES_TEXT="${NOTES:-Language Flipper $VERSION — macOS}"
 gh release create "v${VERSION}-mac" "dist/Language.Flipper.dmg" \
   --title "Language Flipper $VERSION — macOS" \
