@@ -37,11 +37,29 @@ def _ax_trusted() -> bool:
 
 
 def run_if_needed():
-    """Call on startup. Shows onboarding only on first launch."""
+    """Call on startup. Shows full onboarding on first launch; re-prompts for
+    permissions if they were revoked (e.g. after installing a new version)."""
     if storage._load().get("onboarding_done"):
+        if not _ax_trusted():
+            _show_recheck()
         return
 
     _show_welcome()
+
+
+def _show_recheck():
+    """Permissions were revoked (new binary installed). Re-guide the user."""
+    result = _osascript('''
+        button returned of (display dialog \
+            "Language Flipper needs permissions" & return & return & \
+            "A new version was installed and macOS revoked the permissions." & return & \
+            "Click Continue to re-grant them." \
+            buttons {"Quit", "Continue"} default button "Continue" \
+            with title "Language Flipper")
+    ''')
+    if result != "Continue":
+        import sys; sys.exit(0)
+    _check_accessibility()
 
 
 def _show_welcome():
@@ -105,15 +123,26 @@ def _check_input_monitoring():
 def _finish():
     import os as _os
     data = storage._load()
+    first_time = not data.get("onboarding_done")
     data["onboarding_done"] = True
     storage._save(data)
 
-    _osascript('''
-        display dialog ¬
-            "You're all set!\\n\\n" & ¬
-            "Please quit and reopen Language Flipper from the menu bar \\n" & ¬
-            "so the hotkey becomes active." ¬
-            buttons {"Quit Now"} default button "Quit Now" ¬
-            with title "Language Flipper"
-    ''')
-    _os._exit(0)
+    if first_time:
+        _osascript('''
+            display dialog \
+                "You're all set!" & return & return & \
+                "Please quit and reopen Language Flipper from the menu bar " & \
+                "so the hotkey becomes active." \
+                buttons {"Quit Now"} default button "Quit Now" \
+                with title "Language Flipper"
+        ''')
+        _os._exit(0)
+    else:
+        _osascript('''
+            display dialog \
+                "Permissions granted!" & return & return & \
+                "Language Flipper is ready to use." \
+                buttons {"OK"} default button "OK" \
+                with title "Language Flipper"
+        ''')
+        # No exit — app is already running normally
