@@ -26,6 +26,10 @@ def is_enabled() -> bool:
     return _PLIST_PATH.exists()
 
 
+def _uid() -> str:
+    return str(os.getuid())
+
+
 def enable():
     args = _get_program_arguments()
     args_xml = "".join(f"        <string>{p}</string>\n" for p in args)
@@ -49,10 +53,19 @@ def enable():
 """
     _PLIST_PATH.parent.mkdir(parents=True, exist_ok=True)
     _PLIST_PATH.write_text(plist, encoding="utf-8")
-    subprocess.run(["launchctl", "load", str(_PLIST_PATH)], check=False)
+    # Use bootstrap (modern API) — falls back to load if it fails
+    r = subprocess.run(
+        ["launchctl", "bootstrap", f"gui/{_uid()}", str(_PLIST_PATH)],
+        capture_output=True,
+    )
+    if r.returncode != 0:
+        subprocess.run(["launchctl", "load", str(_PLIST_PATH)], check=False)
 
 
 def disable():
     if _PLIST_PATH.exists():
-        subprocess.run(["launchctl", "unload", str(_PLIST_PATH)], check=False)
+        subprocess.run(
+            ["launchctl", "bootout", f"gui/{_uid()}", str(_PLIST_PATH)],
+            capture_output=True,
+        )
         _PLIST_PATH.unlink(missing_ok=True)
