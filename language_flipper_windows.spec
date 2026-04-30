@@ -1,5 +1,6 @@
 # -*- mode: python ; coding: utf-8 -*-
 import certifi
+from PyInstaller.utils.hooks import collect_data_files
 
 block_cipher = None
 
@@ -11,6 +12,7 @@ a = Analysis(
         ('assets', 'assets'),
         ('flipper_daemon/layouts', 'layouts'),
         (certifi.where(), 'certifi'),
+        *collect_data_files('tkinter'),
     ],
     hiddenimports=[
         'pynput.keyboard._win32',
@@ -20,6 +22,11 @@ a = Analysis(
         'pyperclip',
         'winreg',
         'certifi',
+        'tkinter',
+        '_tkinter',
+        'tkinter.ttk',
+        'tkinter.messagebox',
+        'tkinter.simpledialog',
     ],
     hookspath=[],
     hooksconfig={},
