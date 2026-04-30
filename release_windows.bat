@@ -23,7 +23,7 @@ rmdir /s /q build 2>nul
 rmdir /s /q dist 2>nul
 
 echo building exe...
-"C:\Users\user\AppData\Local\Programs\Python\Python314\python.exe" -m PyInstaller --noconfirm language_flipper_windows.spec
+"C:\Users\user\AppData\Local\Programs\Python\Python313\python.exe" -m PyInstaller --noconfirm --clean language_flipper_windows.spec
 if errorlevel 1 (
     echo ERROR: PyInstaller failed.
     exit /b 1
