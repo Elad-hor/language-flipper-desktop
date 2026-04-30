@@ -12,8 +12,11 @@ echo pulling latest code...
 git pull
 
 echo updating version to %VERSION%...
-echo VERSION = "%VERSION%" > flipper_daemon\version.py
+python -c "open('flipper_daemon/version.py','w').write('VERSION = \"%VERSION%\"\n')"
 powershell -Command "(Get-Content language_flipper_setup.iss) -replace 'AppVersion=.*', 'AppVersion=%VERSION%' | Set-Content language_flipper_setup.iss"
+echo version.py now contains:
+type flipper_daemon\version.py
+rmdir /s /q flipper_daemon\__pycache__ 2>nul
 
 echo building exe...
 pyinstaller --noconfirm language_flipper_windows.spec
