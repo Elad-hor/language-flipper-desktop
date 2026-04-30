@@ -13,7 +13,7 @@ import urllib.request
 
 from .version import VERSION
 
-_GITHUB_API = "https://api.github.com/repos/Elad-hor/language-flipper-desktop/releases/latest"
+_GITHUB_API = "https://api.github.com/repos/Elad-hor/language-flipper-desktop/releases"
 
 _PLATFORM_ASSET = {
     "Windows": "Language-Flipper-Setup.exe",
@@ -53,17 +53,29 @@ def start(on_available) -> None:
                 headers={"User-Agent": "language-flipper-updater"}
             )
             with urllib.request.urlopen(req, timeout=10) as r:
-                release = json.loads(r.read())
+                releases = json.loads(r.read())
 
-            latest_tag = release.get("tag_name", "")
-            if _parse_version(latest_tag) <= _parse_version(VERSION):
-                return
+            best_ver = _parse_version(VERSION)
+            best_url = None
+            best_tag = None
 
-            for asset in release.get("assets", []):
-                if asset["name"] == asset_name:
-                    version_str = latest_tag.lstrip("v").split("-")[0]
-                    on_available(version_str, asset["browser_download_url"])
-                    break
+            for release in releases:
+                if release.get("draft") or release.get("prerelease"):
+                    continue
+                tag = release.get("tag_name", "")
+                ver = _parse_version(tag)
+                if ver <= best_ver:
+                    continue
+                for asset in release.get("assets", []):
+                    if asset["name"] == asset_name:
+                        best_ver = ver
+                        best_url = asset["browser_download_url"]
+                        best_tag = tag
+                        break
+
+            if best_url:
+                version_str = best_tag.lstrip("v").split("-")[0]
+                on_available(version_str, best_url)
         except Exception:
             pass
 

@@ -13,7 +13,8 @@ fi
 # 1. Pull latest code
 git pull
 
-# 2. Update version in spec
+# 2. Update version everywhere
+sed -i '' "s/VERSION = \".*\"/VERSION = \"$VERSION\"/" flipper_daemon/version.py
 sed -i '' "s/\"CFBundleShortVersionString\": \".*\"/\"CFBundleShortVersionString\": \"$VERSION\"/" language_flipper.spec
 
 echo "→ Version set to $VERSION"

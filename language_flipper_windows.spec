@@ -1,4 +1,5 @@
 # -*- mode: python ; coding: utf-8 -*-
+import certifi
 
 block_cipher = None
 
@@ -9,6 +10,7 @@ a = Analysis(
     datas=[
         ('assets', 'assets'),
         ('flipper_daemon/layouts', 'layouts'),
+        (certifi.where(), 'certifi'),
     ],
     hiddenimports=[
         'pynput.keyboard._win32',
@@ -17,6 +19,7 @@ a = Analysis(
         'PIL._tkinter_finder',
         'pyperclip',
         'winreg',
+        'certifi',
     ],
     hookspath=[],
     hooksconfig={},

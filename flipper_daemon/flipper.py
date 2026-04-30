@@ -8,10 +8,14 @@ _EN_SET = None
 _HE_SET = None
 
 import sys as _sys
+import platform as _platform
 if getattr(_sys, "frozen", False):
-    # sys.executable = Contents/MacOS/Language Flipper
-    # datas land in   Contents/Resources/
-    _MAP_PATH = Path(_sys.executable).parent.parent / "Resources" / "flipper_daemon" / "layouts" / "en_he_map.json"
+    if _platform.system() == "Darwin":
+        # Mac app bundle: exe is Contents/MacOS/, datas land in Contents/Resources/
+        _MAP_PATH = Path(_sys.executable).parent.parent / "Resources" / "flipper_daemon" / "layouts" / "en_he_map.json"
+    else:
+        # Windows single-file exe: PyInstaller extracts datas to sys._MEIPASS
+        _MAP_PATH = Path(getattr(_sys, "_MEIPASS", Path(_sys.executable).parent)) / "layouts" / "en_he_map.json"
 else:
     _MAP_PATH = Path(__file__).parent / "layouts" / "en_he_map.json"
 

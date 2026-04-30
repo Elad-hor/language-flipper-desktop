@@ -16,11 +16,16 @@ import sys as _sys
 from pathlib import Path as _Path
 
 def _make_ssl_context():
-    # In a frozen PyInstaller bundle the certifi .pem is bundled under
-    # Contents/Resources/certifi/cacert.pem — certifi.where() returns the
-    # wrong path (inside the non-existent site-packages), so override it.
+    # In a frozen PyInstaller bundle certifi.where() returns a wrong path
+    # (inside the non-existent site-packages), so locate the PEM manually.
     if getattr(_sys, "frozen", False):
-        pem = _Path(_sys.executable).parent.parent / "Resources" / "certifi" / "cacert.pem"
+        import platform as _plat
+        if _plat.system() == "Darwin":
+            # Mac app bundle: exe is Contents/MacOS/, datas land in Contents/Resources/
+            pem = _Path(_sys.executable).parent.parent / "Resources" / "certifi" / "cacert.pem"
+        else:
+            # Windows single-file exe: PyInstaller extracts datas to sys._MEIPASS
+            pem = _Path(getattr(_sys, "_MEIPASS", _Path(_sys.executable).parent)) / "certifi" / "cacert.pem"
         if pem.exists():
             return ssl.create_default_context(cafile=str(pem))
     try:
