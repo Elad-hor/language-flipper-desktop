@@ -36,7 +36,8 @@ def download_and_run(url: str) -> None:
     tmp = tempfile.mktemp(suffix=suffix, prefix="lf-setup-")
     urllib.request.urlretrieve(url, tmp)
     if system == "Windows":
-        subprocess.Popen([tmp, "/SILENT"])
+        # /VERYSILENT: no UI; /RESTARTAPPLICATIONS: Inno Setup restarts the app after install
+        subprocess.Popen([tmp, "/VERYSILENT", "/RESTARTAPPLICATIONS"])
     elif system == "Darwin":
         subprocess.Popen(["open", tmp])
 
