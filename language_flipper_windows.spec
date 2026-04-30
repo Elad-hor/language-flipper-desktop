@@ -1,12 +1,29 @@
 # -*- mode: python ; coding: utf-8 -*-
 import certifi
+import sys
+import os
+import glob
 
 block_cipher = None
+
+# Find python DLL and its siblings — Python 3.14 installs them in a
+# non-standard subfolder that PyInstaller's auto-scan misses.
+_ver = f"{sys.version_info.major}{sys.version_info.minor}"
+_dll_name = f"python{_ver}.dll"
+_python_base = os.path.dirname(sys.executable)
+if os.path.basename(_python_base).lower() == 'bin':
+    _python_base = os.path.dirname(_python_base)
+_dll_matches = glob.glob(os.path.join(_python_base, '**', _dll_name), recursive=True)
+_python_binaries = []
+if _dll_matches:
+    _dll_dir = os.path.dirname(_dll_matches[0])
+    for _f in glob.glob(os.path.join(_dll_dir, '*.dll')):
+        _python_binaries.append((_f, '.'))
 
 a = Analysis(
     ['run.py'],
     pathex=[],
-    binaries=[],
+    binaries=_python_binaries,
     datas=[
         ('assets', 'assets'),
         ('flipper_daemon/layouts', 'layouts'),
