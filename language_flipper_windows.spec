@@ -1,18 +1,28 @@
 # -*- mode: python ; coding: utf-8 -*-
 import certifi
-from PyInstaller.utils.hooks import collect_data_files
+import sys
+import os
+import glob
 
 block_cipher = None
+
+# Find python DLL — not bundled automatically by PyInstaller on Python 3.14
+_ver = f"{sys.version_info.major}{sys.version_info.minor}"
+_dll_name = f"python{_ver}.dll"
+_python_base = os.path.dirname(sys.executable)
+if os.path.basename(_python_base).lower() == 'bin':
+    _python_base = os.path.dirname(_python_base)
+_dll_matches = glob.glob(os.path.join(_python_base, '**', _dll_name), recursive=True)
+_python_dll = _dll_matches[0] if _dll_matches else None
 
 a = Analysis(
     ['run.py'],
     pathex=[],
-    binaries=[],
+    binaries=[(_python_dll, '.')] if _python_dll else [],
     datas=[
         ('assets', 'assets'),
         ('flipper_daemon/layouts', 'layouts'),
         (certifi.where(), 'certifi'),
-        *collect_data_files('tkinter'),
     ],
     hiddenimports=[
         'pynput.keyboard._win32',
@@ -22,11 +32,6 @@ a = Analysis(
         'pyperclip',
         'winreg',
         'certifi',
-        'tkinter',
-        '_tkinter',
-        'tkinter.ttk',
-        'tkinter.messagebox',
-        'tkinter.simpledialog',
     ],
     hookspath=[],
     hooksconfig={},
@@ -43,13 +48,17 @@ pyz = PYZ(a.pure, a.zipped_data, cipher=block_cipher)
 exe = EXE(
     pyz,
     a.scripts,
+    a.binaries,
+    a.zipfiles,
+    a.datas,
     [],
-    exclude_binaries=True,
     name='Language Flipper',
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
     upx=False,
+    upx_exclude=[],
+    runtime_tmpdir=None,
     console=False,
     disable_windowed_traceback=False,
     argv_emulation=False,
@@ -57,14 +66,4 @@ exe = EXE(
     codesign_identity=None,
     entitlements_file=None,
     icon='assets/icon.ico',
-)
-
-coll = COLLECT(
-    exe,
-    a.binaries,
-    a.zipfiles,
-    a.datas,
-    strip=False,
-    upx=False,
-    name='Language Flipper',
 )
