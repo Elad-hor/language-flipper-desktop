@@ -36,8 +36,20 @@ def download_and_run(url: str) -> None:
     tmp = tempfile.mktemp(suffix=suffix, prefix="lf-setup-")
     urllib.request.urlretrieve(url, tmp)
     if system == "Windows":
-        # /VERYSILENT: no UI; /RESTARTAPPLICATIONS: Inno Setup restarts the app after install
-        subprocess.Popen([tmp, "/VERYSILENT", "/RESTARTAPPLICATIONS"])
+        import os
+        install_exe = os.path.join(
+            os.environ.get("LOCALAPPDATA", ""),
+            "Programs", "Language Flipper", "Language Flipper.exe",
+        )
+        # We must exit first so Windows releases the file lock on the running exe.
+        # Schedule: wait for us to exit → run installer silently → wait for install → relaunch.
+        cmd = (
+            f'ping -n 2 127.0.0.1 >nul'
+            f' && "{tmp}" /VERYSILENT'
+            f' && ping -n 4 127.0.0.1 >nul'
+            f' && start "" "{install_exe}"'
+        )
+        subprocess.Popen(cmd, shell=True)
     elif system == "Darwin":
         subprocess.Popen(["open", tmp])
 

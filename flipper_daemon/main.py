@@ -160,9 +160,10 @@ def _do_update(_icon=None, _item=None):
         try:
             _, url = _pending_update
             updater.download_and_run(url)
-            # On Windows, Inno Setup closes and restarts the app via CloseApplications/RestartApplications.
-            # On Mac, we stop the tray so the user can open the downloaded DMG manually.
-            if _tray_icon and _platform_mod.system() != "Windows":
+            # Stop the tray on all platforms.
+            # On Windows this releases the file lock so the installer can overwrite the exe.
+            # The installer + relaunch are scheduled via a background cmd (see updater.py).
+            if _tray_icon:
                 _tray_icon.stop()
         except Exception:
             pass
