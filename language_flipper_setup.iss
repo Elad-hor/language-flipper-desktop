@@ -23,7 +23,15 @@ CloseApplications=yes
 RestartApplications=yes
 
 [Files]
-Source: "dist\Language Flipper.exe"; DestDir: "{app}"; Flags: ignoreversion restartreplace
+Source: "dist\Language Flipper.exe"; DestDir: "{app}"; Flags: ignoreversion; BeforeInstall: KillApp
+
+[Code]
+procedure KillApp;
+var ResultCode: Integer;
+begin
+  Exec(ExpandConstant('{cmd}'), '/C taskkill /F /IM "Language Flipper.exe" >nul 2>&1', '', SW_HIDE, ewWaitUntilTerminated, ResultCode);
+  Sleep(500);
+end;
 
 [Icons]
 Name: "{group}\Language Flipper"; Filename: "{app}\Language Flipper.exe"
