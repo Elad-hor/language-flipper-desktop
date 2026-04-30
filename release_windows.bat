@@ -1,8 +1,7 @@
 @echo off
-:: Usage: release_windows.bat 0.1.68 "Fix: description"
+:: Usage: release_windows.bat 0.1.68
 
-set VERSION=%1
-set NOTES=%2
+set VERSION=%~1
 
 if "%VERSION%"=="" (
     echo Usage: release_windows.bat ^<version^> "^<release notes^>"
@@ -35,8 +34,7 @@ git commit -m "bump version to %VERSION% (windows)"
 git push
 
 echo releasing to GitHub...
-if "%NOTES%"=="" set NOTES=Language Flipper %VERSION% - Windows
-gh release create "v%VERSION%-windows" "dist\Language-Flipper-Setup.exe" --title "Language Flipper %VERSION% - Windows" --notes "%NOTES%"
+gh release create "v%VERSION%-windows" "dist\Language-Flipper-Setup.exe" --title "Language Flipper %VERSION% - Windows" --generate-notes
 
 echo.
 echo Done! Released v%VERSION%-windows
