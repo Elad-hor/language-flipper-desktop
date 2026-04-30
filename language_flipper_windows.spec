@@ -1,6 +1,5 @@
 # -*- mode: python ; coding: utf-8 -*-
 import certifi
-from PyInstaller.utils.hooks import collect_data_files
 
 block_cipher = None
 
@@ -12,7 +11,6 @@ a = Analysis(
         ('assets', 'assets'),
         ('flipper_daemon/layouts', 'layouts'),
         (certifi.where(), 'certifi'),
-        *collect_data_files('tkinter'),
     ],
     hiddenimports=[
         'pynput.keyboard._win32',
@@ -50,7 +48,7 @@ exe = EXE(
     bootloader_ignore_signals=False,
     strip=False,
     upx=False,
-    console=True,
+    console=False,
     disable_windowed_traceback=False,
     argv_emulation=False,
     target_arch=None,
