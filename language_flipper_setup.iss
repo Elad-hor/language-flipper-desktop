@@ -23,7 +23,7 @@ CloseApplications=yes
 RestartApplications=yes
 
 [Files]
-Source: "dist\Language Flipper.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "dist\Language Flipper.exe"; DestDir: "{app}"; Flags: ignoreversion restartreplace
 
 [Icons]
 Name: "{group}\Language Flipper"; Filename: "{app}\Language Flipper.exe"
