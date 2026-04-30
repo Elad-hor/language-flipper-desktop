@@ -73,11 +73,12 @@ def _make_icon() -> Image.Image:
 
 
 def _status_label() -> str:
+    from .version import VERSION
     if gumroad.get_premium_status():
-        return "Language Flipper — Premium ✓"
+        return f"Language Flipper v{VERSION} — Premium ✓"
     flips = storage.get_lifetime_flips()
     remaining = max(0, paywall.HARD_LIMIT - flips)
-    return f"Language Flipper — {remaining} free flips left"
+    return f"Language Flipper v{VERSION} — {remaining} free flips left"
 
 
 def _build_menu() -> pystray.Menu:
