@@ -19,9 +19,9 @@ type flipper_daemon\version.py
 rmdir /s /q flipper_daemon\__pycache__ 2>nul
 
 echo building exe...
-python -m PyInstaller --noconfirm language_flipper_windows.spec
+"C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\python.exe" -m PyInstaller --noconfirm language_flipper_windows.spec
 if errorlevel 1 (
-    echo ERROR: PyInstaller failed. Run: pip install pyinstaller
+    echo ERROR: PyInstaller failed.
     exit /b 1
 )
 
