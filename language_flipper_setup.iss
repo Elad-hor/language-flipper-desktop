@@ -12,8 +12,8 @@ DefaultGroupName=Language Flipper
 OutputDir=dist
 OutputBaseFilename=Language-Flipper-Setup
 SetupIconFile=assets\icon.ico
-Compression=lzma
-SolidCompression=yes
+Compression=zip
+SolidCompression=no
 PrivilegesRequired=lowest
 WizardStyle=modern
 DisableProgramGroupPage=yes
@@ -23,7 +23,7 @@ CloseApplications=yes
 RestartApplications=yes
 
 [Files]
-Source: "dist\Language Flipper.exe"; DestDir: "{app}"; Flags: ignoreversion; BeforeInstall: KillApp
+Source: "dist\Language Flipper\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs; BeforeInstall: KillApp
 
 [Code]
 procedure KillApp;
