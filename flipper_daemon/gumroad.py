@@ -38,7 +38,7 @@ _SSL_CONTEXT = _make_ssl_context()
 
 from . import storage
 
-_PRODUCT_ID  = "languageflipper"
+_PRODUCT_ID  = "4ibkrpNt-FvgO4QYvaFbog=="
 _VERIFY_URL  = "https://api.gumroad.com/v2/licenses/verify"
 _CACHE_TTL   = 86400  # 24 hours
 
