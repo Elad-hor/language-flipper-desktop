@@ -18,6 +18,10 @@ echo version.py now contains:
 type flipper_daemon\version.py
 rmdir /s /q flipper_daemon\__pycache__ 2>nul
 
+echo cleaning build cache...
+rmdir /s /q build 2>nul
+rmdir /s /q dist 2>nul
+
 echo building exe...
 "C:\Users\user\AppData\Local\Programs\Python\Python314\python.exe" -m PyInstaller --noconfirm language_flipper_windows.spec
 if errorlevel 1 (
