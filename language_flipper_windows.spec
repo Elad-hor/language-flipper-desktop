@@ -1,12 +1,25 @@
 # -*- mode: python ; coding: utf-8 -*-
 import certifi
+import sys
+import os
 
 block_cipher = None
+
+# Explicitly bundle the Python DLL — required for single-file builds on some
+# Python versions (e.g. 3.14) where PyInstaller doesn't include it automatically.
+_dll_name = f'python{sys.version_info.major}{sys.version_info.minor}.dll'
+_dll_path = None
+for _d in [os.path.dirname(sys.executable), sys.prefix, os.path.join(sys.prefix, 'DLLs')]:
+    _candidate = os.path.join(_d, _dll_name)
+    if os.path.exists(_candidate):
+        _dll_path = _candidate
+        break
+_extra_binaries = [(_dll_path, '.')] if _dll_path else []
 
 a = Analysis(
     ['run.py'],
     pathex=[],
-    binaries=[],
+    binaries=_extra_binaries,
     datas=[
         ('assets', 'assets'),
         ('flipper_daemon/layouts', 'layouts'),
