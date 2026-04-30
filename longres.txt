@@ -1,0 +1,1642 @@
+C:\Users\user\language-flipper-desktop>for /r "C:\Users\user\AppData\Local\Python" %f in          (python314.dll) do echo %f
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\python314.dll
+C:\Users\user\AppData\Local\Python\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\bin\python314.dll
+C:\Users\user\AppData\Local\Python\bin\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\DLLs\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\DLLs\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Doc\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Doc\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Doc\html\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Doc\html\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Doc\html\c-api\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Doc\html\c-api\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Doc\html\deprecations\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Doc\html\deprecations\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Doc\html\distributing\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Doc\html\distributing\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Doc\html\extending\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Doc\html\extending\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Doc\html\faq\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Doc\html\faq\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Doc\html\howto\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Doc\html\howto\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Doc\html\installing\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Doc\html\installing\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Doc\html\library\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Doc\html\library\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Doc\html\reference\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Doc\html\reference\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Doc\html\tutorial\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Doc\html\tutorial\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Doc\html\using\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Doc\html\using\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Doc\html\whatsnew\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Doc\html\whatsnew\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Doc\html\_downloads\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Doc\html\_downloads\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Doc\html\_downloads\6dc1f3f4f0e6ca13cb42ddf4d6cbc8af\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Doc\html\_downloads\6dc1f3f4f0e6ca13cb42ddf4d6cbc8af\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Doc\html\_images\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Doc\html\_images\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Doc\html\_sources\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Doc\html\_sources\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Doc\html\_sources\c-api\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Doc\html\_sources\c-api\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Doc\html\_sources\deprecations\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Doc\html\_sources\deprecations\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Doc\html\_sources\distributing\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Doc\html\_sources\distributing\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Doc\html\_sources\extending\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Doc\html\_sources\extending\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Doc\html\_sources\faq\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Doc\html\_sources\faq\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Doc\html\_sources\howto\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Doc\html\_sources\howto\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Doc\html\_sources\installing\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Doc\html\_sources\installing\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Doc\html\_sources\library\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Doc\html\_sources\library\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Doc\html\_sources\reference\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Doc\html\_sources\reference\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Doc\html\_sources\tutorial\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Doc\html\_sources\tutorial\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Doc\html\_sources\using\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Doc\html\_sources\using\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Doc\html\_sources\whatsnew\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Doc\html\_sources\whatsnew\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Doc\html\_static\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Doc\html\_static\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\include\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\include\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\include\cpython\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\include\cpython\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\include\internal\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\include\internal\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\include\internal\mimalloc\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\include\internal\mimalloc\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\include\internal\mimalloc\mimalloc\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\include\internal\mimalloc\mimalloc\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\collections\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\collections\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\collections\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\collections\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\compression\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\compression\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\compression\zstd\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\compression\zstd\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\compression\zstd\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\compression\zstd\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\compression\_common\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\compression\_common\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\compression\_common\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\compression\_common\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\compression\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\compression\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\concurrent\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\concurrent\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\concurrent\futures\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\concurrent\futures\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\concurrent\futures\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\concurrent\futures\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\concurrent\interpreters\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\concurrent\interpreters\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\concurrent\interpreters\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\concurrent\interpreters\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\concurrent\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\concurrent\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\ctypes\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\ctypes\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\ctypes\macholib\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\ctypes\macholib\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\ctypes\macholib\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\ctypes\macholib\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\ctypes\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\ctypes\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\curses\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\curses\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\dbm\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\dbm\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\email\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\email\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\email\mime\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\email\mime\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\email\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\email\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\encodings\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\encodings\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\encodings\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\encodings\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\ensurepip\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\ensurepip\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\ensurepip\_bundled\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\ensurepip\_bundled\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\html\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\html\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\html\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\html\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\http\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\http\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\http\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\http\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\idlelib\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\idlelib\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\idlelib\Icons\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\idlelib\Icons\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\idlelib\idle_test\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\idlelib\idle_test\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\importlib\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\importlib\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\importlib\metadata\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\importlib\metadata\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\importlib\metadata\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\importlib\metadata\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\importlib\resources\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\importlib\resources\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\importlib\resources\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\importlib\resources\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\importlib\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\importlib\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\json\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\json\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\json\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\json\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\logging\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\logging\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\logging\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\logging\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\multiprocessing\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\multiprocessing\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\multiprocessing\dummy\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\multiprocessing\dummy\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\multiprocessing\dummy\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\multiprocessing\dummy\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\multiprocessing\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\multiprocessing\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\pathlib\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\pathlib\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\pathlib\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\pathlib\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\pydoc_data\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\pydoc_data\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\pydoc_data\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\pydoc_data\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\re\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\re\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\re\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\re\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\altgraph\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\altgraph\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\altgraph\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\altgraph\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\altgraph-0.17.5.dist-info\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\altgraph-0.17.5.dist-info\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\certifi\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\certifi\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\certifi\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\certifi\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\certifi-2026.4.22.dist-info\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\certifi-2026.4.22.dist-info\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\certifi-2026.4.22.dist-info\licenses\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\certifi-2026.4.22.dist-info\licenses\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\mouseinfo\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\mouseinfo\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\mouseinfo\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\mouseinfo\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\mouseinfo-0.1.3.dist-info\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\mouseinfo-0.1.3.dist-info\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\ordlookup\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\ordlookup\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\ordlookup\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\ordlookup\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\packaging\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\packaging\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\packaging\licenses\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\packaging\licenses\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\packaging\licenses\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\packaging\licenses\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\packaging\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\packaging\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\packaging-26.1.dist-info\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\packaging-26.1.dist-info\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\packaging-26.1.dist-info\licenses\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\packaging-26.1.dist-info\licenses\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pefile-2024.8.26.dist-info\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pefile-2024.8.26.dist-info\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\PIL\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\PIL\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\PIL\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\PIL\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pillow-12.2.0.dist-info\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pillow-12.2.0.dist-info\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pillow-12.2.0.dist-info\licenses\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pillow-12.2.0.dist-info\licenses\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_internal\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_internal\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_internal\cli\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_internal\cli\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_internal\cli\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_internal\cli\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_internal\commands\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_internal\commands\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_internal\commands\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_internal\commands\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_internal\distributions\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_internal\distributions\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_internal\distributions\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_internal\distributions\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_internal\index\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_internal\index\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_internal\index\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_internal\index\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_internal\locations\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_internal\locations\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_internal\locations\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_internal\locations\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_internal\metadata\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_internal\metadata\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_internal\metadata\importlib\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_internal\metadata\importlib\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_internal\metadata\importlib\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_internal\metadata\importlib\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_internal\metadata\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_internal\metadata\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_internal\models\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_internal\models\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_internal\models\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_internal\models\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_internal\network\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_internal\network\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_internal\network\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_internal\network\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_internal\operations\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_internal\operations\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_internal\operations\build\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_internal\operations\build\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_internal\operations\build\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_internal\operations\build\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_internal\operations\install\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_internal\operations\install\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_internal\operations\install\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_internal\operations\install\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_internal\operations\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_internal\operations\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_internal\req\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_internal\req\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_internal\req\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_internal\req\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_internal\resolution\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_internal\resolution\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_internal\resolution\legacy\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_internal\resolution\legacy\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_internal\resolution\resolvelib\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_internal\resolution\resolvelib\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_internal\resolution\resolvelib\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_internal\resolution\resolvelib\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_internal\resolution\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_internal\resolution\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_internal\utils\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_internal\utils\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_internal\utils\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_internal\utils\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_internal\vcs\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_internal\vcs\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_internal\vcs\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_internal\vcs\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_internal\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_internal\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\cachecontrol\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\cachecontrol\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\cachecontrol\caches\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\cachecontrol\caches\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\cachecontrol\caches\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\cachecontrol\caches\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\cachecontrol\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\cachecontrol\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\certifi\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\certifi\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\certifi\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\certifi\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\dependency_groups\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\dependency_groups\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\dependency_groups\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\dependency_groups\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\distlib\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\distlib\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\distlib\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\distlib\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\distro\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\distro\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\idna\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\idna\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\idna\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\idna\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\msgpack\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\msgpack\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\msgpack\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\msgpack\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\packaging\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\packaging\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\packaging\licenses\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\packaging\licenses\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\packaging\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\packaging\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\pkg_resources\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\pkg_resources\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\platformdirs\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\platformdirs\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\platformdirs\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\platformdirs\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\pygments\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\pygments\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\pygments\filters\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\pygments\filters\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\pygments\filters\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\pygments\filters\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\pygments\formatters\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\pygments\formatters\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\pygments\lexers\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\pygments\lexers\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\pygments\lexers\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\pygments\lexers\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\pygments\styles\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\pygments\styles\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\pygments\styles\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\pygments\styles\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\pygments\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\pygments\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\pyproject_hooks\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\pyproject_hooks\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\pyproject_hooks\_in_process\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\pyproject_hooks\_in_process\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\pyproject_hooks\_in_process\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\pyproject_hooks\_in_process\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\pyproject_hooks\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\pyproject_hooks\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\requests\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\requests\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\requests\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\requests\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\resolvelib\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\resolvelib\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\resolvelib\resolvers\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\resolvelib\resolvers\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\resolvelib\resolvers\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\resolvelib\resolvers\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\resolvelib\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\resolvelib\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\rich\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\rich\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\rich\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\rich\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\tomli\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\tomli\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\tomli_w\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\tomli_w\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\truststore\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\truststore\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\truststore\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\truststore\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\urllib3\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\urllib3\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\urllib3\contrib\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\urllib3\contrib\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\urllib3\contrib\_securetransport\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\urllib3\contrib\_securetransport\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\urllib3\contrib\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\urllib3\contrib\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\urllib3\packages\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\urllib3\packages\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\urllib3\packages\backports\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\urllib3\packages\backports\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\urllib3\packages\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\urllib3\packages\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\urllib3\util\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\urllib3\util\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\urllib3\util\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\urllib3\util\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\urllib3\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\urllib3\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\_vendor\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip-26.0.1.dist-info\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip-26.0.1.dist-info\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip-26.0.1.dist-info\licenses\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip-26.0.1.dist-info\licenses\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip-26.0.1.dist-info\licenses\src\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip-26.0.1.dist-info\licenses\src\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip-26.0.1.dist-info\licenses\src\pip\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip-26.0.1.dist-info\licenses\src\pip\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip-26.0.1.dist-info\licenses\src\pip\_vendor\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip-26.0.1.dist-info\licenses\src\pip\_vendor\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip-26.0.1.dist-info\licenses\src\pip\_vendor\cachecontrol\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip-26.0.1.dist-info\licenses\src\pip\_vendor\cachecontrol\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip-26.0.1.dist-info\licenses\src\pip\_vendor\certifi\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip-26.0.1.dist-info\licenses\src\pip\_vendor\certifi\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip-26.0.1.dist-info\licenses\src\pip\_vendor\dependency_groups\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip-26.0.1.dist-info\licenses\src\pip\_vendor\dependency_groups\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip-26.0.1.dist-info\licenses\src\pip\_vendor\distlib\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip-26.0.1.dist-info\licenses\src\pip\_vendor\distlib\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip-26.0.1.dist-info\licenses\src\pip\_vendor\distro\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip-26.0.1.dist-info\licenses\src\pip\_vendor\distro\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip-26.0.1.dist-info\licenses\src\pip\_vendor\idna\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip-26.0.1.dist-info\licenses\src\pip\_vendor\idna\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip-26.0.1.dist-info\licenses\src\pip\_vendor\msgpack\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip-26.0.1.dist-info\licenses\src\pip\_vendor\msgpack\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip-26.0.1.dist-info\licenses\src\pip\_vendor\packaging\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip-26.0.1.dist-info\licenses\src\pip\_vendor\packaging\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip-26.0.1.dist-info\licenses\src\pip\_vendor\pkg_resources\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip-26.0.1.dist-info\licenses\src\pip\_vendor\pkg_resources\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip-26.0.1.dist-info\licenses\src\pip\_vendor\platformdirs\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip-26.0.1.dist-info\licenses\src\pip\_vendor\platformdirs\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip-26.0.1.dist-info\licenses\src\pip\_vendor\pygments\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip-26.0.1.dist-info\licenses\src\pip\_vendor\pygments\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip-26.0.1.dist-info\licenses\src\pip\_vendor\pyproject_hooks\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip-26.0.1.dist-info\licenses\src\pip\_vendor\pyproject_hooks\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip-26.0.1.dist-info\licenses\src\pip\_vendor\requests\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip-26.0.1.dist-info\licenses\src\pip\_vendor\requests\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip-26.0.1.dist-info\licenses\src\pip\_vendor\resolvelib\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip-26.0.1.dist-info\licenses\src\pip\_vendor\resolvelib\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip-26.0.1.dist-info\licenses\src\pip\_vendor\rich\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip-26.0.1.dist-info\licenses\src\pip\_vendor\rich\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip-26.0.1.dist-info\licenses\src\pip\_vendor\tomli\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip-26.0.1.dist-info\licenses\src\pip\_vendor\tomli\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip-26.0.1.dist-info\licenses\src\pip\_vendor\tomli_w\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip-26.0.1.dist-info\licenses\src\pip\_vendor\tomli_w\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip-26.0.1.dist-info\licenses\src\pip\_vendor\truststore\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip-26.0.1.dist-info\licenses\src\pip\_vendor\truststore\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip-26.0.1.dist-info\licenses\src\pip\_vendor\urllib3\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pip-26.0.1.dist-info\licenses\src\pip\_vendor\urllib3\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pyautogui\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pyautogui\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pyautogui\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pyautogui\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pyautogui-0.9.54.dist-info\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pyautogui-0.9.54.dist-info\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pyautogui-0.9.54.dist-info\licenses\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pyautogui-0.9.54.dist-info\licenses\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pygetwindow\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pygetwindow\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pygetwindow\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pygetwindow\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pygetwindow-0.0.9.dist-info\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pygetwindow-0.0.9.dist-info\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\PyInstaller\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\PyInstaller\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\PyInstaller\archive\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\PyInstaller\archive\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\PyInstaller\archive\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\PyInstaller\archive\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\PyInstaller\bootloader\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\PyInstaller\bootloader\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\PyInstaller\bootloader\images\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\PyInstaller\bootloader\images\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\PyInstaller\bootloader\Windows-64bit-intel\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\PyInstaller\bootloader\Windows-64bit-intel\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\PyInstaller\building\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\PyInstaller\building\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\PyInstaller\building\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\PyInstaller\building\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\PyInstaller\depend\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\PyInstaller\depend\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\PyInstaller\depend\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\PyInstaller\depend\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\PyInstaller\fake-modules\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\PyInstaller\fake-modules\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\PyInstaller\fake-modules\_pyi_rth_utils\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\PyInstaller\fake-modules\_pyi_rth_utils\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\PyInstaller\fake-modules\_pyi_rth_utils\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\PyInstaller\fake-modules\_pyi_rth_utils\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\PyInstaller\fake-modules\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\PyInstaller\fake-modules\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\PyInstaller\hooks\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\PyInstaller\hooks\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\PyInstaller\hooks\pre_find_module_path\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\PyInstaller\hooks\pre_find_module_path\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\PyInstaller\hooks\pre_find_module_path\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\PyInstaller\hooks\pre_find_module_path\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\PyInstaller\hooks\pre_safe_import_module\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\PyInstaller\hooks\pre_safe_import_module\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\PyInstaller\hooks\pre_safe_import_module\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\PyInstaller\hooks\pre_safe_import_module\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\PyInstaller\hooks\rthooks\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\PyInstaller\hooks\rthooks\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\PyInstaller\hooks\rthooks\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\PyInstaller\hooks\rthooks\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\PyInstaller\hooks\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\PyInstaller\hooks\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\PyInstaller\isolated\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\PyInstaller\isolated\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\PyInstaller\isolated\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\PyInstaller\isolated\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\PyInstaller\lib\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\PyInstaller\lib\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\PyInstaller\lib\modulegraph\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\PyInstaller\lib\modulegraph\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\PyInstaller\lib\modulegraph\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\PyInstaller\lib\modulegraph\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\PyInstaller\lib\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\PyInstaller\lib\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\PyInstaller\loader\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\PyInstaller\loader\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\PyInstaller\loader\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\PyInstaller\loader\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\PyInstaller\utils\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\PyInstaller\utils\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\PyInstaller\utils\cliutils\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\PyInstaller\utils\cliutils\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\PyInstaller\utils\cliutils\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\PyInstaller\utils\cliutils\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\PyInstaller\utils\hooks\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\PyInstaller\utils\hooks\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\PyInstaller\utils\hooks\qt\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\PyInstaller\utils\hooks\qt\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\PyInstaller\utils\hooks\qt\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\PyInstaller\utils\hooks\qt\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\PyInstaller\utils\hooks\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\PyInstaller\utils\hooks\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\PyInstaller\utils\win32\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\PyInstaller\utils\win32\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\PyInstaller\utils\win32\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\PyInstaller\utils\win32\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\PyInstaller\utils\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\PyInstaller\utils\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\PyInstaller\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\PyInstaller\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pyinstaller-6.20.0.dist-info\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pyinstaller-6.20.0.dist-info\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pyinstaller-6.20.0.dist-info\licenses\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pyinstaller-6.20.0.dist-info\licenses\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pyinstaller_hooks_contrib-2026.4.dist-info\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pyinstaller_hooks_contrib-2026.4.dist-info\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pyinstaller_hooks_contrib-2026.4.dist-info\licenses\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pyinstaller_hooks_contrib-2026.4.dist-info\licenses\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pymsgbox\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pymsgbox\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pymsgbox\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pymsgbox\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pymsgbox-2.0.1.dist-info\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pymsgbox-2.0.1.dist-info\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pymsgbox-2.0.1.dist-info\licenses\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pymsgbox-2.0.1.dist-info\licenses\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pynput\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pynput\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pynput\keyboard\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pynput\keyboard\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pynput\keyboard\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pynput\keyboard\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pynput\mouse\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pynput\mouse\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pynput\mouse\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pynput\mouse\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pynput\_util\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pynput\_util\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pynput\_util\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pynput\_util\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pynput\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pynput\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pynput-1.8.1.dist-info\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pynput-1.8.1.dist-info\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pyperclip\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pyperclip\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pyperclip\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pyperclip\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pyperclip-1.11.0.dist-info\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pyperclip-1.11.0.dist-info\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pyperclip-1.11.0.dist-info\licenses\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pyperclip-1.11.0.dist-info\licenses\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pyrect\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pyrect\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pyrect\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pyrect\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pyrect-0.2.0.dist-info\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pyrect-0.2.0.dist-info\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pyrect-0.2.0.dist-info\licenses\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pyrect-0.2.0.dist-info\licenses\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pyscreeze\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pyscreeze\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pyscreeze\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pyscreeze\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pyscreeze-1.0.1.dist-info\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pyscreeze-1.0.1.dist-info\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pyscreeze-1.0.1.dist-info\licenses\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pyscreeze-1.0.1.dist-info\licenses\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pystray\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pystray\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pystray\_util\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pystray\_util\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pystray\_util\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pystray\_util\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pystray\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pystray\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pystray-0.19.5.dist-info\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pystray-0.19.5.dist-info\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pytweening\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pytweening\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pytweening\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pytweening\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pytweening-1.2.0.dist-info\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pytweening-1.2.0.dist-info\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pytweening-1.2.0.dist-info\licenses\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pytweening-1.2.0.dist-info\licenses\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pywin32_ctypes-0.2.3.dist-info\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pywin32_ctypes-0.2.3.dist-info\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\command\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\command\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\command\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\command\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\compat\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\compat\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\compat\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\compat\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\config\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\config\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\config\_validate_pyproject\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\config\_validate_pyproject\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\config\_validate_pyproject\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\config\_validate_pyproject\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\config\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\config\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\tests\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\tests\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\tests\compat\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\tests\compat\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\tests\compat\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\tests\compat\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\tests\config\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\tests\config\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\tests\config\downloads\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\tests\config\downloads\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\tests\config\downloads\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\tests\config\downloads\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\tests\config\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\tests\config\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\tests\indexes\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\tests\indexes\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\tests\indexes\test_links_priority\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\tests\indexes\test_links_priority\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\tests\indexes\test_links_priority\simple\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\tests\indexes\test_links_priority\simple\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\tests\indexes\test_links_priority\simple\foobar\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\tests\indexes\test_links_priority\simple\foobar\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\tests\integration\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\tests\integration\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\tests\integration\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\tests\integration\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\tests\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\tests\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_distutils\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_distutils\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_distutils\command\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_distutils\command\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_distutils\command\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_distutils\command\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_distutils\compat\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_distutils\compat\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_distutils\compat\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_distutils\compat\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_distutils\compilers\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_distutils\compilers\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_distutils\compilers\C\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_distutils\compilers\C\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_distutils\compilers\C\tests\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_distutils\compilers\C\tests\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_distutils\compilers\C\tests\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_distutils\compilers\C\tests\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_distutils\compilers\C\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_distutils\compilers\C\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_distutils\tests\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_distutils\tests\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_distutils\tests\compat\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_distutils\tests\compat\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_distutils\tests\compat\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_distutils\tests\compat\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_distutils\tests\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_distutils\tests\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_distutils\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_distutils\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\autocommand\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\autocommand\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\autocommand\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\autocommand\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\autocommand-2.2.2.dist-info\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\autocommand-2.2.2.dist-info\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\backports\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\backports\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\backports\tarfile\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\backports\tarfile\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\backports\tarfile\compat\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\backports\tarfile\compat\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\backports\tarfile\compat\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\backports\tarfile\compat\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\backports\tarfile\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\backports\tarfile\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\backports\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\backports\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\backports.tarfile-1.2.0.dist-info\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\backports.tarfile-1.2.0.dist-info\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\importlib_metadata\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\importlib_metadata\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\importlib_metadata\compat\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\importlib_metadata\compat\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\importlib_metadata\compat\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\importlib_metadata\compat\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\importlib_metadata\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\importlib_metadata\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\importlib_metadata-8.7.1.dist-info\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\importlib_metadata-8.7.1.dist-info\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\importlib_metadata-8.7.1.dist-info\licenses\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\importlib_metadata-8.7.1.dist-info\licenses\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\jaraco\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\jaraco\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\jaraco\context\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\jaraco\context\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\jaraco\context\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\jaraco\context\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\jaraco\functools\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\jaraco\functools\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\jaraco\functools\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\jaraco\functools\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\jaraco\text\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\jaraco\text\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\jaraco\text\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\jaraco\text\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\jaraco.text-4.0.0.dist-info\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\jaraco.text-4.0.0.dist-info\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\jaraco_context-6.1.0.dist-info\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\jaraco_context-6.1.0.dist-info\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\jaraco_context-6.1.0.dist-info\licenses\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\jaraco_context-6.1.0.dist-info\licenses\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\jaraco_functools-4.4.0.dist-info\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\jaraco_functools-4.4.0.dist-info\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\jaraco_functools-4.4.0.dist-info\licenses\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\jaraco_functools-4.4.0.dist-info\licenses\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\more_itertools\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\more_itertools\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\more_itertools\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\more_itertools\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\more_itertools-10.8.0.dist-info\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\more_itertools-10.8.0.dist-info\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\more_itertools-10.8.0.dist-info\licenses\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\more_itertools-10.8.0.dist-info\licenses\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\packaging\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\packaging\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\packaging\licenses\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\packaging\licenses\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\packaging\licenses\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\packaging\licenses\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\packaging\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\packaging\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\packaging-26.0.dist-info\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\packaging-26.0.dist-info\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\packaging-26.0.dist-info\licenses\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\packaging-26.0.dist-info\licenses\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\platformdirs\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\platformdirs\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\platformdirs\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\platformdirs\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\platformdirs-4.4.0.dist-info\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\platformdirs-4.4.0.dist-info\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\platformdirs-4.4.0.dist-info\licenses\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\platformdirs-4.4.0.dist-info\licenses\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\tomli\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\tomli\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\tomli\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\tomli\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\tomli-2.4.0.dist-info\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\tomli-2.4.0.dist-info\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\tomli-2.4.0.dist-info\licenses\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\tomli-2.4.0.dist-info\licenses\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\wheel\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\wheel\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\wheel\_commands\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\wheel\_commands\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\wheel\_commands\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\wheel\_commands\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\wheel\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\wheel\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\wheel-0.46.3.dist-info\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\wheel-0.46.3.dist-info\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\wheel-0.46.3.dist-info\licenses\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\wheel-0.46.3.dist-info\licenses\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\zipp\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\zipp\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\zipp\compat\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\zipp\compat\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\zipp\compat\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\zipp\compat\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\zipp\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\zipp\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\zipp-3.23.0.dist-info\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\zipp-3.23.0.dist-info\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\zipp-3.23.0.dist-info\licenses\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\_vendor\zipp-3.23.0.dist-info\licenses\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools-82.0.1.dist-info\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools-82.0.1.dist-info\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools-82.0.1.dist-info\licenses\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\setuptools-82.0.1.dist-info\licenses\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\six-1.17.0.dist-info\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\six-1.17.0.dist-info\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\win32ctypes\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\win32ctypes\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\win32ctypes\core\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\win32ctypes\core\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\win32ctypes\core\cffi\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\win32ctypes\core\cffi\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\win32ctypes\core\cffi\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\win32ctypes\core\cffi\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\win32ctypes\core\ctypes\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\win32ctypes\core\ctypes\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\win32ctypes\core\ctypes\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\win32ctypes\core\ctypes\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\win32ctypes\core\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\win32ctypes\core\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\win32ctypes\pywin32\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\win32ctypes\pywin32\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\win32ctypes\pywin32\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\win32ctypes\pywin32\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\win32ctypes\tests\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\win32ctypes\tests\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\win32ctypes\tests\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\win32ctypes\tests\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\win32ctypes\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\win32ctypes\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\_distutils_hack\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\_distutils_hack\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\_distutils_hack\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\_distutils_hack\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\_pyinstaller_hooks_contrib\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\_pyinstaller_hooks_contrib\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\_pyinstaller_hooks_contrib\pre_find_module_path\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\_pyinstaller_hooks_contrib\pre_find_module_path\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\_pyinstaller_hooks_contrib\pre_find_module_path\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\_pyinstaller_hooks_contrib\pre_find_module_path\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\_pyinstaller_hooks_contrib\pre_safe_import_module\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\_pyinstaller_hooks_contrib\pre_safe_import_module\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\_pyinstaller_hooks_contrib\pre_safe_import_module\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\_pyinstaller_hooks_contrib\pre_safe_import_module\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\_pyinstaller_hooks_contrib\rthooks\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\_pyinstaller_hooks_contrib\rthooks\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\_pyinstaller_hooks_contrib\rthooks\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\_pyinstaller_hooks_contrib\rthooks\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\_pyinstaller_hooks_contrib\stdhooks\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\_pyinstaller_hooks_contrib\stdhooks\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\_pyinstaller_hooks_contrib\stdhooks\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\_pyinstaller_hooks_contrib\stdhooks\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\_pyinstaller_hooks_contrib\utils\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\_pyinstaller_hooks_contrib\utils\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\_pyinstaller_hooks_contrib\utils\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\_pyinstaller_hooks_contrib\utils\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\_pyinstaller_hooks_contrib\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\_pyinstaller_hooks_contrib\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\sqlite3\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\sqlite3\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\string\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\string\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\string\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\string\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\sysconfig\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\sysconfig\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\sysconfig\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\sysconfig\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\tkinter\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\tkinter\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\tkinter\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\tkinter\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\tomllib\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\tomllib\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\tomllib\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\tomllib\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\turtledemo\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\turtledemo\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\unittest\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\unittest\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\unittest\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\unittest\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\urllib\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\urllib\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\urllib\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\urllib\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\venv\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\venv\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\venv\scripts\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\venv\scripts\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\venv\scripts\common\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\venv\scripts\common\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\venv\scripts\nt\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\venv\scripts\nt\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\venv\scripts\posix\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\venv\scripts\posix\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\wsgiref\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\wsgiref\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\xml\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\xml\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\xml\dom\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\xml\dom\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\xml\dom\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\xml\dom\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\xml\etree\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\xml\etree\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\xml\etree\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\xml\etree\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\xml\parsers\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\xml\parsers\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\xml\parsers\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\xml\parsers\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\xml\sax\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\xml\sax\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\xml\sax\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\xml\sax\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\xml\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\xml\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\xmlrpc\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\xmlrpc\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\xmlrpc\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\xmlrpc\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\zipfile\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\zipfile\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\zipfile\_path\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\zipfile\_path\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\zipfile\_path\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\zipfile\_path\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\zipfile\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\zipfile\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\zoneinfo\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\zoneinfo\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\_pyrepl\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\_pyrepl\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\_pyrepl\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\_pyrepl\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\__phello__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\__phello__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\__phello__\ham\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\__phello__\ham\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\__pycache__\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Lib\__pycache__\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\libs\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\libs\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Scripts\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\Scripts\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\tcl\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\tcl\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\tcl\dde1.4\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\tcl\dde1.4\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\tcl\nmake\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\tcl\nmake\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\tcl\reg1.3\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\tcl\reg1.3\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\tcl\tcl8\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\tcl\tcl8\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\tcl\tcl8\8.4\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\tcl\tcl8\8.4\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\tcl\tcl8\8.4\platform\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\tcl\tcl8\8.4\platform\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\tcl\tcl8\8.5\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\tcl\tcl8\8.5\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\tcl\tcl8\8.6\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\tcl\tcl8\8.6\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\tcl\tcl8.6\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\tcl\tcl8.6\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\tcl\tcl8.6\encoding\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\tcl\tcl8.6\encoding\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\tcl\tcl8.6\http1.0\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\tcl\tcl8.6\http1.0\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\tcl\tcl8.6\msgs\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\tcl\tcl8.6\msgs\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\tcl\tcl8.6\opt0.4\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\tcl\tcl8.6\opt0.4\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\tcl\tcl8.6\tzdata\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\tcl\tcl8.6\tzdata\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\tcl\tcl8.6\tzdata\Africa\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\tcl\tcl8.6\tzdata\Africa\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\tcl\tcl8.6\tzdata\America\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\tcl\tcl8.6\tzdata\America\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\tcl\tcl8.6\tzdata\America\Argentina\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\tcl\tcl8.6\tzdata\America\Argentina\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\tcl\tcl8.6\tzdata\America\Indiana\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\tcl\tcl8.6\tzdata\America\Indiana\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\tcl\tcl8.6\tzdata\America\Kentucky\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\tcl\tcl8.6\tzdata\America\Kentucky\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\tcl\tcl8.6\tzdata\America\North_Dakota\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\tcl\tcl8.6\tzdata\America\North_Dakota\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\tcl\tcl8.6\tzdata\Antarctica\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\tcl\tcl8.6\tzdata\Antarctica\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\tcl\tcl8.6\tzdata\Arctic\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\tcl\tcl8.6\tzdata\Arctic\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\tcl\tcl8.6\tzdata\Asia\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\tcl\tcl8.6\tzdata\Asia\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\tcl\tcl8.6\tzdata\Atlantic\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\tcl\tcl8.6\tzdata\Atlantic\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\tcl\tcl8.6\tzdata\Australia\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\tcl\tcl8.6\tzdata\Australia\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\tcl\tcl8.6\tzdata\Brazil\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\tcl\tcl8.6\tzdata\Brazil\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\tcl\tcl8.6\tzdata\Canada\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\tcl\tcl8.6\tzdata\Canada\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\tcl\tcl8.6\tzdata\Chile\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\tcl\tcl8.6\tzdata\Chile\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\tcl\tcl8.6\tzdata\Etc\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\tcl\tcl8.6\tzdata\Etc\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\tcl\tcl8.6\tzdata\Europe\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\tcl\tcl8.6\tzdata\Europe\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\tcl\tcl8.6\tzdata\Indian\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\tcl\tcl8.6\tzdata\Indian\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\tcl\tcl8.6\tzdata\Mexico\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\tcl\tcl8.6\tzdata\Mexico\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\tcl\tcl8.6\tzdata\Pacific\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\tcl\tcl8.6\tzdata\Pacific\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\tcl\tcl8.6\tzdata\SystemV\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\tcl\tcl8.6\tzdata\SystemV\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\tcl\tcl8.6\tzdata\US\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\tcl\tcl8.6\tzdata\US\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\tcl\tk8.6\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\tcl\tk8.6\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\tcl\tk8.6\demos\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\tcl\tk8.6\demos\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\tcl\tk8.6\demos\images\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\tcl\tk8.6\demos\images\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\tcl\tk8.6\images\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\tcl\tk8.6\images\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\tcl\tk8.6\msgs\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\tcl\tk8.6\msgs\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\tcl\tk8.6\ttk\python314.dll
+C:\Users\user\AppData\Local\Python\pythoncore-3.14-64\tcl\tk8.6\ttk\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>echo C:\Users\user\AppData\Local\Python\_cache\python314.dll
+C:\Users\user\AppData\Local\Python\_cache\python314.dll
+ 
+C:\Users\user\language-flipper-desktop>
+ 
+ 
+Image
+אלעד הורנשטיין
+מנהל בית בכיר, גוש מנהלה.
+אגף הנדסה ותחזוקה, אוניברסיטת תל אביב.
+ט: 0523245136 | ד: eladhor@tauex.tau.ac.il
