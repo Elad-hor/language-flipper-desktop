@@ -19,7 +19,11 @@ type flipper_daemon\version.py
 rmdir /s /q flipper_daemon\__pycache__ 2>nul
 
 echo building exe...
-pyinstaller --noconfirm language_flipper_windows.spec
+python -m PyInstaller --noconfirm language_flipper_windows.spec
+if errorlevel 1 (
+    echo ERROR: PyInstaller failed. Run: pip install pyinstaller
+    exit /b 1
+)
 
 echo packaging installer...
 if exist "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" (
