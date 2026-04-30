@@ -1,24 +1,12 @@
 # -*- mode: python ; coding: utf-8 -*-
 import certifi
-import sys
-import os
-import glob
 
 block_cipher = None
-
-# Find python DLL — not bundled automatically by PyInstaller on Python 3.14
-_ver = f"{sys.version_info.major}{sys.version_info.minor}"
-_dll_name = f"python{_ver}.dll"
-_python_base = os.path.dirname(sys.executable)
-if os.path.basename(_python_base).lower() == 'bin':
-    _python_base = os.path.dirname(_python_base)
-_dll_matches = glob.glob(os.path.join(_python_base, '**', _dll_name), recursive=True)
-_python_dll = _dll_matches[0] if _dll_matches else None
 
 a = Analysis(
     ['run.py'],
     pathex=[],
-    binaries=[(_python_dll, '.')] if _python_dll else [],
+    binaries=[],
     datas=[
         ('assets', 'assets'),
         ('flipper_daemon/layouts', 'layouts'),
