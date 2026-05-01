@@ -46,8 +46,8 @@ def download_and_run(url: str) -> None:
         cmd = (
             f'ping -n 2 127.0.0.1 >nul'
             f' && "{tmp}" /VERYSILENT'
-            f' && ping -n 91 127.0.0.1 >nul'
-            f' && start "" "{install_exe}"'
+            f' && ping -n 15 127.0.0.1 >nul'
+            f' && explorer "{install_exe}"'
         )
         subprocess.Popen(cmd, shell=True)
     elif system == "Darwin":
