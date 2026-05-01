@@ -118,7 +118,14 @@ The updater searches ALL releases (not just latest) so Mac and Windows tags coex
 2. Hits `https://api.github.com/repos/Elad-hor/language-flipper-desktop/releases`
 3. Scans all non-draft/non-prerelease releases for the platform's asset (`Language-Flipper-Setup.exe` on Windows, `Language.Flipper.dmg` on Mac)
 4. If a newer version is found → shows `⬆ Update available (vX.X.X) — click to install` in tray menu
-5. Click → downloads to temp file → on Windows: runs installer with `/VERYSILENT /RESTARTAPPLICATIONS` (Inno Setup closes old app and restarts new one); on Mac: opens DMG for manual drag
+5. Click → downloads installer to temp → app stops (releases file lock) → cmd chain runs:
+   - `ping -n 2` (wait for app to fully exit)
+   - installer `/VERYSILENT`
+   - `ping -n 15` (buffer after install)
+   - `wscript /B launch.vbs` — VBScript uses `Shell.Run` to relaunch, identical to double-clicking
+6. On Mac: opens DMG for manual drag
+
+**Why VBScript for relaunch (Windows):** `start ""` and `explorer` from a cmd chain inherit a stripped environment that causes PyInstaller's `LoadLibrary` to fail finding python313.dll. `Shell.Run` via wscript launches in the full user desktop context — same as double-clicking — bypassing the DLL search path issue entirely. Do NOT replace this with `start`, `explorer`, or PowerShell `Start-Process` from within a cmd chain.
 
 ---
 
@@ -182,3 +189,4 @@ Index: `MEMORY.md` (read this first in new sessions)
 8. **Windows PyInstaller + uv = fatal DLL crash** — `uv` uses `python-build-standalone` which keeps `vcruntime140.dll` isolated. PyInstaller's `--onefile` bootloader extracts `python314.dll` to a temp `_MEI` folder but Windows `LoadLibrary` won't find vcruntime there. Symptom: `Failed to load Python DLL ... LoadLibrary: The specified module could not be found`. Fix: build with python.org Python only (see "Windows Build Python" above). Do NOT switch back to uv or directory build to solve this — the directory build installs hundreds of files and takes 2+ minutes which is unacceptable for users.
 9. **Windows directory build is too slow** — PyInstaller `--onedir` bundles the entire Python runtime as separate files. Inno Setup with lzma takes 2-5 minutes to install; even zip takes over a minute. Users close the installer thinking it's frozen. Always use `--onefile` for Windows.
 10. **Gumroad `_PRODUCT_ID` must be the internal ID** — `"4ibkrpNt-FvgO4QYvaFbog=="` not the permalink slug. Using the permalink causes HTTP 404.
+11. **Windows auto-update relaunch — never use `start`/`explorer` from cmd chain** — These inherit a broken DLL search path. Use VBScript `Shell.Run` (see updater.py). `RestartApplications=yes` in Inno Setup also causes a premature double-launch — keep it removed from setup.iss.
