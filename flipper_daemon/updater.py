@@ -41,13 +41,17 @@ def download_and_run(url: str) -> None:
             os.environ.get("LOCALAPPDATA", ""),
             "Programs", "Language Flipper", "Language Flipper.exe",
         )
-        # We must exit first so Windows releases the file lock on the running exe.
-        # Schedule: wait for us to exit → run installer silently → wait for install → relaunch.
+        # Write a VBScript launcher — Shell.Run is identical to double-clicking,
+        # fully independent of the cmd chain's environment.
+        vbs_path = tempfile.mktemp(suffix=".vbs", prefix="lf-launch-")
+        with open(vbs_path, "w") as f:
+            f.write(f'Set sh = CreateObject("WScript.Shell")\n')
+            f.write(f'sh.Run """{install_exe}"""\n')
         cmd = (
             f'ping -n 2 127.0.0.1 >nul'
             f' && "{tmp}" /VERYSILENT'
             f' && ping -n 15 127.0.0.1 >nul'
-            f' && explorer "{install_exe}"'
+            f' && wscript /B "{vbs_path}"'
         )
         subprocess.Popen(cmd, shell=True)
     elif system == "Darwin":
