@@ -94,9 +94,15 @@ Does: git pull → bumps `version.py` + `.spec` plist → `build_mac.sh` (PyInst
 ```cmd
 release_windows.bat 0.1.70 "Fix: description"
 ```
-Does: git pull → bumps `version.py` + `setup.iss` → PyInstaller → Inno Setup → git commit/push → `gh release create v0.1.70-windows`
+Does: git pull → clears `build\` + `dist\` cache → bumps `version.py` + `setup.iss` → PyInstaller → Inno Setup → git commit/push → `gh release create v0.1.70-windows`
 
-**Requires on Windows:** Python + pip packages, Inno Setup 6, `gh` CLI (logged in), git
+**Requires on Windows:**
+- **Python 3.13 from python.org** at `C:\Users\user\AppData\Local\Programs\Python\Python313\` — MUST be the official installer, NOT uv. See "Windows Build Python" note below.
+- All pip packages installed to that Python: `pip install pyinstaller pynput pystray pillow certifi pyperclip`
+- Inno Setup 6, `gh` CLI (logged in), git
+
+**CRITICAL — Windows Build Python:**
+The build machine uses `uv` for development but PyInstaller MUST be run with the official python.org Python 3.13. Reason: `uv` installs a "portable" Python (`python-build-standalone`) that keeps `vcruntime140.dll` isolated in its own folder. Windows `LoadLibrary` will not find it in PyInstaller's temp `_MEI` extraction folder, causing a fatal crash on every launch. The official python.org installer registers vcruntime globally in System32, which fixes this permanently. The `release_windows.bat` hardcodes the path: `C:\Users\user\AppData\Local\Programs\Python\Python313\python.exe`.
 
 ### Release tag format
 - Mac: `v0.1.70-mac` (asset: `Language.Flipper.dmg`)
@@ -173,3 +179,6 @@ Index: `MEMORY.md` (read this first in new sessions)
 5. **Updater used `/releases/latest`** — breaks when Mac and Windows have separate release tags. Now uses `/releases` list and scans for platform asset
 6. **`release_mac.sh` didn't bump `version.py`** — only bumped the plist. Fixed: now bumps both
 7. **TIS/InputMethodKit layout switch must run on main thread** — dispatched via `NSOperationQueue.mainQueue()`
+8. **Windows PyInstaller + uv = fatal DLL crash** — `uv` uses `python-build-standalone` which keeps `vcruntime140.dll` isolated. PyInstaller's `--onefile` bootloader extracts `python314.dll` to a temp `_MEI` folder but Windows `LoadLibrary` won't find vcruntime there. Symptom: `Failed to load Python DLL ... LoadLibrary: The specified module could not be found`. Fix: build with python.org Python only (see "Windows Build Python" above). Do NOT switch back to uv or directory build to solve this — the directory build installs hundreds of files and takes 2+ minutes which is unacceptable for users.
+9. **Windows directory build is too slow** — PyInstaller `--onedir` bundles the entire Python runtime as separate files. Inno Setup with lzma takes 2-5 minutes to install; even zip takes over a minute. Users close the installer thinking it's frozen. Always use `--onefile` for Windows.
+10. **Gumroad `_PRODUCT_ID` must be the internal ID** — `"4ibkrpNt-FvgO4QYvaFbog=="` not the permalink slug. Using the permalink causes HTTP 404.
