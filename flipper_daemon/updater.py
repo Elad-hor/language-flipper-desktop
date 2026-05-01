@@ -43,7 +43,12 @@ def download_and_run(url: str) -> None:
         )
         # We must exit first so Windows releases the file lock on the running exe.
         # Schedule: wait for us to exit → run installer silently → wait for install → relaunch.
-        cmd = f'ping -n 2 127.0.0.1 >nul && "{tmp}" /VERYSILENT'
+        cmd = (
+            f'ping -n 2 127.0.0.1 >nul'
+            f' && "{tmp}" /VERYSILENT'
+            f' && ping -n 91 127.0.0.1 >nul'
+            f' && start "" "{install_exe}"'
+        )
         subprocess.Popen(cmd, shell=True)
     elif system == "Darwin":
         subprocess.Popen(["open", tmp])

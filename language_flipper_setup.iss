@@ -47,4 +47,4 @@ Root: HKCU; Subkey: "Software\Microsoft\Windows\CurrentVersion\Run"; ValueType: 
 Filename: "{cmd}"; Parameters: "/C taskkill /F /IM ""Language Flipper.exe"""; Flags: runhidden waituntilterminated
 
 [Run]
-Filename: "{app}\Language Flipper.exe"; Description: "Launch Language Flipper now"; Flags: nowait postinstall
+Filename: "{app}\Language Flipper.exe"; Description: "Launch Language Flipper now"; Flags: nowait postinstall skipifsilent
