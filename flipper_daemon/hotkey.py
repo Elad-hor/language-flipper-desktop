@@ -15,7 +15,7 @@ from typing import Callable
 _PLATFORM = platform.system()
 
 # Hotkey in pynput format (macOS + Linux)
-_PYNPUT_HOTKEY = "<cmd>+<shift>+y" if _PLATFORM == "Darwin" else "<ctrl>+<shift>+y"
+_PYNPUT_HOTKEY = "<cmd>+<shift>+f" if _PLATFORM == "Darwin" else "<ctrl>+<shift>+f"
 
 
 # ---------------------------------------------------------------------------
@@ -32,21 +32,21 @@ def _start_windows_hotkey(callback: Callable):
     _MOD_SHIFT   = 0x0004
     _MOD_NOREPEAT= 0x4000   # don't fire repeatedly while held
     _HOTKEY_ID   = 9001
-    _VK_Y        = ord('Y')
+    _VK_F        = ord('F')
 
     def loop():
         ok = ctypes.windll.user32.RegisterHotKey(
             None,
             _HOTKEY_ID,
             _MOD_CONTROL | _MOD_SHIFT | _MOD_NOREPEAT,
-            _VK_Y,
+            _VK_F,
         )
         if not ok:
             print("[hotkey] RegisterHotKey failed — falling back to pynput")
             _start_pynput(callback)
             return
 
-        print("[hotkey] RegisterHotKey (Windows) — Ctrl+Shift+Y")
+        print("[hotkey] RegisterHotKey (Windows) — Ctrl+Shift+F")
 
         msg = ctypes.wintypes.MSG()
         while ctypes.windll.user32.GetMessageW(ctypes.byref(msg), None, 0, 0) != 0:
@@ -115,7 +115,7 @@ def _start_xdg_portal(callback: Callable):
             "flip",
             {
                 "description": dbus.String("Flip keyboard layout", variant_level=1),
-                "preferred-trigger": dbus.String("<Control><Shift>y", variant_level=1),
+                "preferred-trigger": dbus.String("<Control><Shift>f", variant_level=1),
             },
         )]
 

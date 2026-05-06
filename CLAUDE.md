@@ -5,7 +5,7 @@
 A macOS + Windows system tray app that flips mistyped Hebrew↔English text.
 User presses the hotkey → selected text (or current line) is read, characters are mapped through `en_he_map.json`, text is replaced, and the keyboard layout is switched to match.
 
-**Hotkey:** `Cmd+Shift+Y` (Mac) / `Ctrl+Shift+Y` (Windows)
+**Hotkey:** `Cmd+Shift+F` (Mac) / `Ctrl+Shift+F` (Windows)
 **Paywall:** 40 free lifetime flips, then Gumroad license required ($9.99/year)
 **Current version:** see `flipper_daemon/version.py` — this is the single source of truth
 
