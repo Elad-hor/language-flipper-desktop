@@ -4,7 +4,7 @@
 
 [Setup]
 AppName=Language Flipper
-AppVersion=0.1.101
+AppVersion=0.1.98
 AppPublisher=Elad Horenstine
 AppPublisherURL=https://github.com/Elad-hor/language-flipper-desktop
 DefaultDirName={localappdata}\Programs\Language Flipper
@@ -20,7 +20,6 @@ DisableProgramGroupPage=yes
 UninstallDisplayIcon={app}\Language Flipper.exe
 UninstallDisplayName=Language Flipper
 CloseApplications=yes
-RestartApplications=yes
 
 [Files]
 Source: "dist\Language Flipper.exe"; DestDir: "{app}"; Flags: ignoreversion; BeforeInstall: KillApp

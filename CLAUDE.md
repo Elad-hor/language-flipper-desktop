@@ -118,44 +118,7 @@ The updater searches ALL releases (not just latest) so Mac and Windows tags coex
 2. Hits `https://api.github.com/repos/Elad-hor/language-flipper-desktop/releases`
 3. Scans all non-draft/non-prerelease releases for the platform's asset (`Language-Flipper-Setup.exe` on Windows, `Language.Flipper.dmg` on Mac)
 4. If a newer version is found → shows `⬆ Update available (vX.X.X) — click to install` in tray menu
-5. Click → downloads installer to temp → app stops (releases file lock) → cmd chain runs:
-   - `ping -n 2` (wait for app to fully exit)
-   - installer `/VERYSILENT`
-   - done — no relaunch
-6. After update: user reopens the app manually, or the startup registry key handles it on next login
-7. On Mac: opens DMG for manual drag
-
-**Why no auto-relaunch on Windows:** Any process launched from a cmd chain — including `start ""`, `explorer`, `WScript.Shell.Run`, and `Shell.Application.ShellExecute` — inherits a stripped DLL search path. PyInstaller's bootloader calls `LoadLibrary("python313.dll")` which then fails to find `vcruntime140.dll`. This error only appears when the app is launched from within the cmd chain context. Manual launch (double-click, startup registry) works fine. The fix is to not relaunch at all from the cmd chain.
-
----
-
-## Flip Logic & Character Mapping
-
-### en_he_map.json — design rules
-Each entry maps one English character to one Hebrew character. The mapping is used in both directions:
-- `_EN2HE` — built from the `en` field (en→he flip)
-- `_HE2EN` — built from the `he` field (he→en flip). **Last write wins** — if two entries share the same `he` value, the second overwrites the first.
-
-**Why `<` and `>` are NOT in the map:**
-`<` (Shift+`,`) and `>` (Shift+`.`) produce the same character in **both** Hebrew and English layouts. They are layout-invariant — there is no mistyping scenario where a user typed `>` and meant something else. Having them in the map caused a last-write-wins collision: ץ→`>` and ת→`<` instead of the correct ץ→`.` and ת→`,`. They were removed in v0.1.99.
-
-### Layout switch after flip (`main.py: _on_flip`)
-After a successful flip, the app switches the OS keyboard layout to match the flipped text. The source layout is inferred from text content by `detect_layout()` (Hebrew chars vs Latin chars score).
-
-**Caps Lock special case — full reasoning:**
-
-Israeli users use Alt+Shift to switch layouts. The hotkey (Ctrl+Shift+Y) is only pressed to flip mistyped text — never as a layout switcher.
-
-When Caps Lock is ON at hotkey time, there is exactly one scenario: the user typed in the wrong layout while Caps Lock was on. In both cases below, the correct action is identical:
-- Hebrew layout + Caps Lock on → produces English capitals (Caps Lock is layout-invariant: it always outputs the Latin alphabet layer regardless of layout)
-- English layout + Caps Lock on → produces English capitals
-
-After flip in both cases:
-1. Text is correctly flipped ✓
-2. **Turn off Caps Lock** — always correct; the flip corrected the text, Caps Lock is no longer needed
-3. **Skip layout switch** — we cannot reliably infer from text content whether the user was in Hebrew or English layout (both produce English capitals with Caps Lock on). Auto-switching risks putting them in the wrong layout. Skipping is safe: worst case they need one Alt+Shift. This is implemented in `layout_switch.py`: `caps_lock_is_on()` + `turn_off_caps_lock()`.
-
-When Caps Lock is OFF, layout switch fires normally.
+5. Click → downloads to temp file → on Windows: runs installer with `/VERYSILENT /RESTARTAPPLICATIONS` (Inno Setup closes old app and restarts new one); on Mac: opens DMG for manual drag
 
 ---
 
@@ -219,6 +182,3 @@ Index: `MEMORY.md` (read this first in new sessions)
 8. **Windows PyInstaller + uv = fatal DLL crash** — `uv` uses `python-build-standalone` which keeps `vcruntime140.dll` isolated. PyInstaller's `--onefile` bootloader extracts `python314.dll` to a temp `_MEI` folder but Windows `LoadLibrary` won't find vcruntime there. Symptom: `Failed to load Python DLL ... LoadLibrary: The specified module could not be found`. Fix: build with python.org Python only (see "Windows Build Python" above). Do NOT switch back to uv or directory build to solve this — the directory build installs hundreds of files and takes 2+ minutes which is unacceptable for users.
 9. **Windows directory build is too slow** — PyInstaller `--onedir` bundles the entire Python runtime as separate files. Inno Setup with lzma takes 2-5 minutes to install; even zip takes over a minute. Users close the installer thinking it's frozen. Always use `--onefile` for Windows.
 10. **Gumroad `_PRODUCT_ID` must be the internal ID** — `"4ibkrpNt-FvgO4QYvaFbog=="` not the permalink slug. Using the permalink causes HTTP 404.
-11. **Windows auto-update — do NOT relaunch from cmd chain** — Every launch method from a cmd chain (`start`, `explorer`, `WScript.Shell.Run`, `Shell.Application.ShellExecute`) causes the same DLL error: PyInstaller's `LoadLibrary("python313.dll")` fails because `vcruntime140.dll` is not on the stripped search path. The fix is to not relaunch at all — just run the installer silently and let the user open the app manually or via the startup registry key. `RestartApplications=yes` in Inno Setup also causes issues — keep it removed from setup.iss.
-12. **`<` and `>` in en_he_map.json caused wrong he→en flips** — Both `<`/`,` and `>`/`.` shared the same Hebrew target (ת and ץ). Last-write-wins in `_HE2EN` meant ץ→`>` and ת→`<` instead of `.` and `,`. Fixed in v0.1.99 by removing the `<` and `>` entries entirely. They are layout-invariant (Shift+key produces the same char in both layouts) so they should never be flipped.
-13. **Don't add layout switch logic that reads text content when Caps Lock is on** — Text content alone cannot distinguish "user was in English layout" from "user was in Hebrew layout with Caps Lock on" (both produce English capitals). When Caps Lock is on at hotkey time, skip the layout switch entirely and just turn off Caps Lock. See "Caps Lock special case" in the Flip Logic section above.
