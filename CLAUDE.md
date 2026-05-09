@@ -118,7 +118,16 @@ The updater searches ALL releases (not just latest) so Mac and Windows tags coex
 2. Hits `https://api.github.com/repos/Elad-hor/language-flipper-desktop/releases`
 3. Scans all non-draft/non-prerelease releases for the platform's asset (`Language-Flipper-Setup.exe` on Windows, `Language.Flipper.dmg` on Mac)
 4. If a newer version is found → shows `⬆ Update available (vX.X.X) — click to install` in tray menu
-5. Click → downloads to temp file → on Windows: runs installer with `/VERYSILENT /RESTARTAPPLICATIONS` (Inno Setup closes old app and restarts new one); on Mac: opens DMG for manual drag
+5. Click → downloads installer to temp file
+6. **Windows relaunch flow:**
+   - From within the running Python process (clean desktop context), create a one-time Task Scheduler task to relaunch `Language Flipper.exe` ~90 seconds from now: `schtasks /create /tn LFRelaunch /tr "...exe" /sc once /st HH:MM /f`
+   - Run installer silently via cmd chain: `ping -n 2 >nul && installer /VERYSILENT` (NO relaunch from cmd chain)
+   - App exits (releases file lock on the exe)
+   - Installer runs silently (~30s)
+   - Task Scheduler fires at the scheduled time → relaunches app in a full desktop session context (same as double-clicking)
+   - **Why Task Scheduler**: every other relaunch mechanism (start, explorer, VBScript Shell.Run, Shell.Application.ShellExecute) is launched from within the cmd chain and inherits its environment. Task Scheduler runs tasks in the user's logon session independently — vcruntime140.dll is findable and the PyInstaller --onefile exe launches cleanly.
+   - setup.iss has `skipifsilent` on the [Run] section so the installer itself does NOT also launch the app
+7. **Mac**: opens DMG for manual drag (no auto-relaunch needed)
 
 ---
 
@@ -182,3 +191,4 @@ Index: `MEMORY.md` (read this first in new sessions)
 8. **Windows PyInstaller + uv = fatal DLL crash** — `uv` uses `python-build-standalone` which keeps `vcruntime140.dll` isolated. PyInstaller's `--onefile` bootloader extracts `python314.dll` to a temp `_MEI` folder but Windows `LoadLibrary` won't find vcruntime there. Symptom: `Failed to load Python DLL ... LoadLibrary: The specified module could not be found`. Fix: build with python.org Python only (see "Windows Build Python" above). Do NOT switch back to uv or directory build to solve this — the directory build installs hundreds of files and takes 2+ minutes which is unacceptable for users.
 9. **Windows directory build is too slow** — PyInstaller `--onedir` bundles the entire Python runtime as separate files. Inno Setup with lzma takes 2-5 minutes to install; even zip takes over a minute. Users close the installer thinking it's frozen. Always use `--onefile` for Windows.
 10. **Gumroad `_PRODUCT_ID` must be the internal ID** — `"4ibkrpNt-FvgO4QYvaFbog=="` not the permalink slug. Using the permalink causes HTTP 404.
+11. **Windows auto-update relaunch — every cmd chain approach causes DLL crash** — `start ""`, `explorer`, VBScript `Shell.Run`, `Shell.Application.ShellExecute` all cause `Failed to load Python DLL ... LoadLibrary: The specified module could not be found` because they inherit the stripped cmd chain environment. `RestartApplications=yes` in Inno Setup doesn't work either because our app exits BEFORE the installer starts, so Windows Restart Manager has no running process to restart. The ONLY working approach: schedule relaunch via `schtasks` from within the running Python process (before it exits), then run the installer from cmd chain with NO relaunch step. Task Scheduler executes tasks in the user's full logon session.
