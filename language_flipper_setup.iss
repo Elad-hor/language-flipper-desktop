@@ -4,7 +4,7 @@
 
 [Setup]
 AppName=Language Flipper
-AppVersion=0.1.104
+AppVersion=0.1.105
 AppPublisher=Elad Horenstine
 AppPublisherURL=https://github.com/Elad-hor/language-flipper-desktop
 DefaultDirName={localappdata}\Programs\Language Flipper
