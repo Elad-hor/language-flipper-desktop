@@ -47,8 +47,13 @@ def _on_flip():
             storage.increment_lifetime_flips()
             source = _last_flip_info.get("source")
             if source:
-                target = "he_il" if source == "en_us" else "en_us"
-                layout_switch.switch_to(target)
+                if layout_switch.caps_lock_is_on():
+                    # Caps Lock ON means Hebrew layout was producing English uppercase.
+                    # Turn it off so the user can keep typing in Hebrew; skip layout switch.
+                    layout_switch.turn_off_caps_lock()
+                else:
+                    target = "he_il" if source == "en_us" else "en_us"
+                    layout_switch.switch_to(target)
                 flip_log.log_flip(source, _last_flip_info.get("chars", 0))
             _refresh_tray_menu()
 

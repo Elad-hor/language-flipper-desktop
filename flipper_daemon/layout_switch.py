@@ -31,6 +31,41 @@ _MAC_SOURCES = {
 }
 
 _WM_INPUTLANGCHANGEREQUEST = 0x0050
+_VK_CAPITAL = 0x14
+
+
+def caps_lock_is_on() -> bool:
+    try:
+        system = platform.system()
+        if system == "Windows":
+            import ctypes
+            return bool(ctypes.windll.user32.GetKeyState(_VK_CAPITAL) & 0x0001)
+        elif system == "Darwin":
+            import Quartz
+            flags = Quartz.CGEventSourceFlagsState(Quartz.kCGEventSourceStateHIDSystemState)
+            return bool(flags & Quartz.kCGEventFlagMaskAlphaShift)
+    except Exception:
+        pass
+    return False
+
+
+def turn_off_caps_lock() -> None:
+    try:
+        system = platform.system()
+        if system == "Windows":
+            import ctypes
+            if caps_lock_is_on():
+                ctypes.windll.user32.keybd_event(_VK_CAPITAL, 0x45, 0, 0)
+                ctypes.windll.user32.keybd_event(_VK_CAPITAL, 0x45, 2, 0)
+        elif system == "Darwin":
+            if caps_lock_is_on():
+                import Quartz
+                down = Quartz.CGEventCreateKeyboardEvent(None, 0x39, True)
+                up   = Quartz.CGEventCreateKeyboardEvent(None, 0x39, False)
+                Quartz.CGEventPost(Quartz.kCGHIDEventTap, down)
+                Quartz.CGEventPost(Quartz.kCGHIDEventTap, up)
+    except Exception:
+        pass
 
 
 def _switch_windows(layout_id: str) -> None:
