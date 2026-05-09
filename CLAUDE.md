@@ -118,16 +118,43 @@ The updater searches ALL releases (not just latest) so Mac and Windows tags coex
 2. Hits `https://api.github.com/repos/Elad-hor/language-flipper-desktop/releases`
 3. Scans all non-draft/non-prerelease releases for the platform's asset (`Language-Flipper-Setup.exe` on Windows, `Language.Flipper.dmg` on Mac)
 4. If a newer version is found → shows `⬆ Update available (vX.X.X) — click to install` in tray menu
-5. Click → downloads installer to temp file
-6. **Windows relaunch flow:**
-   - From within the running Python process (clean desktop context), create a one-time Task Scheduler task to relaunch `Language Flipper.exe` ~90 seconds from now: `schtasks /create /tn LFRelaunch /tr "...exe" /sc once /st HH:MM /f`
-   - Run installer silently via cmd chain: `ping -n 2 >nul && installer /VERYSILENT` (NO relaunch from cmd chain)
-   - App exits (releases file lock on the exe)
-   - Installer runs silently (~30s)
-   - Task Scheduler fires at the scheduled time → relaunches app in a full desktop session context (same as double-clicking)
-   - **Why Task Scheduler**: every other relaunch mechanism (start, explorer, VBScript Shell.Run, Shell.Application.ShellExecute) is launched from within the cmd chain and inherits its environment. Task Scheduler runs tasks in the user's logon session independently — vcruntime140.dll is findable and the PyInstaller --onefile exe launches cleanly.
-   - setup.iss has `skipifsilent` on the [Run] section so the installer itself does NOT also launch the app
-7. **Mac**: opens DMG for manual drag (no auto-relaunch needed)
+5. Click → downloads installer to temp → app stops (releases file lock) → cmd chain runs:
+   - `ping -n 2` (wait for app to fully exit)
+   - installer `/VERYSILENT`
+   - Task Scheduler one-time task (scheduled before app exits) relaunches the app ~90s later in a clean desktop session context
+6. On Mac: opens DMG for manual drag
+
+**Why Task Scheduler for relaunch (Windows):** `start ""`, `explorer`, VBScript `Shell.Run`, and `Shell.Application.ShellExecute` all inherit a stripped environment from the cmd chain that causes PyInstaller's `LoadLibrary` to fail finding python313.dll. Task Scheduler runs tasks in the user's full logon session — same as double-clicking — bypassing the DLL search path issue entirely. The task is created via `schtasks` from within the running Python process (before it exits), so it runs in the correct environment. Do NOT replace this with `start`, `explorer`, VBScript, or PowerShell `Start-Process` from within a cmd chain.
+
+---
+
+## Flip Logic & Character Mapping
+
+### en_he_map.json — design rules
+Each entry maps one English character to one Hebrew character. The mapping is used in both directions:
+- `_EN2HE` — built from the `en` field (en→he flip)
+- `_HE2EN` — built from the `he` field (he→en flip). **Last write wins** — if two entries share the same `he` value, the second overwrites the first.
+
+**Why `<` and `>` are NOT in the map:**
+`<` (Shift+`,`) and `>` (Shift+`.`) produce the same character in **both** Hebrew and English layouts. They are layout-invariant — there is no mistyping scenario where a user typed `>` and meant something else. Having them in the map caused a last-write-wins collision: ץ→`>` and ת→`<` instead of the correct ץ→`.` and ת→`,`. They were removed in v0.1.99.
+
+### Layout switch after flip (`main.py: _on_flip`)
+After a successful flip, the app switches the OS keyboard layout to match the flipped text. The source layout is inferred from text content by `detect_layout()` (Hebrew chars vs Latin chars score).
+
+**Caps Lock special case — full reasoning:**
+
+Israeli users use Alt+Shift to switch layouts. The hotkey (Ctrl+Shift+Y) is only pressed to flip mistyped text — never as a layout switcher.
+
+When Caps Lock is ON at hotkey time, there is exactly one scenario: the user typed in the wrong layout while Caps Lock was on. In both cases below, the correct action is identical:
+- Hebrew layout + Caps Lock on → produces English capitals (Caps Lock is layout-invariant: it always outputs the Latin alphabet layer regardless of layout)
+- English layout + Caps Lock on → produces English capitals
+
+After flip in both cases:
+1. Text is correctly flipped ✓
+2. **Turn off Caps Lock** — always correct; the flip corrected the text, Caps Lock is no longer needed
+3. **Skip layout switch** — we cannot reliably infer from text content whether the user was in Hebrew or English layout (both produce English capitals with Caps Lock on). Auto-switching risks putting them in the wrong layout. Skipping is safe: worst case they need one Alt+Shift. This is implemented in `layout_switch.py`: `caps_lock_is_on()` + `turn_off_caps_lock()`.
+
+When Caps Lock is OFF, layout switch fires normally.
 
 ---
 
@@ -191,4 +218,6 @@ Index: `MEMORY.md` (read this first in new sessions)
 8. **Windows PyInstaller + uv = fatal DLL crash** — `uv` uses `python-build-standalone` which keeps `vcruntime140.dll` isolated. PyInstaller's `--onefile` bootloader extracts `python314.dll` to a temp `_MEI` folder but Windows `LoadLibrary` won't find vcruntime there. Symptom: `Failed to load Python DLL ... LoadLibrary: The specified module could not be found`. Fix: build with python.org Python only (see "Windows Build Python" above). Do NOT switch back to uv or directory build to solve this — the directory build installs hundreds of files and takes 2+ minutes which is unacceptable for users.
 9. **Windows directory build is too slow** — PyInstaller `--onedir` bundles the entire Python runtime as separate files. Inno Setup with lzma takes 2-5 minutes to install; even zip takes over a minute. Users close the installer thinking it's frozen. Always use `--onefile` for Windows.
 10. **Gumroad `_PRODUCT_ID` must be the internal ID** — `"4ibkrpNt-FvgO4QYvaFbog=="` not the permalink slug. Using the permalink causes HTTP 404.
-11. **Windows auto-update relaunch — every cmd chain approach causes DLL crash** — `start ""`, `explorer`, VBScript `Shell.Run`, `Shell.Application.ShellExecute` all cause `Failed to load Python DLL ... LoadLibrary: The specified module could not be found` because they inherit the stripped cmd chain environment. `RestartApplications=yes` in Inno Setup doesn't work either because our app exits BEFORE the installer starts, so Windows Restart Manager has no running process to restart. The ONLY working approach: schedule relaunch via `schtasks` from within the running Python process (before it exits), then run the installer from cmd chain with NO relaunch step. Task Scheduler executes tasks in the user's full logon session.
+11. **Windows auto-update relaunch — never use `start`/`explorer`/VBScript/ShellExecute from cmd chain** — All of these inherit a broken DLL search path causing `LoadLibrary` to fail on python313.dll. `RestartApplications=yes` in Inno Setup also doesn't work because our app exits before the installer starts, so Restart Manager has nothing to restart. The only working approach: schedule relaunch via `schtasks` from within the running Python process (clean desktop context), then run the installer from cmd chain with NO relaunch step. See updater.py and the Auto-Updater Flow section above.
+12. **`<` and `>` in en_he_map.json caused wrong he→en flips** — Both `<`/`,` and `>`/`.` shared the same Hebrew target (ת and ץ). Last-write-wins in `_HE2EN` meant ץ→`>` and ת→`<` instead of `.` and `,`. Fixed in v0.1.99 by removing the `<` and `>` entries entirely. They are layout-invariant (Shift+key produces the same char in both layouts) so they should never be flipped.
+13. **Don't add layout switch logic that reads text content when Caps Lock is on** — Text content alone cannot distinguish "user was in English layout" from "user was in Hebrew layout with Caps Lock on" (both produce English capitals). When Caps Lock is on at hotkey time, skip the layout switch entirely and just turn off Caps Lock. See "Caps Lock special case" in the Flip Logic section above.
