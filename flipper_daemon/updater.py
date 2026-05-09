@@ -45,8 +45,8 @@ def download_and_run(url: str) -> None:
         # fully independent of the cmd chain's environment.
         vbs_path = tempfile.mktemp(suffix=".vbs", prefix="lf-launch-")
         with open(vbs_path, "w") as f:
-            f.write(f'Set sh = CreateObject("WScript.Shell")\n')
-            f.write(f'sh.Run """{install_exe}"""\n')
+            f.write('Set sh = CreateObject("Shell.Application")\n')
+            f.write(f'sh.ShellExecute "{install_exe}"\n')
         cmd = (
             f'ping -n 2 127.0.0.1 >nul'
             f' && "{tmp}" /VERYSILENT'
