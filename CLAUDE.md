@@ -129,6 +129,36 @@ The updater searches ALL releases (not just latest) so Mac and Windows tags coex
 
 ---
 
+## Flip Logic & Character Mapping
+
+### en_he_map.json — design rules
+Each entry maps one English character to one Hebrew character. The mapping is used in both directions:
+- `_EN2HE` — built from the `en` field (en→he flip)
+- `_HE2EN` — built from the `he` field (he→en flip). **Last write wins** — if two entries share the same `he` value, the second overwrites the first.
+
+**Why `<` and `>` are NOT in the map:**
+`<` (Shift+`,`) and `>` (Shift+`.`) produce the same character in **both** Hebrew and English layouts. They are layout-invariant — there is no mistyping scenario where a user typed `>` and meant something else. Having them in the map caused a last-write-wins collision: ץ→`>` and ת→`<` instead of the correct ץ→`.` and ת→`,`. They were removed in v0.1.99.
+
+### Layout switch after flip (`main.py: _on_flip`)
+After a successful flip, the app switches the OS keyboard layout to match the flipped text. The source layout is inferred from text content by `detect_layout()` (Hebrew chars vs Latin chars score).
+
+**Caps Lock special case — full reasoning:**
+
+Israeli users use Alt+Shift to switch layouts. The hotkey (Ctrl+Shift+Y) is only pressed to flip mistyped text — never as a layout switcher.
+
+When Caps Lock is ON at hotkey time, there is exactly one scenario: the user typed in the wrong layout while Caps Lock was on. In both cases below, the correct action is identical:
+- Hebrew layout + Caps Lock on → produces English capitals (Caps Lock is layout-invariant: it always outputs the Latin alphabet layer regardless of layout)
+- English layout + Caps Lock on → produces English capitals
+
+After flip in both cases:
+1. Text is correctly flipped ✓
+2. **Turn off Caps Lock** — always correct; the flip corrected the text, Caps Lock is no longer needed
+3. **Skip layout switch** — we cannot reliably infer from text content whether the user was in Hebrew or English layout (both produce English capitals with Caps Lock on). Auto-switching risks putting them in the wrong layout. Skipping is safe: worst case they need one Alt+Shift. This is implemented in `layout_switch.py`: `caps_lock_is_on()` + `turn_off_caps_lock()`.
+
+When Caps Lock is OFF, layout switch fires normally.
+
+---
+
 ## Storage
 
 All persistent data in `~/.config/language-flipper/data.json`:
@@ -190,3 +220,5 @@ Index: `MEMORY.md` (read this first in new sessions)
 9. **Windows directory build is too slow** — PyInstaller `--onedir` bundles the entire Python runtime as separate files. Inno Setup with lzma takes 2-5 minutes to install; even zip takes over a minute. Users close the installer thinking it's frozen. Always use `--onefile` for Windows.
 10. **Gumroad `_PRODUCT_ID` must be the internal ID** — `"4ibkrpNt-FvgO4QYvaFbog=="` not the permalink slug. Using the permalink causes HTTP 404.
 11. **Windows auto-update relaunch — never use `start`/`explorer` from cmd chain** — These inherit a broken DLL search path. Use VBScript `Shell.Run` (see updater.py). `RestartApplications=yes` in Inno Setup also causes a premature double-launch — keep it removed from setup.iss.
+12. **`<` and `>` in en_he_map.json caused wrong he→en flips** — Both `<`/`,` and `>`/`.` shared the same Hebrew target (ת and ץ). Last-write-wins in `_HE2EN` meant ץ→`>` and ת→`<` instead of `.` and `,`. Fixed in v0.1.99 by removing the `<` and `>` entries entirely. They are layout-invariant (Shift+key produces the same char in both layouts) so they should never be flipped.
+13. **Don't add layout switch logic that reads text content when Caps Lock is on** — Text content alone cannot distinguish "user was in English layout" from "user was in Hebrew layout with Caps Lock on" (both produce English capitals). When Caps Lock is on at hotkey time, skip the layout switch entirely and just turn off Caps Lock. See "Caps Lock special case" in the Flip Logic section above.
