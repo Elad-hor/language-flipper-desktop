@@ -36,24 +36,23 @@ def download_and_run(url: str) -> None:
     tmp = tempfile.mktemp(suffix=suffix, prefix="lf-setup-")
     urllib.request.urlretrieve(url, tmp)
     if system == "Windows":
-        import os, datetime
+        import os
         install_exe = os.path.join(
             os.environ.get("LOCALAPPDATA", ""),
             "Programs", "Language Flipper", "Language Flipper.exe",
         )
-        # Schedule relaunch via Task Scheduler — it runs the exe in the user's
-        # full desktop session context, not inside a cmd chain, so Windows can
-        # locate vcruntime140.dll and the PyInstaller --onefile exe launches cleanly.
-        run_time = (datetime.datetime.now() + datetime.timedelta(seconds=90)).strftime("%H:%M")
-        subprocess.run(
-            ["schtasks", "/create", "/tn", "LFRelaunch",
-             "/tr", f'"{install_exe}"',
-             "/sc", "once", "/st", run_time, "/f"],
-            creationflags=subprocess.CREATE_NO_WINDOW,
-            capture_output=True,
+        # Write a VBScript launcher — Shell.Run is identical to double-clicking,
+        # fully independent of the cmd chain's environment.
+        vbs_path = tempfile.mktemp(suffix=".vbs", prefix="lf-launch-")
+        with open(vbs_path, "w") as f:
+            f.write(f'Set sh = CreateObject("WScript.Shell")\n')
+            f.write(f'sh.Run """{install_exe}"""\n')
+        cmd = (
+            f'ping -n 2 127.0.0.1 >nul'
+            f' && "{tmp}" /VERYSILENT'
+            f' && ping -n 15 127.0.0.1 >nul'
+            f' && wscript /B "{vbs_path}"'
         )
-        # Installer runs silently; Task Scheduler handles relaunch — no cmd chain relaunch.
-        cmd = f'ping -n 2 127.0.0.1 >nul && "{tmp}" /VERYSILENT'
         subprocess.Popen(cmd, shell=True)
     elif system == "Darwin":
         subprocess.Popen(["open", tmp])
