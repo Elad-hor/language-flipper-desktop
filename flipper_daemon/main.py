@@ -41,14 +41,18 @@ def _on_flip():
         if not paywall.check_and_maybe_block():
             return
 
+        caps_was_on = layout_switch.caps_lock_is_on()
         replaced = read_and_replace(_flip_and_track)
 
         if replaced:
             storage.increment_lifetime_flips()
             source = _last_flip_info.get("source")
             if source:
-                target = "he_il" if source == "en_us" else "en_us"
-                layout_switch.switch_to(target)
+                if caps_was_on:
+                    layout_switch.turn_off_caps_lock()
+                else:
+                    target = "he_il" if source == "en_us" else "en_us"
+                    layout_switch.switch_to(target)
                 flip_log.log_flip(source, _last_flip_info.get("chars", 0))
             _refresh_tray_menu()
 

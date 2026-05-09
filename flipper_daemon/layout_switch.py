@@ -85,6 +85,47 @@ def _switch_mac(layout_id: str) -> None:
 
 
 
+# ---------------------------------------------------------------------------
+# Caps Lock
+# ---------------------------------------------------------------------------
+
+def caps_lock_is_on() -> bool:
+    try:
+        system = platform.system()
+        if system == "Windows":
+            import ctypes
+            return bool(ctypes.windll.user32.GetKeyState(0x14) & 0x0001)
+        elif system == "Darwin":
+            import Quartz
+            flags = Quartz.CGEventSourceFlagsState(
+                Quartz.kCGEventSourceStateCombinedSessionState
+            )
+            return bool(flags & Quartz.kCGEventFlagMaskAlphaShift)
+    except Exception:
+        pass
+    return False
+
+
+def turn_off_caps_lock() -> None:
+    try:
+        system = platform.system()
+        if system == "Windows":
+            import ctypes
+            if ctypes.windll.user32.GetKeyState(0x14) & 0x0001:
+                KEYEVENTF_KEYUP = 0x0002
+                ctypes.windll.user32.keybd_event(0x14, 0, 0, 0)
+                ctypes.windll.user32.keybd_event(0x14, 0, KEYEVENTF_KEYUP, 0)
+        elif system == "Darwin":
+            if not caps_lock_is_on():
+                return
+            from pynput.keyboard import Controller, Key
+            kb = Controller()
+            kb.press(Key.caps_lock)
+            kb.release(Key.caps_lock)
+    except Exception:
+        pass
+
+
 def switch_to(layout_id: str) -> None:
     try:
         system = platform.system()
