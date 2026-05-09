@@ -36,23 +36,12 @@ def download_and_run(url: str) -> None:
     tmp = tempfile.mktemp(suffix=suffix, prefix="lf-setup-")
     urllib.request.urlretrieve(url, tmp)
     if system == "Windows":
-        import os
-        install_exe = os.path.join(
-            os.environ.get("LOCALAPPDATA", ""),
-            "Programs", "Language Flipper", "Language Flipper.exe",
-        )
-        # Write a VBScript launcher — Shell.Run is identical to double-clicking,
-        # fully independent of the cmd chain's environment.
-        vbs_path = tempfile.mktemp(suffix=".vbs", prefix="lf-launch-")
-        with open(vbs_path, "w") as f:
-            f.write('Set sh = CreateObject("Shell.Application")\n')
-            f.write(f'sh.ShellExecute "{install_exe}"\n')
-        cmd = (
-            f'ping -n 2 127.0.0.1 >nul'
-            f' && "{tmp}" /VERYSILENT'
-            f' && ping -n 15 127.0.0.1 >nul'
-            f' && wscript /B "{vbs_path}"'
-        )
+        # Do NOT attempt to relaunch from the cmd chain — any launch from a
+        # cmd chain context (Shell.Run, explorer, start, etc.) inherits a
+        # stripped DLL search path that breaks PyInstaller's LoadLibrary.
+        # The installer runs silently; the user reopens the app manually,
+        # or the startup registry key handles it on next login.
+        cmd = f'ping -n 2 127.0.0.1 >nul && "{tmp}" /VERYSILENT'
         subprocess.Popen(cmd, shell=True)
     elif system == "Darwin":
         subprocess.Popen(["open", tmp])
