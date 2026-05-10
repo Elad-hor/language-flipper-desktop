@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Language Flipper — Try It</title>
+</head>
+<body>
+
+<!--
+  Language Flipper "Try It" widget
+  To embed in Elementor: paste everything from <style> through </script> into an HTML widget.
+-->
+
+<style>
+/* All rules scoped to .lf-widget — safe to paste into any Elementor page */
+
+.lf-widget,
+.lf-widget * {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.lf-widget {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  max-width: 620px;
+  margin: 0 auto;
+}
+
+.lf-hint {
+  margin-bottom: 10px;
+  font-size: 13px;
+  color: #888;
+  text-align: center;
+  line-height: 1.6;
+  letter-spacing: 0.01em;
+}
+
+.lf-hint kbd {
+  display: inline-block;
+  padding: 1px 6px;
+  font-family: inherit;
+  font-size: 11px;
+  line-height: 1.6;
+  background: #f5f5f5;
+  border: 1px solid #d0d0d0;
+  border-bottom-width: 2px;
+  border-radius: 4px;
+  color: #444;
+  white-space: nowrap;
+}
+
+.lf-textarea {
+  display: block;
+  width: 100%;
+  min-height: 158px;
+  padding: 18px 20px;
+  font-family: 'Menlo', 'SF Mono', 'Consolas', 'Courier New', monospace;
+  font-size: 16px;
+  line-height: 1.7;
+  color: #1a1a1a;
+  background: #fff;
+  border: 1.5px solid #dde1e7;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  resize: vertical;
+  outline: none;
+  transition: border-color 0.18s, box-shadow 0.18s;
+  /* unicode-bidi: plaintext lets each paragraph self-determine direction,
+     while the dir attribute sets the base direction for the widget */
+  unicode-bidi: plaintext;
+}
+
+.lf-textarea:focus {
+  border-color: #4a9eff;
+  box-shadow: 0 2px 12px rgba(74, 158, 255, 0.18);
+}
+
+.lf-textarea::placeholder {
+  color: #bbb;
+  direction: rtl;
+}
+
+/* Success flash */
+@keyframes lf-flash {
+  0%   { background: #e9f7ef; border-color: #5ecb86; }
+  70%  { background: #e9f7ef; border-color: #5ecb86; }
+  100% { background: #fff;    border-color: #dde1e7; }
+}
+
+.lf-textarea.lf-did-flip {
+  animation: lf-flash 0.7s ease-out forwards;
+}
+
+/* Flip button — hidden on desktop, shown on touch devices */
+.lf-flip-btn {
+  display: none;
+  width: 100%;
+  margin-top: 12px;
+  padding: 14px 20px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+  background: linear-gradient(135deg, #4a9eff 0%, #2478d4 100%);
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  letter-spacing: 0.02em;
+  box-shadow: 0 3px 12px rgba(74, 158, 255, 0.35);
+  transition: opacity 0.15s, transform 0.1s;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.lf-flip-btn:hover {
+  opacity: 0.9;
+}
+
+.lf-flip-btn:active {
+  opacity: 0.75;
+  transform: scale(0.97);
+}
+
+/* Reveal button and swap hint text on touch-primary devices */
+@media (hover: none) and (pointer: coarse) {
+  .lf-flip-btn       { display: block; }
+  .lf-hint-desktop   { display: none;  }
+  .lf-hint-mobile    { display: inline !important; }
+}
+
+.lf-hint-mobile { display: none; }
+</style>
+
+<div class="lf-widget">
+  <p class="lf-hint" id="lf-hint">
+    <span class="lf-hint-desktop">
+      Press <kbd id="lf-mod">Cmd</kbd>+<kbd>Shift</kbd>+<kbd>Y</kbd> to flip
+    </span>
+    <span class="lf-hint-mobile">Tap the button to flip your mistyped text</span>
+  </p>
+  <textarea
+    class="lf-textarea"
+    id="lf-textarea"
+    dir="rtl"
+    placeholder="הקלד או הדבק טקסט שגוי כאן..."
+    spellcheck="false"
+    autocorrect="off"
+    autocapitalize="off"
+  ></textarea>
+  <button class="lf-flip-btn" id="lf-flip-btn" aria-label="Flip text">↔ Flip</button>
+</div>
+
+<!-- Character map inlined from flipper_daemon/layouts/en_he_map.json -->
+<script id="lf-map" type="application/json">
+[
+  { "en": "q", "he": "/" },
+  { "en": "w", "he": "'" },
+  { "en": "e", "he": "ק" },
+  { "en": "r", "he": "ר" },
+  { "en": "t", "he": "א" },
+  { "en": "y", "he": "ט" },
+  { "en": "u", "he": "ו" },
+  { "en": "i", "he": "ן" },
+  { "en": "o", "he": "ם" },
+  { "en": "p", "he": "פ" },
+  { "en": "a", "he": "ש" },
+  { "en": "s", "he": "ד" },
+  { "en": "d", "he": "ג" },
+  { "en": "f", "he": "כ" },
+  { "en": "g", "he": "ע" },
+  { "en": "h", "he": "י" },
+  { "en": "j", "he": "ח" },
+  { "en": "k", "he": "ל" },
+  { "en": "l", "he": "ך" },
+  { "en": "z", "he": "ז" },
+  { "en": "x", "he": "ס" },
+  { "en": "c", "he": "ב" },
+  { "en": "v", "he": "ה" },
+  { "en": "b", "he": "נ" },
+  { "en": "n", "he": "מ" },
+  { "en": "m", "he": "צ" },
+  { "en": ",", "he": "ת" },
+  { "en": ".", "he": "ץ" },
+  { "en": ";", "he": "ף" },
+  { "en": "'", "he": "'" },
+  { "en": "\"", "he": "״" },
+  { "en": "/", "he": "." }
+]
+</script>
+
+<script>
+(function () {
+  'use strict';
+
+  // Parse the inlined character map
+  var MAP = JSON.parse(document.getElementById('lf-map').textContent);
+
+  // Build lookup tables: EN→HE and HE→EN
+  var EN2HE = Object.create(null);
+  var HE2EN = Object.create(null);
+  for (var i = 0; i < MAP.length; i++) {
+    EN2HE[MAP[i].en] = MAP[i].he;
+    // Last-write-wins for HE2EN (matches flipper.py behaviour)
+    HE2EN[MAP[i].he] = MAP[i].en;
+  }
+
+  // Hebrew Unicode ranges (base letters + common extras)
+  function isHebrewChar(ch) {
+    var c = ch.charCodeAt(0);
+    return (c >= 0x05D0 && c <= 0x05EA) || // base letters
+           (c >= 0x05F0 && c <= 0x05F4) || // ligatures + punctuation
+           (c >= 0xFB1D && c <= 0xFB4E);   // presentation forms
+  }
+
+  function detectDirection(text) {
+    var he = 0, en = 0;
+    for (var i = 0; i < text.length; i++) {
+      var ch = text[i];
+      if (isHebrewChar(ch)) {
+        he++;
+      } else if ((ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z')) {
+        en++;
+      }
+    }
+    // Default to EN→HE when ambiguous (common case: user forgot to switch layout)
+    return he > en ? 'he' : 'en';
+  }
+
+  function flipText(text) {
+    var dir = detectDirection(text);
+    var useMap = dir === 'he' ? HE2EN : EN2HE;
+    var out = '';
+    for (var i = 0; i < text.length; i++) {
+      var ch = text[i];
+      if (useMap[ch] !== undefined) {
+        out += useMap[ch];
+      } else if (dir === 'en') {
+        // Uppercase English: try the lowercase equivalent
+        var lo = ch.toLowerCase();
+        out += (useMap[lo] !== undefined) ? useMap[lo] : ch;
+      } else {
+        out += ch;
+      }
+    }
+    return out;
+  }
+
+  // DOM refs
+  var ta  = document.getElementById('lf-textarea');
+  var btn = document.getElementById('lf-flip-btn');
+  var mod = document.getElementById('lf-mod');
+
+  // Show Ctrl on non-Mac
+  if (!/Mac|iPhone|iPad|iPod/.test(navigator.platform || navigator.userAgent)) {
+    if (mod) mod.textContent = 'Ctrl';
+  }
+
+  // Show Flip button on touch devices (JS catches what the media query might miss)
+  if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
+    btn.style.display = 'block';
+    var hintDesktop = document.querySelector('.lf-hint-desktop');
+    var hintMobile  = document.querySelector('.lf-hint-mobile');
+    if (hintDesktop) hintDesktop.style.display = 'none';
+    if (hintMobile)  hintMobile.style.display  = 'inline';
+  }
+
+  function doFlip() {
+    var text = ta.value;
+    if (!text.trim()) return;
+
+    var flipped = flipText(text);
+    ta.value = flipped;
+
+    // Update base direction to match the flipped content
+    var newDir = detectDirection(flipped);
+    ta.dir = newDir === 'he' ? 'rtl' : 'ltr';
+
+    // Flash the textarea green as success feedback
+    ta.classList.remove('lf-did-flip');
+    void ta.offsetWidth; // force reflow so animation restarts
+    ta.classList.add('lf-did-flip');
+    ta.addEventListener('animationend', function handler() {
+      ta.classList.remove('lf-did-flip');
+      ta.removeEventListener('animationend', handler);
+    });
+  }
+
+  // Auto-update textarea direction while typing
+  ta.addEventListener('input', function () {
+    if (!ta.value) {
+      ta.dir = 'rtl'; // revert to RTL for placeholder
+      return;
+    }
+    var d = detectDirection(ta.value);
+    ta.dir = d === 'he' ? 'rtl' : 'ltr';
+  });
+
+  // Global hotkey: Cmd/Ctrl + Shift + Y
+  document.addEventListener('keydown', function (e) {
+    var key = (e.key || '').toLowerCase();
+    if ((e.metaKey || e.ctrlKey) && e.shiftKey && key === 'y') {
+      e.preventDefault();
+      ta.focus();
+      doFlip();
+    }
+  });
+
+  // Mobile Flip button
+  btn.addEventListener('click', doFlip);
+
+})();
+</script>
+
+</body>
+</html>
