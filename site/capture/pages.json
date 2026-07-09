@@ -1,0 +1,16 @@
+[
+  { "name": "home",        "lang": "en", "path": "/",                 "url": "https://languageflipper.com/" },
+  { "name": "about-us",    "lang": "en", "path": "/about-us/",        "url": "https://languageflipper.com/about-us/" },
+  { "name": "solutions",   "lang": "en", "path": "/solutions/",       "url": "https://languageflipper.com/solutions/" },
+  { "name": "flip-it",     "lang": "en", "path": "/flip-it/",         "url": "https://languageflipper.com/flip-it/" },
+  { "name": "contact-us",  "lang": "en", "path": "/contact-us/",      "url": "https://languageflipper.com/contact-us/" },
+  { "name": "terms",       "lang": "en", "path": "/terms-of-service/","url": "https://languageflipper.com/terms-of-service/" },
+  { "name": "privacy",     "lang": "en", "path": "/privacy-policy/",  "url": "https://languageflipper.com/privacy-policy/" },
+
+  { "name": "home-he",       "lang": "he", "path": "/he/%d7%91%d7%99%d7%aa/",                     "url": "https://languageflipper.com/he/%d7%91%d7%99%d7%aa/" },
+  { "name": "about-us-he",   "lang": "he", "path": "/he/%d7%a2%d7%9c%d7%99%d7%a0%d7%95/",         "url": "https://languageflipper.com/he/%d7%a2%d7%9c%d7%99%d7%a0%d7%95/" },
+  { "name": "contact-us-he", "lang": "he", "path": "/he/%d7%a6%d7%95%d7%a8-%d7%a7%d7%a9%d7%a8/",   "url": "https://languageflipper.com/he/%d7%a6%d7%95%d7%a8-%d7%a7%d7%a9%d7%a8/" },
+  { "name": "flip-it-he",    "lang": "he", "path": "/he/%d7%aa%d7%a4%d7%9c%d7%99%d7%a4%d7%95/",     "url": "https://languageflipper.com/he/%d7%aa%d7%a4%d7%9c%d7%99%d7%a4%d7%95/" },
+  { "name": "terms-he",      "lang": "he", "path": "/he/%d7%aa%d7%a0%d7%90%d7%99-%d7%a9%d7%99%d7%9e%d7%95%d7%a9/", "url": "https://languageflipper.com/he/%d7%aa%d7%a0%d7%90%d7%99-%d7%a9%d7%99%d7%9e%d7%95%d7%a9/" },
+  { "name": "privacy-he",    "lang": "he", "path": "/he/%d7%a4%d7%a8%d7%98%d7%99%d7%95%d7%aa/",     "url": "https://languageflipper.com/he/%d7%a4%d7%a8%d7%98%d7%99%d7%95%d7%aa/" }
+]
