@@ -1,5 +1,5 @@
 import { readFile, mkdir, writeFile, readdir } from 'node:fs/promises';
-import { dirname, join, basename } from 'node:path';
+import { dirname, join, basename, extname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const here = dirname(fileURLToPath(import.meta.url));
@@ -26,7 +26,17 @@ for (const u of urls) {
     const res = await fetch(u);
     if (!res.ok) { console.warn('skip', res.status, u); continue; }
     const buf = Buffer.from(await res.arrayBuffer());
-    let name = basename(new URL(u).pathname) || ('asset-' + saved);
+    // Sanitize to an ASCII-safe filename: percent-encoded / Unicode names (e.g. Hebrew)
+    // break Astro's public->dist copy + dir cleanup, so strip to [A-Za-z0-9._-].
+    const decoded = decodeURIComponent(basename(new URL(u).pathname));
+    const ext = extname(decoded);
+    const stem = decoded.slice(0, decoded.length - ext.length)
+      .normalize('NFKD')
+      .replace(/[^\x20-\x7E]/g, '')      // drop non-ASCII
+      .replace(/[^A-Za-z0-9._-]/g, '-')  // safe chars only
+      .replace(/-+/g, '-')
+      .replace(/^-|-$/g, '');
+    const name = (stem || ('asset-' + saved)) + ext;
     await writeFile(join(outDir, name), buf);
     saved++;
     console.log('saved', name);
