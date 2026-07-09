@@ -1,0 +1,6 @@
+node_modules/
+dist/
+capture/ref/
+capture/build/
+capture/diff/
+.astro/
