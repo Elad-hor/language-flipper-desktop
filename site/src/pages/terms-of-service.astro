@@ -1,0 +1,89 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import LegalText from '../components/LegalText.astro';
+
+const lang = 'en';
+---
+<BaseLayout
+  title="Terms of Service - languageflipper.com"
+  lang={lang}
+>
+  <Header lang={lang} />
+  <main id="content">
+
+    <!-- Hero banner: "Terms of Service" on textured purple bg -->
+    <section class="legal-hero">
+      <div class="container legal-hero-inner">
+        <h1 class="legal-hero-h1">Terms of Service</h1>
+      </div>
+    </section>
+
+    <!-- Legal body -->
+    <LegalText heading="Terms of Service for Language Flipper">
+      <p><strong>Last Updated: May 15, 2026</strong></p>
+
+      <p><strong>1. Acceptance of Terms</strong> By accessing the website languageflipper.com or downloading and using the Language Flipper desktop application ("the App"), you agree to be bound by these Terms of Service. If you do not agree with any part of these terms, please do not use our services.</p>
+
+      <p><strong>2. License and Usage</strong> Language Flipper is provided under a commercial license structure.</p>
+
+      <ul>
+        <li><p><strong>Free Trial:</strong> The App provides a limited number of free "flips" so you can test the functionality on your system.</p></li>
+        <li><p><strong>Paid License:</strong> Purchasing a license grants you a personal, non-exclusive, non-transferable right to use the App.</p></li>
+        <li><p><strong>Restrictions:</strong> You may not reverse-engineer, redistribute, resell, or publicly share your license key. We reserve the right to revoke license keys that are found to be abused or publicly leaked.</p></li>
+      </ul>
+
+      <p><strong>3. Purchases and Refunds</strong> All payments are securely processed by our authorized merchant of record, Gumroad.</p>
+
+      <ul>
+        <li><p><strong>Refund Policy:</strong> We want you to be fully satisfied. If the App does not work for your setup, we offer a 14-day money-back guarantee. Simply reply to your Gumroad receipt email or contact our support address to request a refund.</p></li>
+      </ul>
+
+      <p><strong>4. Disclaimer of Warranties</strong> The App is provided "as is" and "as available." While we strive to ensure Language Flipper works flawlessly across Mac and Windows environments, we cannot guarantee absolute compatibility with every third-party software or future operating system updates. We are not liable for any lost data, typing errors, or system issues arising from the use of the App.</p>
+
+      <p><strong>5. Updates to the Terms</strong> We may update these terms occasionally to reflect new features or legal requirements. Continued use of the App after changes are posted constitutes your acceptance of the new terms.</p>
+
+      <p><strong>6. Contact Us</strong> For support, refund requests, or questions regarding these terms, please contact us at:</p>
+
+      <ul>
+        <li><p>Email: falafeltikunim@gmail.com</p></li>
+      </ul>
+    </LegalText>
+
+  </main>
+  <Footer lang={lang} />
+</BaseLayout>
+
+<style>
+  /* ── Legal hero ── */
+  .legal-hero {
+    position: relative;
+    background-image: url('/assets/home-page-main.webp');
+    background-size: cover;
+    background-position: center top;
+    min-height: 320px;
+    display: flex;
+    align-items: center;
+  }
+  .legal-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(20, 0, 70, 0.45);
+  }
+  .legal-hero-inner {
+    position: relative;
+    z-index: 1;
+    padding-top: 80px;
+    padding-bottom: 80px;
+    text-align: left;
+  }
+  .legal-hero-h1 {
+    font-size: clamp(2.4rem, 5vw, 3.5rem);
+    font-weight: 900;
+    color: var(--lf-white);
+    font-style: italic;
+    text-align: left;
+  }
+</style>
