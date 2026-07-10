@@ -1,0 +1,188 @@
+---
+import { type Lang, t } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+
+const aboutHref = lang === 'he' ? '/he/about-us/' : '/about-us/';
+const homeHref = lang === 'he' ? '/he/about-us/' : '/about-us/';
+const solutionsHref = '/solutions/';
+const contactHref = lang === 'he' ? '/he/contact-us/' : '/contact-us/';
+const flipHref = lang === 'he' ? '/he/flip-it/' : '/flip-it/';
+---
+<footer class="site-footer">
+  <div class="container footer-top">
+    <div class="footer-brand-col">
+      <a href="/" class="footer-brand">{t(lang, 'footer.brand')}</a>
+      <div class="social-icons">
+        <!-- Facebook -->
+        <a href="#" class="social-icon" aria-label="Facebook" target="_blank" rel="noopener noreferrer">
+          <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path fill="currentColor" d="M504 256C504 119 393 8 256 8S8 119 8 256c0 123.78 90.69 226.38 209.25 245V327.69h-63V256h63v-54.64c0-62.15 37-96.48 93.67-96.48 27.14 0 55.52 4.84 55.52 4.84v61h-31.28c-30.8 0-40.41 19.12-40.41 38.73V256h68.78l-11 71.69h-57.78V501C413.31 482.38 504 379.78 504 256z"/>
+          </svg>
+        </a>
+        <!-- X/Twitter -->
+        <a href="#" class="social-icon" aria-label="X-twitter" target="_blank" rel="noopener noreferrer">
+          <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path fill="currentColor" d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z"/>
+          </svg>
+        </a>
+        <!-- YouTube -->
+        <a href="#" class="social-icon" aria-label="Youtube" target="_blank" rel="noopener noreferrer">
+          <svg viewBox="0 0 576 512" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path fill="currentColor" d="M549.655 124.083c-6.281-23.65-24.787-42.276-48.284-48.597C458.781 64 288 64 288 64S117.22 64 74.629 75.486c-23.497 6.322-42.003 24.947-48.284 48.597-11.412 42.867-11.412 132.305-11.412 132.305s0 89.438 11.412 132.305c6.281 23.65 24.787 41.5 48.284 47.821C117.22 448 288 448 288 448s170.78 0 213.371-11.486c23.497-6.321 42.003-24.171 48.284-47.821 11.412-42.867 11.412-132.305 11.412-132.305s0-89.438-11.412-132.305zm-317.51 213.508V175.185l142.739 81.205-142.739 81.201z"/>
+          </svg>
+        </a>
+        <!-- LinkedIn -->
+        <a href="#" class="social-icon" aria-label="Linkedin" target="_blank" rel="noopener noreferrer">
+          <svg viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path fill="currentColor" d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+
+    <div class="footer-col">
+      <h4 class="footer-col-title">{t(lang, 'footer.about_col')}</h4>
+      <ul>
+        <li><a href={aboutHref}>{t(lang, 'footer.about_us')}</a></li>
+        <li><a href={homeHref}>{t(lang, 'footer.home')}</a></li>
+        <li><a href={solutionsHref}>Technology</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h4 class="footer-col-title">{t(lang, 'footer.contact_col')}</h4>
+      <ul>
+        <li><a href={contactHref}>{t(lang, 'footer.lets_talk')}</a></li>
+        <li><a href={flipHref}>{t(lang, 'footer.flip_it')}</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <div class="container footer-bottom-inner">
+      <span class="made">{t(lang, 'footer.made')}</span>
+      <div class="legal-links">
+        <a href="https://languageflipper.com/wp-content/uploads/2026/05/accessibility-statement-EN.pdf" target="_blank" rel="noopener">{t(lang, 'footer.accessibility')}</a>
+        <a href="/terms-of-service/">{t(lang, 'footer.terms')}</a>
+        <a href="/privacy-policy/">{t(lang, 'footer.privacy')}</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background: var(--lf-footer);
+    color: var(--lf-white);
+    padding-top: 56px;
+  }
+  .footer-top {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    gap: 3rem;
+    padding-bottom: 40px;
+  }
+  .footer-brand-col {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .footer-brand {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--lf-white);
+  }
+  .social-icons {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+  .social-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.12);
+    color: var(--lf-white);
+    transition: background 0.2s;
+  }
+  .social-icon:hover { background: rgba(255,255,255,0.25); }
+  .social-icon svg {
+    width: 16px;
+    height: 16px;
+  }
+  .footer-col {
+    min-width: 120px;
+  }
+  .footer-col-title {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--lf-white);
+    margin-bottom: 0.75rem;
+  }
+  .footer-col ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+  .footer-col ul a {
+    color: rgba(255,255,255,0.7);
+    font-size: 0.85rem;
+    transition: color 0.2s;
+  }
+  .footer-col ul a:hover { color: var(--lf-white); }
+  .footer-bottom {
+    border-top: 1px solid rgba(255,255,255,0.08);
+    padding: 18px 0;
+    background: var(--lf-footer);
+  }
+  .footer-bottom-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .made {
+    font-size: 0.78rem;
+    color: rgba(255,255,255,0.6);
+  }
+  .legal-links {
+    display: flex;
+    gap: 1.25rem;
+    flex-wrap: wrap;
+  }
+  .legal-links a {
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.6);
+    transition: color 0.2s;
+  }
+  .legal-links a:hover { color: var(--lf-white); }
+
+  @media (max-width: 767px) {
+    .footer-top {
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: auto auto;
+      gap: 1.5rem;
+    }
+    .footer-brand-col {
+      grid-column: 1 / -1;
+    }
+    .footer-bottom-inner {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .legal-links {
+      gap: 0.75rem;
+    }
+  }
+</style>

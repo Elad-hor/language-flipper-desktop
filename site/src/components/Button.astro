@@ -1,0 +1,26 @@
+---
+interface Props {
+  href: string;
+  label: string;
+  class?: string;
+}
+const { href, label, class: extraClass } = Astro.props;
+---
+<a href={href} class:list={['btn-pill', extraClass]}>{label}</a>
+
+<style>
+  .btn-pill {
+    display: inline-block;
+    background: var(--lf-magenta);
+    color: var(--lf-white);
+    font-family: var(--lf-font);
+    font-weight: 600;
+    font-size: 0.875rem;
+    padding: 0.55em 1.6em;
+    border-radius: 50px;
+    text-decoration: none;
+    transition: opacity 0.2s;
+    white-space: nowrap;
+  }
+  .btn-pill:hover { opacity: 0.85; }
+</style>

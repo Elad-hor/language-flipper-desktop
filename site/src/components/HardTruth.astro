@@ -1,0 +1,121 @@
+---
+import { type Lang, t } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+---
+<section class="truth-section">
+  <div class="truth-bg" aria-hidden="true"></div>
+  <div class="truth-overlay" aria-hidden="true"></div>
+  <!-- Tilt shape bottom — rotateY(180deg) mirrors it horizontally -->
+  <div class="truth-shape-bottom" aria-hidden="true">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 100" preserveAspectRatio="none" style="transform:scaleX(-1)">
+      <path fill="#1D005B" d="M0,6V0h1000v100L0,6z"></path>
+    </svg>
+  </div>
+  <div class="container truth-inner">
+    <div class="truth-left">
+      <h2 class="truth-h2">{t(lang, 'truth.h2')}</h2>
+      <div class="slash-decor" aria-hidden="true">
+        <svg viewBox="0 0 640 512" xmlns="http://www.w3.org/2000/svg" width="28" height="28">
+          <path fill="var(--lf-magenta)" d="M594.53 508.63L6.18 53.9c-6.97-5.42-8.23-15.47-2.81-22.45L23.01 6.18C28.43-.8 38.49-2.06 45.47 3.37L633.82 458.1c6.97 5.42 8.23 15.47 2.81 22.45l-19.64 25.27c-5.42 6.98-15.48 8.23-22.46 2.81z"/>
+        </svg>
+      </div>
+      <p class="truth-sub">{t(lang, 'truth.sub')}</p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .truth-section {
+    position: relative;
+    min-height: 855px;
+    display: flex;
+    align-items: flex-start;
+    overflow: hidden;
+  }
+  .truth-bg {
+    position: absolute;
+    inset: 0;
+    background-image: url('/assets/customer-results-scaled.webp');
+    background-size: cover;
+    background-position: center center;
+    z-index: 0;
+  }
+  .truth-overlay {
+    position: absolute;
+    inset: 0;
+    /* Exact Elementor value: #1D005B at opacity 0.73 — uniform overlay */
+    background-color: rgba(29,0,91,0.73);
+    z-index: 1;
+  }
+  .truth-shape-bottom {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 91px;
+    z-index: 3;
+    pointer-events: none;
+  }
+  .truth-shape-bottom svg {
+    width: 100%;
+    height: 100%;
+  }
+  .truth-inner {
+    position: relative;
+    z-index: 2;
+    padding-top: 100px;
+    padding-bottom: 150px;
+    /* Elementor: padding 0px 110px 0px 120px — handled by .container + this */
+  }
+  .truth-left {
+    max-width: 340px;
+  }
+  .truth-h2 {
+    font-size: 55px;
+    font-weight: 400;
+    line-height: 80px;
+    letter-spacing: -3.5px;
+    color: var(--lf-white);
+    margin-bottom: 0.5rem;
+  }
+  .slash-decor {
+    margin-bottom: 0.8rem;
+  }
+  .truth-sub {
+    color: var(--lf-white);
+    font-size: 0.92rem;
+    line-height: 1.7;
+    opacity: 0.85;
+    max-width: 280px;
+  }
+
+  @media (max-width: 767px) {
+    .truth-section {
+      min-height: 850px;
+      align-items: center;
+    }
+    .truth-inner {
+      padding-top: 80px;
+      padding-bottom: 160px;
+      text-align: center;
+    }
+    .truth-left {
+      max-width: 100%;
+    }
+    .truth-h2 {
+      font-size: 38px;
+      line-height: 1.3em;
+      letter-spacing: 0;
+    }
+    .slash-decor {
+      justify-content: center;
+    }
+    .truth-sub {
+      max-width: 100%;
+    }
+  }
+</style>

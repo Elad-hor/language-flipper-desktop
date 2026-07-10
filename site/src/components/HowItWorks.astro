@@ -1,0 +1,138 @@
+---
+import { type Lang, t } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+---
+<section class="how-section">
+  <div class="how-bg" aria-hidden="true"></div>
+  <div class="how-overlay" aria-hidden="true"></div>
+  <!-- Tilt shape bottom -->
+  <!-- shape_divider_bottom with rotateY(180deg) per Elementor CSS -->
+  <div class="how-shape-bottom" aria-hidden="true">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 100" preserveAspectRatio="none" style="transform:scaleX(-1)">
+      <path fill="#1D005B" d="M0,6V0h1000v100L0,6z"></path>
+    </svg>
+  </div>
+  <div class="container how-inner">
+    <div class="how-text-col">
+      <h2 class="how-h2">{t(lang, 'how.h2')}</h2>
+      <div class="slash-icon" aria-hidden="true">
+        <svg viewBox="0 0 640 512" xmlns="http://www.w3.org/2000/svg" width="32" height="32">
+          <path fill="var(--lf-magenta)" d="M594.53 508.63L6.18 53.9c-6.97-5.42-8.23-15.47-2.81-22.45L23.01 6.18C28.43-.8 38.49-2.06 45.47 3.37L633.82 458.1c6.97 5.42 8.23 15.47 2.81 22.45l-19.64 25.27c-5.42 6.98-15.48 8.23-22.46 2.81z"/>
+        </svg>
+      </div>
+      <div class="how-body">
+        <p>{t(lang, 'how.body_p1')}</p>
+        <p>( <span class="accent">{t(lang, 'how.body_cmd')}</span>{t(lang, 'how.body_p2')}<span class="accent">{t(lang, 'how.body_ctrl')}</span>{t(lang, 'how.body_p3')}</p>
+      </div>
+    </div>
+    <!-- right col is intentionally empty — background image shows through -->
+    <div class="how-right-col" aria-hidden="true"></div>
+  </div>
+</section>
+
+<style>
+  .how-section {
+    position: relative;
+    min-height: 1280px;
+    display: flex;
+    align-items: flex-start;
+    overflow: hidden;
+  }
+  .how-bg {
+    position: absolute;
+    inset: 0;
+    background-image: url('/assets/how-it-works-1.webp');
+    background-size: cover;
+    background-position: center center;
+    z-index: 0;
+  }
+  .how-overlay {
+    position: absolute;
+    inset: 0;
+    /* Elementor: #1D005B at opacity 0.53. Note: ref screenshot shows a
+       different bg-image position due to Elementor scroll parallax effects
+       which are unreproducible in a static build. */
+    background-color: rgba(29,0,91,0.53);
+    z-index: 1;
+  }
+  .how-shape-bottom {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100px;
+    z-index: 3;
+    pointer-events: none;
+  }
+  .how-shape-bottom svg {
+    width: 100%;
+    height: 100%;
+  }
+  .how-inner {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: 50% 50%;
+    padding-top: 100px;
+    padding-bottom: 80px;
+    width: 100%;
+  }
+  .how-text-col {
+    /* left column only */
+  }
+  .how-right-col {
+    /* empty, bg image shows through on right */
+  }
+  .how-h2 {
+    font-size: 55px;
+    font-weight: 400;
+    line-height: 80px;
+    letter-spacing: -3.5px;
+    color: var(--lf-white);
+    margin-bottom: 0.5rem;
+  }
+  .slash-icon {
+    margin-bottom: 1.2rem;
+  }
+  .how-body {
+    color: var(--lf-white);
+    font-size: 0.88rem;
+    line-height: 1.85;
+  }
+  .how-body p {
+    margin: 0 0 1rem;
+  }
+  .how-body p:last-child {
+    margin-bottom: 0;
+  }
+  .accent {
+    color: var(--lf-magenta);
+    font-weight: 600;
+  }
+
+  @media (max-width: 767px) {
+    .how-section {
+      min-height: 1595px;
+      align-items: flex-start;
+    }
+    /* Mobile: bg-position center left per Elementor (opacity stays 0.53) */
+    .how-bg {
+      background-position: center left;
+    }
+    .how-inner {
+      grid-template-columns: 1fr;
+      padding-top: 80px;
+      padding-bottom: 120px;
+    }
+    .how-h2 {
+      font-size: 38px;
+      line-height: 1.3em;
+      letter-spacing: 0;
+    }
+    .how-right-col { display: none; }
+  }
+</style>

@@ -1,0 +1,63 @@
+---
+import { type Lang, t } from '../i18n/ui';
+import LanguageSwitcher from './LanguageSwitcher.astro';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+
+const aboutHref = lang === 'he' ? '/he/about-us/' : '/about-us/';
+const contactHref = lang === 'he' ? '/he/contact-us/' : '/contact-us/';
+const flipHref = lang === 'he' ? '/he/flip-it/' : '/flip-it/';
+---
+<nav class="nav">
+  <ul class="nav-links">
+    <li><a href={aboutHref}>{t(lang, 'nav.about')}</a></li>
+    <li><a href={contactHref}>{t(lang, 'nav.contact')}</a></li>
+    <li><a href={flipHref}>{t(lang, 'nav.flip')}</a></li>
+  </ul>
+  <LanguageSwitcher lang={lang} />
+  <button class="burger" aria-label="Toggle menu" aria-expanded="false">
+    <svg viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg" width="22" height="22" aria-hidden="true">
+      <path fill="currentColor" d="M104 333H896C929 333 958 304 958 271S929 208 896 208H104C71 208 42 237 42 271S71 333 104 333ZM104 583H896C929 583 958 554 958 521S929 458 896 458H104C71 458 42 487 42 521S71 583 104 583ZM104 833H896C929 833 958 804 958 771S929 708 896 708H104C71 708 42 737 42 771S71 833 104 833Z"/>
+    </svg>
+  </button>
+</nav>
+
+<style>
+  .nav {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+  .nav-links {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    gap: 1.75rem;
+  }
+  .nav-links a {
+    color: var(--lf-white);
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    opacity: 0.92;
+    transition: opacity 0.2s;
+  }
+  .nav-links a:hover { opacity: 1; }
+  .burger {
+    display: none;
+    background: none;
+    border: none;
+    color: var(--lf-white);
+    cursor: pointer;
+    padding: 0;
+  }
+  @media (max-width: 767px) {
+    .nav-links { display: none; }
+    .burger { display: flex; }
+  }
+</style>

@@ -1,0 +1,109 @@
+---
+import Button from './Button.astro';
+import { type Lang, t } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const flipHref = lang === 'he' ? '/he/flip-it/' : '/flip-it/';
+---
+<section class="hero">
+  <div class="hero-bg" aria-hidden="true"></div>
+  <div class="hero-overlay" aria-hidden="true"></div>
+  <div class="container hero-content">
+    <h1 class="hero-h1">
+      {t(lang, 'hero.h1')}<span class="accent">{t(lang, 'hero.h1_accent')}</span>
+    </h1>
+    <p class="hero-sub">
+      {t(lang, 'hero.subtitle_1')}<span class="accent">{t(lang, 'hero.subtitle_akuo')}</span>{t(lang, 'hero.subtitle_2')}<span class="accent">{t(lang, 'hero.subtitle_shalom')}</span>{t(lang, 'hero.subtitle_3')}
+      <br />
+      {t(lang, 'hero.subtitle_4')}<span class="accent">{t(lang, 'hero.subtitle_hotkey')}</span>{t(lang, 'hero.subtitle_5')}
+    </p>
+    <Button href={flipHref} label={t(lang, 'hero.cta')} />
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    min-height: 760px;
+    display: flex;
+    align-items: flex-start;
+    overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background-image: url('/assets/language-Flipper-hero.webp');
+    background-size: cover;
+    background-position: top center;
+    z-index: 0;
+  }
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    /* Exact Elementor value: #1D005B at opacity 0.17 */
+    background-color: rgba(29,0,91,0.17);
+    z-index: 1;
+  }
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    padding-top: 280px;
+    padding-bottom: 80px;
+    max-width: 700px;
+  }
+  .hero-h1 {
+    font-size: clamp(2.8rem, 5.9vw, 85px);
+    font-weight: 600;
+    color: var(--lf-white);
+    line-height: 100px;
+    letter-spacing: -3.5px;
+    margin-bottom: 1rem;
+    text-shadow: 0 2px 28px rgba(0,0,0,0.65);
+  }
+  .accent {
+    color: var(--lf-magenta);
+  }
+  .hero-sub {
+    color: var(--lf-white);
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 35px;
+    letter-spacing: -0.9px;
+    margin-bottom: 1.8rem;
+    text-shadow: 0 1px 14px rgba(0,0,0,0.7);
+    max-width: 560px;
+  }
+
+  @media (max-width: 767px) {
+    .hero {
+      min-height: 465px;
+      align-items: flex-start;
+    }
+    /* Mobile: Elementor uses -401px 0px offset; with cover+390px viewport
+       the image renders at ~832px wide, -401px shifts to show right portion */
+    .hero-bg {
+      background-position: 60% top;
+    }
+    .hero-overlay {
+      background-color: rgba(29,0,91,0.25);
+    }
+    .hero-content {
+      padding-top: 80px;
+      padding-bottom: 60px;
+    }
+    .hero-h1 {
+      font-size: 67px;
+      line-height: 1.1;
+      letter-spacing: 1.4px;
+    }
+    .hero-sub {
+      font-size: 18px;
+      line-height: 1.3em;
+      letter-spacing: 0;
+      max-width: 100%;
+    }
+  }
+</style>
