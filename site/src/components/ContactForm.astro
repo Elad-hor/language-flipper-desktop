@@ -1,0 +1,155 @@
+---
+// ContactForm.astro — contact form that posts to /contact.php
+// On ?sent=1, shows a success confirmation instead of the form.
+
+const sent = Astro.url.searchParams.get('sent') === '1';
+---
+
+{sent ? (
+  <div class="cf-success">
+    <p>Thanks — we'll be in touch.</p>
+  </div>
+) : (
+  <form class="cf-form" method="post" action="/contact.php">
+
+    <!-- Honeypot: real users leave this empty; bots fill it -->
+    <input type="text" name="website" style="display:none" tabindex="-1" autocomplete="off" />
+
+    <div class="cf-row">
+      <div class="cf-field">
+        <label for="cf-first-name" class="cf-label">First Name</label>
+        <input type="text" id="cf-first-name" name="first_name" class="cf-input" />
+      </div>
+      <div class="cf-field">
+        <label for="cf-last-name" class="cf-label">Last Name</label>
+        <input type="text" id="cf-last-name" name="last_name" class="cf-input" />
+      </div>
+    </div>
+
+    <div class="cf-row">
+      <div class="cf-field">
+        <label for="cf-email" class="cf-label">Email <span class="cf-required" aria-label="required">*</span></label>
+        <input type="email" id="cf-email" name="email" class="cf-input" required />
+      </div>
+      <div class="cf-field">
+        <label for="cf-company" class="cf-label">Company <span class="cf-required" aria-label="required">*</span></label>
+        <input type="text" id="cf-company" name="company" class="cf-input" required />
+      </div>
+    </div>
+
+    <div class="cf-field cf-field--full">
+      <label for="cf-message" class="cf-label">Message</label>
+      <textarea id="cf-message" name="message" class="cf-textarea" rows="4"></textarea>
+    </div>
+
+    <div class="cf-submit-row">
+      <button type="submit" class="cf-submit">SUBMIT</button>
+    </div>
+
+  </form>
+)}
+
+<style>
+  /* ── Success state ── */
+  .cf-success {
+    text-align: center;
+    padding: 3rem 1rem;
+    font-size: 1.1rem;
+    color: var(--lf-magenta);
+    font-weight: 600;
+  }
+
+  /* ── Form layout ── */
+  .cf-form {
+    width: 100%;
+    max-width: 640px;
+    margin: 0 auto;
+  }
+
+  .cf-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 2rem;
+    margin-bottom: 0;
+  }
+
+  .cf-field {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 2rem;
+  }
+
+  .cf-field--full {
+    grid-column: 1 / -1;
+  }
+
+  /* ── Labels ── */
+  .cf-label {
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 2px;
+    letter-spacing: 0.01em;
+  }
+
+  .cf-required {
+    color: #333;
+  }
+
+  /* ── Inputs: underline style matching reference ── */
+  .cf-input,
+  .cf-textarea {
+    border: none;
+    border-bottom: 1px solid #4B0FAC;
+    outline: none;
+    background: transparent;
+    padding: 6px 0 4px;
+    font-family: var(--lf-font);
+    font-size: 0.88rem;
+    color: #333;
+    transition: border-color 0.2s;
+    width: 100%;
+  }
+
+  .cf-input:focus,
+  .cf-textarea:focus {
+    border-bottom-color: var(--lf-magenta);
+  }
+
+  .cf-textarea {
+    resize: vertical;
+    min-height: 80px;
+  }
+
+  /* ── Submit button ── */
+  .cf-submit-row {
+    display: flex;
+    justify-content: center;
+    margin-top: 0.5rem;
+  }
+
+  .cf-submit {
+    background: var(--lf-magenta);
+    color: #fff;
+    border: none;
+    padding: 14px 52px;
+    font-family: var(--lf-font);
+    font-size: 0.92rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: opacity 0.2s;
+  }
+
+  .cf-submit:hover {
+    opacity: 0.88;
+  }
+
+  /* ── Mobile ── */
+  @media (max-width: 600px) {
+    .cf-row {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
