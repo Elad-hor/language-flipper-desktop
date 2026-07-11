@@ -37,7 +37,7 @@ const flipHref = lang === 'he' ? '/he/תפליפו/' : '/flip-it/';
     const wrongArr = [...correct].map((ch) => EN2HE[ch.toLowerCase()] ?? ch);
     const correctArr = [...correct];
     const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
-    const TYPE = 95, FLIP = 65, HOLD_TYPED = 650, HOLD_CORRECT = 1800, HOLD_EMPTY = 550;
+    const TYPE = 95, HOLD_TYPED = 650, HOLD_CORRECT = 1800, HOLD_EMPTY = 550;
 
     async function run() {
       // Respect reduced-motion: just show the correct text, no animation.
@@ -52,9 +52,8 @@ const flipHref = lang === 'he' ? '/he/תפליפו/' : '/flip-it/';
         for (let i = 1; i <= wrongArr.length; i++) { flipEl.textContent = wrongArr.slice(0, i).join(''); await sleep(TYPE); }
         flipEl.classList.remove('typing');
         await sleep(HOLD_TYPED);
-        // 2) Flip each character in place to the correct one, left to right.
-        const chars = wrongArr.slice();
-        for (let i = 0; i < correctArr.length; i++) { chars[i] = correctArr[i]; flipEl.textContent = chars.join(''); await sleep(FLIP); }
+        // 2) Flip the whole thing to the correct words at once — instant, no typing.
+        flipEl.textContent = correctArr.join('');
         await sleep(HOLD_CORRECT);
         // 3) Clear and repeat.
         flipEl.textContent = '';
@@ -112,8 +111,11 @@ const flipHref = lang === 'he' ? '/he/תפליפו/' : '/flip-it/';
   /* Animated headline: "types" the wrong-layout text (shown LTR), then flips it
      in place to the correct words. No folding/rotate — just a typed + flip effect. */
   .h1-flip {
-    display: inline-block;
-    min-height: 1em;
+    display: block;
+    /* Always one line with a reserved height, so typing/flipping/clearing never
+       reflows the headline (which was resizing the hero image). */
+    white-space: nowrap;
+    min-height: 100px;
     /* Force the Hebrew "wrong layout" text to lay out left-to-right, as if typed
        on an English keyboard in the wrong layout. */
     direction: ltr;
@@ -159,6 +161,7 @@ const flipHref = lang === 'he' ? '/he/תפליפו/' : '/flip-it/';
       line-height: 1.1;
       letter-spacing: 1.4px;
     }
+    .h1-flip { min-height: 74px; white-space: nowrap; }
     .hero-sub {
       font-size: 18px;
       line-height: 1.3em;
