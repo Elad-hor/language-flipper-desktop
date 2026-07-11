@@ -37,7 +37,7 @@ const flipHref = lang === 'he' ? '/he/תפליפו/' : '/flip-it/';
     const wrongArr = [...correct].map((ch) => EN2HE[ch.toLowerCase()] ?? ch);
     const correctArr = [...correct];
     const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
-    const TYPE = 95, HOLD_TYPED = 500, HOLD_SELECT = 750, HOLD_FLIPPED = 650, HOLD_CORRECT = 1500, HOLD_EMPTY = 550;
+    const TYPE = 95, HOLD_TYPED = 500, HOLD_SELECT = 750, HOLD_CORRECT = 1600, HOLD_EMPTY = 550;
 
     async function run() {
       // Respect reduced-motion: just show the correct text, no animation.
@@ -55,13 +55,12 @@ const flipHref = lang === 'he' ? '/he/תפליפו/' : '/flip-it/';
         // 2) Highlight (select) the typed text, like selecting it before the hotkey.
         flipEl.classList.add('selected');
         await sleep(HOLD_SELECT);
-        // 3) Flip the whole thing to the correct words at once — instant, no typing.
+        // 3) Flip to the correct words AND deselect at the same moment, so the
+        //    corrected text is shown without the highlight.
         flipEl.textContent = correctArr.join('');
-        await sleep(HOLD_FLIPPED);
-        // 4) Deselect, hold on the corrected words.
         flipEl.classList.remove('selected');
         await sleep(HOLD_CORRECT);
-        // 5) Clear and repeat.
+        // 4) Clear and repeat.
         flipEl.textContent = '';
         await sleep(HOLD_EMPTY);
       }
