@@ -179,7 +179,10 @@ const flipWrong = [...flipCorrect]
   :global(html[dir='rtl']) .h1-flip {
     direction: rtl;
     unicode-bidi: plaintext;
-    margin-inline-start: auto;
+    /* fit-content block sits at the inline-start edge (the right, in RTL) */
+    margin-inline-start: 0;
+    margin-inline-end: auto;
+    text-align: right;
   }
   .h1-flip.typing::after {
     content: '|';
