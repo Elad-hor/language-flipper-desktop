@@ -37,7 +37,7 @@ const flipHref = lang === 'he' ? '/he/תפליפו/' : '/flip-it/';
     const wrongArr = [...correct].map((ch) => EN2HE[ch.toLowerCase()] ?? ch);
     const correctArr = [...correct];
     const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
-    const TYPE = 95, HOLD_TYPED = 650, HOLD_CORRECT = 1800, HOLD_EMPTY = 550;
+    const TYPE = 95, HOLD_TYPED = 500, HOLD_SELECT = 750, HOLD_FLIPPED = 650, HOLD_CORRECT = 1500, HOLD_EMPTY = 550;
 
     async function run() {
       // Respect reduced-motion: just show the correct text, no animation.
@@ -52,10 +52,16 @@ const flipHref = lang === 'he' ? '/he/תפליפו/' : '/flip-it/';
         for (let i = 1; i <= wrongArr.length; i++) { flipEl.textContent = wrongArr.slice(0, i).join(''); await sleep(TYPE); }
         flipEl.classList.remove('typing');
         await sleep(HOLD_TYPED);
-        // 2) Flip the whole thing to the correct words at once — instant, no typing.
+        // 2) Highlight (select) the typed text, like selecting it before the hotkey.
+        flipEl.classList.add('selected');
+        await sleep(HOLD_SELECT);
+        // 3) Flip the whole thing to the correct words at once — instant, no typing.
         flipEl.textContent = correctArr.join('');
+        await sleep(HOLD_FLIPPED);
+        // 4) Deselect, hold on the corrected words.
+        flipEl.classList.remove('selected');
         await sleep(HOLD_CORRECT);
-        // 3) Clear and repeat.
+        // 5) Clear and repeat.
         flipEl.textContent = '';
         await sleep(HOLD_EMPTY);
       }
@@ -139,6 +145,8 @@ const flipHref = lang === 'he' ? '/he/תפליפו/' : '/flip-it/';
      in place to the correct words. No folding/rotate — just a typed + flip effect. */
   .h1-flip {
     display: block;
+    /* hug the text so the selection highlight wraps just the words, not the line */
+    width: fit-content;
     /* Smaller than line 1 so the wrong-layout text fits on one line without
        running off the screen. */
     font-size: clamp(3rem, 5.8vw, 84px);
@@ -161,6 +169,12 @@ const flipHref = lang === 'he' ? '/he/תפליפו/' : '/flip-it/';
     animation: lf-caret 0.9s step-end infinite;
   }
   @keyframes lf-caret { 0%, 50% { opacity: 1; } 50.01%, 100% { opacity: 0; } }
+  /* Text-selection highlight shown right before the flip (like selecting text,
+     then pressing the hotkey). */
+  .h1-flip.selected {
+    background-color: #2a6fff;
+    color: #fff;
+  }
   .hero-sub {
     color: var(--lf-white);
     font-size: 24px;
