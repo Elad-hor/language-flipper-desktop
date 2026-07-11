@@ -1,0 +1,79 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Header from '../../../components/Header.astro';
+import Footer from '../../../components/Footer.astro';
+import LegalText from '../../../components/LegalText.astro';
+
+const lang = 'he' as const;
+---
+<BaseLayout
+  title="מדיניות פרטיות - languageflipper.com"
+  lang={lang}
+>
+  <Header lang={lang} />
+  <main id="content">
+
+    <!-- Hero banner: "מדיניות פרטיות" on textured purple bg -->
+    <section class="legal-hero">
+      <div class="container legal-hero-inner">
+        <h1 class="legal-hero-h1">מדיניות פרטיות</h1>
+      </div>
+    </section>
+
+    <!-- Legal body in Hebrew -->
+    <LegalText heading="מדיניות פרטיות עבור Language Flipper">
+      <p>עדכון אחרון: 15 במאי, 2026</p>
+
+      <p><span>1. מבוא ברוכים הבאים ל-Language Flipper ("אנחנו", "שלנו", או "אנו"). מדיניות פרטיות זו מסבירה כיצד אנו אוספים, משתמשים ומגנים על המידע שלך בעת ביקור באתר languageflipper.com ("האתר") או בשימוש באפליקציית שולחן העבודה של Language Flipper ("האפליקציה").</span></p>
+
+      <p><span>2. המידע שאנו אוספים מידע שאתה מספק: כאשר אתה יוצר עמנו קשר דרך הטופס באתר, אנו אוספים את שמך וכתובת האימייל שלך. פרטי תשלום: כל הרכישות מעובדות באופן מאובטח באמצעות ספק צד-שלישי שדרכו מתבצעות המכירות, Gumroad. איננו אוספים או שומרים ישירות את פרטי כרטיס האשראי שלך. Gumroad חולקת עמנו את שמך, כתובת האימייל שלך וסטטוס רישיון השימוש (license key) כדי לאפשר את הגישה שלך לאפליקציה. אימות רישיון האפליקציה: אפליקציית שולחן העבודה של Language Flipper פועלת באופן מקומי על המחשב שלך. עם זאת, האפליקציה מתחברת לאינטרנט מעת לעת כדי לאמת את הרישיון הפעיל שלך מול השרתים שלנו. תהליך זה משדר באופן מאובטח את מפתח הרישיון שלך ומזהה מכשיר מקומי (localized identifier) כדי לאשר את תקפותו. איננו מתעדים או עוקבים אחר הקשות המקלדת שלך, נתוני לוח הגזירים (clipboard), או תוכן הטקסט שאתה ממיר.</span></p>
+
+      <p><span>3. אנליטיקה וטכנולוגיות מעקב האתר שלנו משתמש בקובצי עוגיות (Cookies) ובטכנולוגיות מעקב כדי לשפר את חוויית המשתמש: Google Analytics 4: משמש להבנת תנועת הגולשים באתר והתנהגות המבקרים. Microsoft Clarity: משמש למפות חום (heatmaps) והקלטות פעילות באתר, כדי לעזור לנו לזהות בעיות בחוויית המשתמש (UX) ולשפר את האתר. Clarity מתעד אינטראקציות באתר, אך שדות קלט רגישים מוסתרים. הסכמה לקובצי עוגיות: באפשרותך לנהל את העדפות המעקב שלך בכל עת באמצעות באנר ההסכמה לעוגיות המופיע באתר שלנו.</span></p>
+
+      <p><span>4. כיצד אנו משתמשים במידע שלך אנו משתמשים במידע שנאסף כדי: לספק, לתחזק ולתמוך באפליקציה ובאתר. לאמת את מפתח הרישיון שלך מ-Gumroad. להשיב לבקשות התמיכה של לקוחותינו. לנתח את ביצועי האתר ולשפר את חוויית המשתמש.</span></p>
+
+      <p><span>5. שירותי צד-שלישי אנו משתמשים בשירותי צד-שלישי מהימנים עבור הפעילות שלנו, אשר כפופים למדיניות הפרטיות שלהם עצמם: Gumroad: לעיבוד תשלומים והנפקת רישיונות. GitHub Releases: לאחסון ואספקת קובצי ההתקנה של האפליקציה שלנו. Google ו-Microsoft: לאנליטיקה של האתר.</span></p>
+
+      <p><span>6. הזכויות שלך על המידע (GDPR ו-CCPA) בהתאם למיקומך הגיאוגרפי, ייתכן שיש לך את הזכות לבקש גישה למידע האישי שלך, לתקן אותו או למחוק אותו. כמו כן, באפשרותך לבטל את ההסכמה לקובצי עוגיות שאינם חיוניים באמצעות באנר העוגיות שלנו. כדי לממש זכויות אלו, אנא צור עמנו קשר.</span></p>
+
+      <p><span>7. צור קשר אם יש לך שאלות כלשהן לגבי מדיניות פרטיות זו, אנא פנה אלינו בכתובת: דוא"ל: <a href="mailto:falafeltikunim@gmail.com">falafeltikunim@gmail.com</a></span></p>
+
+      <p><span>או דרך עמוד <a href="/he/צור-קשר/">"צור קשר" (Contact)</a> באתר שלנו.</span></p>
+    </LegalText>
+
+  </main>
+  <Footer lang={lang} />
+</BaseLayout>
+
+<style>
+  /* ── Legal hero ── */
+  .legal-hero {
+    position: relative;
+    background-image: url('/assets/home-page-main.webp');
+    background-size: cover;
+    background-position: center top;
+    min-height: 320px;
+    display: flex;
+    align-items: center;
+  }
+  .legal-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(20, 0, 70, 0.45);
+  }
+  .legal-hero-inner {
+    position: relative;
+    z-index: 1;
+    padding-top: 80px;
+    padding-bottom: 80px;
+    text-align: right;
+  }
+  .legal-hero-h1 {
+    font-size: clamp(2.4rem, 5vw, 3.5rem);
+    font-weight: 900;
+    color: var(--lf-white);
+    font-style: italic;
+    text-align: right;
+  }
+</style>

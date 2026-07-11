@@ -32,7 +32,7 @@ const { heading } = Astro.props;
     align-items: stretch;
   }
   .legal-content {
-    padding-right: 2.5rem;
+    padding-inline-end: 2.5rem;
   }
   .legal-heading {
     font-size: clamp(1.6rem, 2.8vw, 2.2rem);
@@ -56,7 +56,8 @@ const { heading } = Astro.props;
     margin-bottom: 1.2rem;
   }
   .legal-body ul {
-    margin: 0.6rem 0 1.4rem 1.4rem;
+    margin: 0.6rem 0 1.4rem;
+    margin-inline-start: 1.4rem;
     padding: 0;
   }
   .legal-body li {
@@ -97,6 +98,6 @@ const { heading } = Astro.props;
       grid-template-columns: 1fr;
     }
     .legal-deco { display: none; }
-    .legal-content { padding-right: 0; }
+    .legal-content { padding-inline-end: 0; }
   }
 </style>

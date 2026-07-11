@@ -1,13 +1,28 @@
 ---
 // ContactForm.astro — contact form that posts to /contact.php
 // On ?sent=1, shows a success confirmation instead of the form.
+import { type Lang, t } from '../i18n/ui';
 
+interface Props {
+  lang?: Lang;
+}
+const { lang = 'en' } = Astro.props;
 const sent = Astro.url.searchParams.get('sent') === '1';
+
+const labels = {
+  firstName: lang === 'he' ? 'שם' : 'First Name',
+  lastName: lang === 'he' ? 'משפחה' : 'Last Name',
+  email: lang === 'he' ? 'דוא"ל' : 'Email',
+  company: lang === 'he' ? 'חברה' : 'Company',
+  message: lang === 'he' ? 'תוכן ההודעה' : 'Message',
+  submit: lang === 'he' ? 'שגר' : 'SUBMIT',
+  success: lang === 'he' ? 'תודה — ניצור קשר בקרוב.' : "Thanks — we'll be in touch.",
+};
 ---
 
 {sent ? (
   <div class="cf-success">
-    <p>Thanks — we'll be in touch.</p>
+    <p>{labels.success}</p>
   </div>
 ) : (
   <form class="cf-form" method="post" action="/contact.php">
@@ -17,33 +32,33 @@ const sent = Astro.url.searchParams.get('sent') === '1';
 
     <div class="cf-row">
       <div class="cf-field">
-        <label for="cf-first-name" class="cf-label">First Name</label>
+        <label for="cf-first-name" class="cf-label">{labels.firstName}</label>
         <input type="text" id="cf-first-name" name="first_name" class="cf-input" />
       </div>
       <div class="cf-field">
-        <label for="cf-last-name" class="cf-label">Last Name</label>
+        <label for="cf-last-name" class="cf-label">{labels.lastName}</label>
         <input type="text" id="cf-last-name" name="last_name" class="cf-input" />
       </div>
     </div>
 
     <div class="cf-row">
       <div class="cf-field">
-        <label for="cf-email" class="cf-label">Email <span class="cf-required" aria-label="required">*</span></label>
+        <label for="cf-email" class="cf-label">{labels.email} <span class="cf-required" aria-label="required">*</span></label>
         <input type="email" id="cf-email" name="email" class="cf-input" required />
       </div>
       <div class="cf-field">
-        <label for="cf-company" class="cf-label">Company <span class="cf-required" aria-label="required">*</span></label>
+        <label for="cf-company" class="cf-label">{labels.company} <span class="cf-required" aria-label="required">*</span></label>
         <input type="text" id="cf-company" name="company" class="cf-input" required />
       </div>
     </div>
 
     <div class="cf-field cf-field--full">
-      <label for="cf-message" class="cf-label">Message</label>
+      <label for="cf-message" class="cf-label">{labels.message}</label>
       <textarea id="cf-message" name="message" class="cf-textarea" rows="4"></textarea>
     </div>
 
     <div class="cf-submit-row">
-      <button type="submit" class="cf-submit">SUBMIT</button>
+      <button type="submit" class="cf-submit">{labels.submit}</button>
     </div>
 
   </form>

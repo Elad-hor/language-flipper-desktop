@@ -6,11 +6,16 @@ interface Props {
 }
 const { lang } = Astro.props;
 
-const aboutHref = lang === 'he' ? '/he/about-us/' : '/about-us/';
-const homeHref = lang === 'he' ? '/he/about-us/' : '/about-us/';
+const aboutHref = lang === 'he' ? '/he/עלינו/' : '/about-us/';
+const homeHref = lang === 'he' ? '/he/בית/' : '/';
 const solutionsHref = '/solutions/';
-const contactHref = lang === 'he' ? '/he/contact-us/' : '/contact-us/';
-const flipHref = lang === 'he' ? '/he/flip-it/' : '/flip-it/';
+const contactHref = lang === 'he' ? '/he/צור-קשר/' : '/contact-us/';
+const flipHref = lang === 'he' ? '/he/תפליפו/' : '/flip-it/';
+const termsHref = lang === 'he' ? '/he/תנאי-שימוש/' : '/terms-of-service/';
+const privacyHref = lang === 'he' ? '/he/פרטיות/' : '/privacy-policy/';
+const accessibilityHref = lang === 'he'
+  ? '/accessibility-statement-HE.pdf'
+  : 'https://languageflipper.com/wp-content/uploads/2026/05/accessibility-statement-EN.pdf';
 ---
 <footer class="site-footer">
   <div class="container footer-top">
@@ -49,7 +54,7 @@ const flipHref = lang === 'he' ? '/he/flip-it/' : '/flip-it/';
       <ul>
         <li><a href={aboutHref}>{t(lang, 'footer.about_us')}</a></li>
         <li><a href={homeHref}>{t(lang, 'footer.home')}</a></li>
-        <li><a href={solutionsHref}>Technology</a></li>
+        {lang === 'en' && <li><a href={solutionsHref}>Technology</a></li>}
       </ul>
     </div>
 
@@ -66,9 +71,9 @@ const flipHref = lang === 'he' ? '/he/flip-it/' : '/flip-it/';
     <div class="container footer-bottom-inner">
       <span class="made">{t(lang, 'footer.made')}</span>
       <div class="legal-links">
-        <a href="https://languageflipper.com/wp-content/uploads/2026/05/accessibility-statement-EN.pdf" target="_blank" rel="noopener">{t(lang, 'footer.accessibility')}</a>
-        <a href="/terms-of-service/">{t(lang, 'footer.terms')}</a>
-        <a href="/privacy-policy/">{t(lang, 'footer.privacy')}</a>
+        <a href={accessibilityHref} target="_blank" rel="noopener">{t(lang, 'footer.accessibility')}</a>
+        <a href={termsHref}>{t(lang, 'footer.terms')}</a>
+        <a href={privacyHref}>{t(lang, 'footer.privacy')}</a>
       </div>
     </div>
   </div>

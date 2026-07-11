@@ -6,7 +6,7 @@ interface Props {
 }
 const { lang } = Astro.props;
 const targetLang = lang === 'en' ? 'he' : 'en';
-const targetHref = lang === 'en' ? '/he/' : '/';
+const targetHref = lang === 'en' ? '/he/בית/' : '/';
 const label = t(lang, 'nav.lang_label');
 ---
 <a href={targetHref} class="lang-switcher" aria-label={`Switch to ${targetLang}`}>

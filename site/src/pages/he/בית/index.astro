@@ -1,0 +1,54 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Header from '../../../components/Header.astro';
+import Hero from '../../../components/Hero.astro';
+import HowItWorks from '../../../components/HowItWorks.astro';
+import DownloadRow from '../../../components/DownloadRow.astro';
+import SolutionGrid from '../../../components/SolutionGrid.astro';
+import HardTruth from '../../../components/HardTruth.astro';
+import GetTheFeeling from '../../../components/GetTheFeeling.astro';
+import Footer from '../../../components/Footer.astro';
+
+const lang = 'he' as const;
+---
+<BaseLayout
+  title="Language Flipper | אל תתפלפו... פשוט תפליפו! מחליף שפה"
+  description="עייפתם לכתוב גיבריש? Language Flipper מתקן טעויות מקלדת עברית-אנגלית ברגע. הורידו עכשיו וקבלו 40 פליפים חינם!"
+  lang={lang}
+>
+  <Header lang={lang} />
+  <main id="content">
+    <Hero lang={lang} />
+    <!-- Two empty gradient spacers between hero and how-it-works -->
+    <div class="gradient-spacer"></div>
+    <div class="gradient-spacer"></div>
+    <HowItWorks lang={lang} />
+    <!-- Empty gradient spacer between how-it-works and download -->
+    <div class="gradient-spacer-lg"></div>
+    <DownloadRow lang={lang} />
+    <SolutionGrid lang={lang} />
+    <HardTruth lang={lang} />
+    <GetTheFeeling lang={lang} />
+  </main>
+  <Footer lang={lang} />
+</BaseLayout>
+
+<style>
+  /* Elementor gradient spacer sections: 180deg transparent → #1D005B */
+  .gradient-spacer {
+    background: linear-gradient(180deg, #21252900 0%, #1D005B 100%);
+    height: 40px;
+    display: block;
+  }
+  .gradient-spacer-lg {
+    background: linear-gradient(180deg, #21252900 0%, #1D005B 78%);
+    height: 40px;
+    display: block;
+  }
+  @media (max-width: 767px) {
+    .gradient-spacer,
+    .gradient-spacer-lg {
+      height: 20px;
+    }
+  }
+</style>

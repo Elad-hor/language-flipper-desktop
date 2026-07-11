@@ -1,0 +1,224 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Header from '../../../components/Header.astro';
+import Footer from '../../../components/Footer.astro';
+import DownloadRow from '../../../components/DownloadRow.astro';
+
+const lang = 'he' as const;
+---
+<BaseLayout
+  title="עלינו | Language Flipper - אל תתפלפו, פשוט תפליפו"
+  description="כתבנו פסקה מבריקה שלמה בלי להרים עיניים מהמקלדת. הרמנו מבט — והיא הייתה בשפה הלא נכונה. אז בנינו את האפליקציה הזאת."
+  lang={lang}
+>
+  <Header lang={lang} />
+  <main id="content">
+
+    <!-- Hero: "הסיפור שלנו" heading + subtitle, solutions.webp bg -->
+    <section class="about-hero">
+      <div class="about-hero-content">
+        <h1 class="about-hero-h1">הסיפור שלנו</h1>
+        <h2 class="about-hero-h2">
+          כתבנו פסקה מבריקה שלמה בלי להרים עיניים מהמקלדת.<br />
+          הרמנו מבט — והיא הייתה בשפה הלא נכונה.<br />
+          אז בנינו את האפליקציה הזאת כדי להציל את המחשב מהחלון.
+        </h2>
+        <a href="/he/תפליפו/" class="about-cta">תנסו את זה</a>
+      </div>
+    </section>
+
+    <!-- About Language Flipper: white bg, content + right circuit deco -->
+    <section class="about-body-section">
+      <div class="about-body-grid container">
+        <div class="about-text-col">
+          <h2 class="about-h2">About Language Flipper</h2>
+          <div class="about-divider"></div>
+          <p>כולנו יודעים בדיוק איך הסרט הזה נגמר.</p>
+          <p>אתם לגמרי בקטע. הרגע הקלדתם את הפסקה הכי מבריקה ומנוסחת בקריירה שלכם. האצבעות עפות על המקלדת. אתם מרימים מבט מלאי ביטחון למסך, מוכנים ללחוץ שלח… והנשמה שלכם פשוט עוזבת את הגוף.</p>
+          <p>במקום הודעה גאונית, אתם בוהים במסך מלא בג׳יבריש טהור. akuo, nv ph,tun vneks, akf cvbnkh,?</p>
+          <p>Language Flipper הוא כפתור ה-Undo שחלמתם עליו מאז שנות ה-90. אפליקציה קלילה וסופר-מהירה לווינדוס ומאק, שלוקחת את טעויות המקלדת המעצבנות האלה והופכת אותן ברגע חזרה למילים של בני אדם.</p>
+          <p>זה בכלל לא משנה איפה אתם עובדים. ל-Language Flipper לא אכפת אם אתם עמוק בתוך מסמך Word, קוברים את עצמכם ב-Excel, כותבים אימייל ב-Chrome, חופרים לקולגות ב-Slack או מסתמסים ב-WhatsApp. אם אפשר להקליד שם, אפשר לעשות שם פליפ.</p>
+          <p>אל תתפלפו. פשוט תפליפו.</p>
+        </div>
+        <!-- Right column: decorative circuit-board image -->
+        <div class="about-deco-col" aria-hidden="true">
+          <img src="/assets/Language-Flipper.webp" alt="" />
+        </div>
+      </div>
+    </section>
+
+    <!-- Download Now -->
+    <DownloadRow lang={lang} />
+
+    <!-- Talk to us: dark animated background section -->
+    <section class="talk-section">
+      <div class="talk-inner container">
+        <h1 class="talk-h1">תדברו איתנו</h1>
+        <a href="/he/צור-קשר/" class="talk-cta">צרו קשר</a>
+      </div>
+    </section>
+
+  </main>
+  <Footer lang={lang} />
+</BaseLayout>
+
+<style>
+  /* ─── Hero ─── */
+  .about-hero {
+    position: relative;
+    background-image: url('/assets/solutions.webp');
+    background-size: cover;
+    background-position: center center;
+    min-height: 620px;
+    display: flex;
+    align-items: flex-start;
+  }
+  .about-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(6, 0, 30, 0.48);
+  }
+  .about-hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: var(--lf-maxw);
+    margin: 0 auto;
+    padding: 80px 20px 60px;
+    width: 100%;
+    text-align: right;
+  }
+  .about-hero-h1 {
+    font-size: clamp(2rem, 4.5vw, 3.2rem);
+    font-weight: 800;
+    color: var(--lf-white);
+    margin-bottom: 1rem;
+    line-height: 1.1;
+  }
+  .about-hero-h2 {
+    font-size: clamp(0.8rem, 1.4vw, 0.95rem);
+    font-weight: 400;
+    color: var(--lf-white);
+    line-height: 1.8;
+    margin-bottom: 1.75rem;
+    max-width: 580px;
+    /* For RTL, align text right and let max-width apply from right */
+    margin-inline-start: auto;
+  }
+  .about-cta {
+    display: inline-block;
+    background: var(--lf-magenta);
+    color: var(--lf-white);
+    padding: 10px 28px;
+    border-radius: 40px;
+    font-weight: 600;
+    font-size: 0.88rem;
+    transition: opacity 0.2s;
+  }
+  .about-cta:hover { opacity: 0.85; }
+
+  /* ─── About body (white bg, 2-col) ─── */
+  .about-body-section {
+    background: #fff;
+    padding: 100px 0 160px;
+  }
+  .about-body-grid {
+    display: grid;
+    grid-template-columns: 55fr 45fr;
+    gap: 0;
+    align-items: stretch;
+  }
+  .about-text-col {
+    padding-inline-end: 2rem;
+  }
+  .about-text-col p {
+    color: #333;
+    font-size: 0.9rem;
+    line-height: 1.8;
+    margin-bottom: 1rem;
+  }
+  .about-h2 {
+    font-size: clamp(1.4rem, 2.5vw, 1.9rem);
+    color: var(--lf-magenta);
+    font-weight: 700;
+    margin-bottom: 0.85rem;
+    line-height: 1.2;
+  }
+  .about-divider {
+    width: 44px;
+    height: 3px;
+    background: var(--lf-magenta);
+    margin-bottom: 1.4rem;
+  }
+
+  /* Right deco col */
+  .about-deco-col {
+    overflow: hidden;
+    position: relative;
+    min-height: 300px;
+  }
+  .about-deco-col img {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: left center;
+    max-width: none;
+    opacity: 0.95;
+  }
+
+  /* ─── Talk to us ─── */
+  .talk-section {
+    position: relative;
+    background-image: url('/assets/about-food-check-back.webp');
+    background-size: cover;
+    background-position: center top;
+    min-height: 560px;
+    display: flex;
+    align-items: center;
+  }
+  .talk-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(4, 0, 40, 0.58);
+  }
+  .talk-inner {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding-top: 96px;
+    padding-bottom: 96px;
+    width: 100%;
+  }
+  .talk-h1 {
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    color: var(--lf-white);
+    font-weight: 800;
+    margin-bottom: 1.5rem;
+  }
+  .talk-cta {
+    display: inline-block;
+    background: var(--lf-magenta);
+    color: var(--lf-white);
+    padding: 12px 32px;
+    border-radius: 40px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: opacity 0.2s;
+  }
+  .talk-cta:hover { opacity: 0.85; }
+
+  /* ─── Mobile ─── */
+  @media (max-width: 767px) {
+    .about-hero { min-height: 360px; }
+    .about-body-grid {
+      grid-template-columns: 1fr;
+    }
+    .about-deco-col { display: none; }
+    .about-text-col { padding-inline-end: 0; }
+  }
+</style>

@@ -1,0 +1,278 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Header from '../../../components/Header.astro';
+import Footer from '../../../components/Footer.astro';
+import ContactForm from '../../../components/ContactForm.astro';
+
+const lang = 'he' as const;
+---
+<BaseLayout
+  title="צור קשר - languageflipper.com"
+  description="צרו קשר עם Language Flipper. משרד ישראל: רח' שלמה בן יוסף 16, תל אביב. משרד ארה&quot;ב: Los Angeles."
+  lang={lang}
+>
+  <Header lang={lang} />
+  <main id="content">
+
+    <!-- ── Hero: "דברו איתנו" + typing animation, wave background ── -->
+    <section class="cu-hero">
+      <div class="cu-hero-content container">
+        <h1 class="cu-hero-h1">
+          דברו איתנו<br />
+          <span class="cu-hero-typing" aria-hidden="true">Language Flipper.</span>
+        </h1>
+      </div>
+    </section>
+
+    <!-- ── Get in touch: form + circuit-board deco on left (RTL: deco on right side visually = left in DOM) ── -->
+    <section class="cu-form-section">
+      <div class="cu-form-layout">
+        <div class="cu-form-col">
+          <h2 class="cu-h2">צור קשר</h2>
+          <div class="cu-divider"></div>
+          <ContactForm lang={lang} />
+        </div>
+        <div class="cu-deco-col" aria-hidden="true">
+          <img src="/assets/Language-Flipper.webp" alt="" class="cu-deco-img" />
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Gradient spacer ── -->
+    <div class="cu-gradient-spacer"></div>
+
+    <!-- ── Office cards ── -->
+    <section class="cu-offices-section">
+      <div class="container cu-offices-grid">
+
+        <div class="cu-office-card">
+          <div class="cu-office-img-wrap">
+            <img
+              src="/assets/US-office-scaled.webp"
+              alt="US Office"
+              class="cu-office-img"
+              loading="lazy"
+            />
+          </div>
+          <div class="cu-office-body">
+            <h3 class="cu-office-title">משרד ארה"ב</h3>
+            <div class="cu-office-divider"></div>
+            <p class="cu-office-addr">
+              Los Angeles<br />
+              בקרוב
+            </p>
+          </div>
+        </div>
+
+        <div class="cu-office-card cu-office-card--dark">
+          <div class="cu-office-img-wrap cu-office-img-wrap--dark">
+            <img
+              src="/assets/israel-office-scaled.webp"
+              alt="Israel Office"
+              class="cu-office-img"
+              loading="lazy"
+            />
+          </div>
+          <div class="cu-office-body cu-office-body--dark">
+            <h3 class="cu-office-title">משרדים ישראל</h3>
+            <div class="cu-office-divider"></div>
+            <p class="cu-office-addr">
+              רח' שלמה בן יוסף 16<br />
+              תל אביב, 036912516
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+  <Footer lang={lang} />
+</BaseLayout>
+
+<style>
+  /* ── Hero ── */
+  .cu-hero {
+    position: relative;
+    background-image: url('/assets/home-page-main.webp');
+    background-size: cover;
+    background-position: center center;
+    min-height: 420px;
+    display: flex;
+    align-items: center;
+  }
+  .cu-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(8, 0, 40, 0.45);
+  }
+  .cu-hero-content {
+    position: relative;
+    z-index: 1;
+    padding: 80px 20px 60px;
+    width: 100%;
+    text-align: right;
+  }
+  .cu-hero-h1 {
+    font-size: clamp(2.4rem, 5vw, 3.8rem);
+    font-weight: 800;
+    color: #fff;
+    line-height: 1.15;
+  }
+  .cu-hero-typing {
+    display: inline-block;
+    color: #fff;
+    font-weight: 800;
+  }
+
+  /* ── Form section ── */
+  .cu-form-section {
+    background: #fff;
+    padding: 0;
+    overflow: hidden;
+    position: relative;
+  }
+  .cu-form-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 620px;
+  }
+  .cu-form-col {
+    padding: 72px 48px 80px 48px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+  }
+  .cu-h2 {
+    font-size: clamp(1.6rem, 2.8vw, 2.2rem);
+    color: var(--lf-magenta);
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 0.6rem;
+    line-height: 1.2;
+    align-self: center;
+  }
+  .cu-divider {
+    width: 44px;
+    height: 3px;
+    background: var(--lf-magenta);
+    margin: 0 auto 2.4rem;
+    flex-shrink: 0;
+  }
+
+  /* Deco column: circuit-board image */
+  .cu-deco-col {
+    position: relative;
+    overflow: hidden;
+    min-height: 440px;
+  }
+  .cu-deco-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: left center;
+    max-width: none;
+    opacity: 0.85;
+  }
+
+  /* ── Gradient spacer between form section and offices ── */
+  .cu-gradient-spacer {
+    background: linear-gradient(180deg, rgba(255,255,255,0) 0%, var(--lf-bg-deep) 100%);
+    height: 280px;
+  }
+
+  /* ── Office cards ── */
+  .cu-offices-section {
+    background: var(--lf-bg-deep);
+    padding: 0 0 140px;
+  }
+  .cu-offices-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 12px;
+    align-items: start;
+  }
+
+  .cu-office-card {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .cu-office-img-wrap {
+    width: 100%;
+    height: 210px;
+    overflow: hidden;
+    background: #1D005B;
+  }
+  .cu-office-img-wrap--dark {
+    background: #160040;
+  }
+  .cu-office-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center bottom;
+    display: block;
+  }
+
+  .cu-office-body {
+    background: #1D005B;
+    padding: 28px 32px 40px;
+    text-align: right;
+  }
+  .cu-office-body--dark {
+    background: #160040;
+  }
+  .cu-office-title {
+    font-size: clamp(1.4rem, 2.2vw, 1.9rem);
+    color: var(--lf-magenta);
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+  .cu-office-divider {
+    width: 40px;
+    height: 3px;
+    background: var(--lf-magenta);
+    margin-bottom: 1rem;
+    /* For RTL, align divider to the right (inline-end = right in RTL) */
+    margin-inline-end: auto;
+    margin-inline-start: 0;
+  }
+  .cu-office-addr {
+    font-size: 0.92rem;
+    color: #fff;
+    line-height: 1.7;
+  }
+
+  /* ── Mobile ── */
+  @media (max-width: 767px) {
+    .cu-hero { min-height: 240px; }
+    .cu-hero-content { padding: 60px 20px 36px; }
+
+    .cu-form-layout {
+      grid-template-columns: 1fr;
+    }
+    .cu-form-col {
+      padding: 48px 24px;
+    }
+    .cu-deco-col {
+      display: none;
+    }
+
+    .cu-gradient-spacer { height: 120px; }
+
+    .cu-offices-grid {
+      grid-template-columns: 1fr;
+      gap: 40px 0;
+    }
+    .cu-offices-section {
+      padding: 0 0 100px;
+    }
+  }
+</style>
