@@ -69,8 +69,8 @@ const flipHref = lang === 'he' ? '/he/תפליפו/' : '/flip-it/';
     position: relative;
     /* Fixed height so the image always fully covers the section and never
        resizes when the animated headline changes. */
-    height: 80vh;
-    min-height: 600px;
+    height: 64vh;
+    min-height: 500px;
     display: flex;
     align-items: flex-start;
     overflow: hidden;
@@ -83,14 +83,14 @@ const flipHref = lang === 'he' ? '/he/תפליפו/' : '/flip-it/';
     background-position: center center;
     /* Zoom + shift: guarantees the image fully covers the section on any screen,
        and moves the character to the right (clear of the left text) and lower. */
-    transform: scale(1.45) translate(15%, 8%);
+    transform: scale(1.6) translate(21%, 11%);
     transform-origin: center;
     z-index: 0;
   }
   /* Hebrew is RTL (text on the right), so mirror the shift — push the character
      to the LEFT so it stays clear of the right-aligned text. */
   :global(html[dir='rtl']) .hero-bg {
-    transform: scale(1.45) translate(-15%, 8%);
+    transform: scale(1.6) translate(-21%, 11%);
   }
   .hero-overlay {
     position: absolute;
@@ -102,8 +102,8 @@ const flipHref = lang === 'he' ? '/he/תפליפו/' : '/flip-it/';
   .hero-content {
     position: relative;
     z-index: 2;
-    padding-top: 180px;
-    padding-bottom: 60px;
+    padding-top: 130px;
+    padding-bottom: 50px;
     max-width: 700px;
   }
   .hero-h1 {
@@ -165,10 +165,10 @@ const flipHref = lang === 'he' ? '/he/תפליפו/' : '/flip-it/';
        the image renders at ~832px wide, -401px shifts to show right portion */
     .hero-bg {
       background-position: center center;
-      transform: scale(1.22) translate(7%, 5%);
+      transform: scale(1.4) translate(14%, 8%);
     }
     :global(html[dir='rtl']) .hero-bg {
-      transform: scale(1.22) translate(-7%, 5%);
+      transform: scale(1.4) translate(-14%, 8%);
     }
     .hero-overlay {
       background-color: rgba(29,0,91,0.25);
