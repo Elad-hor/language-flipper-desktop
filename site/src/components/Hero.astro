@@ -67,8 +67,10 @@ const flipHref = lang === 'he' ? '/he/תפליפו/' : '/flip-it/';
 <style>
   .hero {
     position: relative;
-    /* Fill ~80% of the first screen; grow if content needs more room */
-    min-height: 80vh;
+    /* Fixed height so the image always fully covers the section and never
+       resizes when the animated headline changes. */
+    height: 80vh;
+    min-height: 600px;
     display: flex;
     align-items: flex-start;
     overflow: hidden;
@@ -91,8 +93,8 @@ const flipHref = lang === 'he' ? '/he/תפליפו/' : '/flip-it/';
   .hero-content {
     position: relative;
     z-index: 2;
-    padding-top: 280px;
-    padding-bottom: 80px;
+    padding-top: 180px;
+    padding-bottom: 60px;
     max-width: 700px;
   }
   .hero-h1 {
@@ -112,10 +114,16 @@ const flipHref = lang === 'he' ? '/he/תפליפו/' : '/flip-it/';
      in place to the correct words. No folding/rotate — just a typed + flip effect. */
   .h1-flip {
     display: block;
+    /* Smaller than line 1 so the wrong-layout text fits on one line without
+       running off the screen. */
+    font-size: clamp(2rem, 4.2vw, 56px);
+    line-height: 1.1;
+    letter-spacing: -1px;
     /* Always one line with a reserved height, so typing/flipping/clearing never
        reflows the headline (which was resizing the hero image). */
     white-space: nowrap;
-    min-height: 100px;
+    min-height: 64px;
+    margin-top: 6px;
     /* Force the Hebrew "wrong layout" text to lay out left-to-right, as if typed
        on an English keyboard in the wrong layout. */
     direction: ltr;
@@ -161,7 +169,7 @@ const flipHref = lang === 'he' ? '/he/תפליפו/' : '/flip-it/';
       line-height: 1.1;
       letter-spacing: 1.4px;
     }
-    .h1-flip { min-height: 74px; white-space: nowrap; }
+    .h1-flip { font-size: 34px; min-height: 42px; margin-top: 4px; white-space: nowrap; }
     .hero-sub {
       font-size: 18px;
       line-height: 1.3em;
