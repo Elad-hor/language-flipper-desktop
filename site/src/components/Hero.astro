@@ -26,25 +26,42 @@ const flipHref = lang === 'he' ? '/he/תפליפו/' : '/flip-it/';
 </section>
 
 <script>
-  // Animated hero headline: show "Just Flip It." first as wrong-keyboard-layout
-  // gibberish, then flip it to the correct words — demonstrating what the app does.
+  // Animated hero headline: TYPE the wrong-keyboard-layout text (shown left-to-right),
+  // then FLIP it in place to the correct words — no folding, just typed + flip.
   const flipEl = document.querySelector('.hero-h1 .h1-flip[data-correct]');
   if (flipEl) {
     const EN2HE = { q:'/', w:"'", e:'ק', r:'ר', t:'א', y:'ט', u:'ו', i:'ן', o:'ם',
       p:'פ', a:'ש', s:'ד', d:'ג', f:'כ', g:'ע', h:'י', j:'ח', k:'ל', l:'ך', z:'ז',
       x:'ס', c:'ב', v:'ה', b:'נ', n:'מ', m:'צ', ',':'ת', '.':'ץ', ';':'ף', '/':'.' };
     const correct = flipEl.getAttribute('data-correct') || '';
-    const wrong = [...correct].map((ch) => EN2HE[ch.toLowerCase()] ?? ch).join('');
-    let showingCorrect = false;
-    flipEl.textContent = wrong; // start on the "mistyped" version
-    setInterval(() => {
-      flipEl.classList.add('flipping');
-      setTimeout(() => {
-        showingCorrect = !showingCorrect;
-        flipEl.textContent = showingCorrect ? correct : wrong;
-        flipEl.classList.remove('flipping');
-      }, 320);
-    }, 2400);
+    const wrongArr = [...correct].map((ch) => EN2HE[ch.toLowerCase()] ?? ch);
+    const correctArr = [...correct];
+    const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+    const TYPE = 95, FLIP = 65, HOLD_TYPED = 650, HOLD_CORRECT = 1800, HOLD_EMPTY = 550;
+
+    async function run() {
+      // Respect reduced-motion: just show the correct text, no animation.
+      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        flipEl.textContent = correct;
+        return;
+      }
+      flipEl.textContent = '';
+      while (true) {
+        // 1) Type the wrong-layout text, character by character.
+        flipEl.classList.add('typing');
+        for (let i = 1; i <= wrongArr.length; i++) { flipEl.textContent = wrongArr.slice(0, i).join(''); await sleep(TYPE); }
+        flipEl.classList.remove('typing');
+        await sleep(HOLD_TYPED);
+        // 2) Flip each character in place to the correct one, left to right.
+        const chars = wrongArr.slice();
+        for (let i = 0; i < correctArr.length; i++) { chars[i] = correctArr[i]; flipEl.textContent = chars.join(''); await sleep(FLIP); }
+        await sleep(HOLD_CORRECT);
+        // 3) Clear and repeat.
+        flipEl.textContent = '';
+        await sleep(HOLD_EMPTY);
+      }
+    }
+    run();
   }
 </script>
 
@@ -92,21 +109,23 @@ const flipHref = lang === 'he' ? '/he/תפליפו/' : '/flip-it/';
     color: var(--lf-magenta);
   }
   .h1-line1 { display: block; }
-  /* Animated headline: starts as wrong-layout gibberish, flips to the real words */
+  /* Animated headline: "types" the wrong-layout text (shown LTR), then flips it
+     in place to the correct words. No folding/rotate — just a typed + flip effect. */
   .h1-flip {
     display: inline-block;
-    transform-origin: center bottom;
-    transition: transform 0.32s ease, opacity 0.32s ease;
-    will-change: transform, opacity;
-    unicode-bidi: plaintext;
+    min-height: 1em;
+    /* Force the Hebrew "wrong layout" text to lay out left-to-right, as if typed
+       on an English keyboard in the wrong layout. */
+    direction: ltr;
+    unicode-bidi: bidi-override;
   }
-  .h1-flip.flipping {
-    transform: rotateX(90deg);
-    opacity: 0;
+  .h1-flip.typing::after {
+    content: '|';
+    margin-left: 2px;
+    font-weight: 400;
+    animation: lf-caret 0.9s step-end infinite;
   }
-  @media (prefers-reduced-motion: reduce) {
-    .h1-flip { transition: none; }
-  }
+  @keyframes lf-caret { 0%, 50% { opacity: 1; } 50.01%, 100% { opacity: 0; } }
   .hero-sub {
     color: var(--lf-white);
     font-size: 24px;
