@@ -80,7 +80,8 @@ const flipHref = lang === 'he' ? '/he/תפליפו/' : '/flip-it/';
     inset: 0;
     background-image: url('/assets/language-Flipper-hero.webp');
     background-size: cover;
-    background-position: top center;
+    /* Lower the framing so the subject isn't sitting too high in the section. */
+    background-position: center 30%;
     z-index: 0;
   }
   .hero-overlay {
@@ -116,14 +117,14 @@ const flipHref = lang === 'he' ? '/he/תפליפו/' : '/flip-it/';
     display: block;
     /* Smaller than line 1 so the wrong-layout text fits on one line without
        running off the screen. */
-    font-size: clamp(2rem, 4.2vw, 56px);
+    font-size: clamp(2.6rem, 5vw, 72px);
     line-height: 1.1;
-    letter-spacing: -1px;
+    letter-spacing: -1.5px;
     /* Always one line with a reserved height, so typing/flipping/clearing never
        reflows the headline (which was resizing the hero image). */
     white-space: nowrap;
-    min-height: 64px;
-    margin-top: 6px;
+    min-height: 84px;
+    margin-top: 4px;
     /* Force the Hebrew "wrong layout" text to lay out left-to-right, as if typed
        on an English keyboard in the wrong layout. */
     direction: ltr;
@@ -169,7 +170,7 @@ const flipHref = lang === 'he' ? '/he/תפליפו/' : '/flip-it/';
       line-height: 1.1;
       letter-spacing: 1.4px;
     }
-    .h1-flip { font-size: 34px; min-height: 42px; margin-top: 4px; white-space: nowrap; }
+    .h1-flip { font-size: 42px; min-height: 50px; margin-top: 4px; white-space: nowrap; }
     .hero-sub {
       font-size: 18px;
       line-height: 1.3em;
