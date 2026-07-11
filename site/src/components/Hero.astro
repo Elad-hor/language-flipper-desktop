@@ -80,9 +80,17 @@ const flipHref = lang === 'he' ? '/he/תפליפו/' : '/flip-it/';
     inset: 0;
     background-image: url('/assets/language-Flipper-hero.webp');
     background-size: cover;
-    /* Lower the framing so the subject isn't sitting too high in the section. */
-    background-position: center 30%;
+    background-position: center center;
+    /* Zoom + shift: guarantees the image fully covers the section on any screen,
+       and moves the character to the right (clear of the left text) and lower. */
+    transform: scale(1.45) translate(15%, 8%);
+    transform-origin: center;
     z-index: 0;
+  }
+  /* Hebrew is RTL (text on the right), so mirror the shift — push the character
+     to the LEFT so it stays clear of the right-aligned text. */
+  :global(html[dir='rtl']) .hero-bg {
+    transform: scale(1.45) translate(-15%, 8%);
   }
   .hero-overlay {
     position: absolute;
@@ -117,13 +125,13 @@ const flipHref = lang === 'he' ? '/he/תפליפו/' : '/flip-it/';
     display: block;
     /* Smaller than line 1 so the wrong-layout text fits on one line without
        running off the screen. */
-    font-size: clamp(2.6rem, 5vw, 72px);
+    font-size: clamp(3rem, 5.8vw, 84px);
     line-height: 1.1;
     letter-spacing: -1.5px;
     /* Always one line with a reserved height, so typing/flipping/clearing never
        reflows the headline (which was resizing the hero image). */
     white-space: nowrap;
-    min-height: 84px;
+    min-height: 96px;
     margin-top: 4px;
     /* Force the Hebrew "wrong layout" text to lay out left-to-right, as if typed
        on an English keyboard in the wrong layout. */
@@ -156,7 +164,11 @@ const flipHref = lang === 'he' ? '/he/תפליפו/' : '/flip-it/';
     /* Mobile: Elementor uses -401px 0px offset; with cover+390px viewport
        the image renders at ~832px wide, -401px shifts to show right portion */
     .hero-bg {
-      background-position: 60% top;
+      background-position: center center;
+      transform: scale(1.22) translate(7%, 5%);
+    }
+    :global(html[dir='rtl']) .hero-bg {
+      transform: scale(1.22) translate(-7%, 5%);
     }
     .hero-overlay {
       background-color: rgba(29,0,91,0.25);
@@ -170,7 +182,7 @@ const flipHref = lang === 'he' ? '/he/תפליפו/' : '/flip-it/';
       line-height: 1.1;
       letter-spacing: 1.4px;
     }
-    .h1-flip { font-size: 42px; min-height: 50px; margin-top: 4px; white-space: nowrap; }
+    .h1-flip { font-size: 48px; min-height: 56px; margin-top: 4px; white-space: nowrap; }
     .hero-sub {
       font-size: 18px;
       line-height: 1.3em;
