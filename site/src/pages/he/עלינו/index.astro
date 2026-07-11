@@ -14,14 +14,12 @@ const lang = 'he' as const;
   <Header lang={lang} />
   <main id="content">
 
-    <!-- Hero: "הסיפור שלנו" heading + subtitle, solutions.webp bg -->
+    <!-- Hero: "קצת עלינו" heading + subtitle, how-it-works-1.webp bg (tech tunnel) -->
     <section class="about-hero">
       <div class="about-hero-content">
-        <h1 class="about-hero-h1">הסיפור שלנו</h1>
+        <h1 class="about-hero-h1">קצת עלינו</h1>
         <h2 class="about-hero-h2">
-          כתבנו פסקה מבריקה שלמה בלי להרים עיניים מהמקלדת.<br />
-          הרמנו מבט — והיא הייתה בשפה הלא נכונה.<br />
-          אז בנינו את האפליקציה הזאת כדי להציל את המחשב מהחלון.
+          Language Flipper מתקן אוטומטית טעויות של אנגלית-עברית בכל תוכנה ובכל אתר. פשוט לוחצים, וממשיכים לעבוד.
         </h2>
         <a href="/he/תפליפו/" class="about-cta">תנסו את זה</a>
       </div>
@@ -31,7 +29,7 @@ const lang = 'he' as const;
     <section class="about-body-section">
       <div class="about-body-grid container">
         <div class="about-text-col">
-          <h2 class="about-h2">About Language Flipper</h2>
+          <h2 class="about-h2">זה כל הסיפור</h2>
           <div class="about-divider"></div>
           <p>כולנו יודעים בדיוק איך הסרט הזה נגמר.</p>
           <p>אתם לגמרי בקטע. הרגע הקלדתם את הפסקה הכי מבריקה ומנוסחת בקריירה שלכם. האצבעות עפות על המקלדת. אתם מרימים מבט מלאי ביטחון למסך, מוכנים ללחוץ שלח… והנשמה שלכם פשוט עוזבת את הגוף.</p>
@@ -66,7 +64,7 @@ const lang = 'he' as const;
   /* ─── Hero ─── */
   .about-hero {
     position: relative;
-    background-image: url('/assets/solutions.webp');
+    background-image: url('/assets/how-it-works-1.webp');
     background-size: cover;
     background-position: center center;
     min-height: 620px;
@@ -86,6 +84,7 @@ const lang = 'he' as const;
     margin: 0 auto;
     padding: 80px 20px 60px;
     width: 100%;
+    direction: rtl;
     text-align: right;
   }
   .about-hero-h1 {
@@ -102,8 +101,6 @@ const lang = 'he' as const;
     line-height: 1.8;
     margin-bottom: 1.75rem;
     max-width: 580px;
-    /* For RTL, align text right and let max-width apply from right */
-    margin-inline-start: auto;
   }
   .about-cta {
     display: inline-block;
