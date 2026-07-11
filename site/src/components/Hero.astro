@@ -13,7 +13,8 @@ const flipHref = lang === 'he' ? '/he/תפליפו/' : '/flip-it/';
   <div class="hero-overlay" aria-hidden="true"></div>
   <div class="container hero-content">
     <h1 class="hero-h1">
-      {t(lang, 'hero.h1')}<span class="accent">{t(lang, 'hero.h1_accent')}</span>
+      <span class="h1-line1">{t(lang, 'hero.h1')}<span class="accent">{t(lang, 'hero.h1_accent')}</span></span>
+      {lang === 'en' && <span class="h1-flip accent" data-correct="Just Flip It.">Just Flip It.</span>}
     </h1>
     <p class="hero-sub">
       {t(lang, 'hero.subtitle_1')}<span class="accent">{t(lang, 'hero.subtitle_akuo')}</span>{t(lang, 'hero.subtitle_2')}<span class="accent">{t(lang, 'hero.subtitle_shalom')}</span>{t(lang, 'hero.subtitle_3')}
@@ -24,10 +25,34 @@ const flipHref = lang === 'he' ? '/he/תפליפו/' : '/flip-it/';
   </div>
 </section>
 
+<script>
+  // Animated hero headline: show "Just Flip It." first as wrong-keyboard-layout
+  // gibberish, then flip it to the correct words — demonstrating what the app does.
+  const flipEl = document.querySelector('.hero-h1 .h1-flip[data-correct]');
+  if (flipEl) {
+    const EN2HE = { q:'/', w:"'", e:'ק', r:'ר', t:'א', y:'ט', u:'ו', i:'ן', o:'ם',
+      p:'פ', a:'ש', s:'ד', d:'ג', f:'כ', g:'ע', h:'י', j:'ח', k:'ל', l:'ך', z:'ז',
+      x:'ס', c:'ב', v:'ה', b:'נ', n:'מ', m:'צ', ',':'ת', '.':'ץ', ';':'ף', '/':'.' };
+    const correct = flipEl.getAttribute('data-correct') || '';
+    const wrong = [...correct].map((ch) => EN2HE[ch.toLowerCase()] ?? ch).join('');
+    let showingCorrect = false;
+    flipEl.textContent = wrong; // start on the "mistyped" version
+    setInterval(() => {
+      flipEl.classList.add('flipping');
+      setTimeout(() => {
+        showingCorrect = !showingCorrect;
+        flipEl.textContent = showingCorrect ? correct : wrong;
+        flipEl.classList.remove('flipping');
+      }, 320);
+    }, 2400);
+  }
+</script>
+
 <style>
   .hero {
     position: relative;
-    min-height: 760px;
+    /* Fill ~80% of the first screen; grow if content needs more room */
+    min-height: 80vh;
     display: flex;
     align-items: flex-start;
     overflow: hidden;
@@ -65,6 +90,22 @@ const flipHref = lang === 'he' ? '/he/תפליפו/' : '/flip-it/';
   }
   .accent {
     color: var(--lf-magenta);
+  }
+  .h1-line1 { display: block; }
+  /* Animated headline: starts as wrong-layout gibberish, flips to the real words */
+  .h1-flip {
+    display: inline-block;
+    transform-origin: center bottom;
+    transition: transform 0.32s ease, opacity 0.32s ease;
+    will-change: transform, opacity;
+    unicode-bidi: plaintext;
+  }
+  .h1-flip.flipping {
+    transform: rotateX(90deg);
+    opacity: 0;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .h1-flip { transition: none; }
   }
   .hero-sub {
     color: var(--lf-white);
