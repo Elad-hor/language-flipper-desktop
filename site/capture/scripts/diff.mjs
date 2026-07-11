@@ -10,7 +10,7 @@ const root = join(here, '..');
 const pages = JSON.parse(await readFile(join(root, 'pages.json'), 'utf8'));
 const base = process.env.PREVIEW_URL || 'http://localhost:4321';
 const widths = { desktop: 1440, mobile: 390 };
-const only = process.argv[2]; // optional: diff a single page name
+const only = process.argv.slice(2); // optional: diff only these page name(s)
 
 await mkdir(join(root, 'build'), { recursive: true });
 await mkdir(join(root, 'diff'), { recursive: true });
@@ -27,7 +27,7 @@ function crop(src, width, height) {
 const browser = await chromium.launch();
 const report = [];
 for (const p of pages) {
-  if (only && p.name !== only) continue;
+  if (only.length && !only.includes(p.name)) continue;
   const ctx = await browser.newContext({ deviceScaleFactor: 1 });
   const page = await ctx.newPage();
   await page.goto(base + p.path, { waitUntil: 'networkidle' });
