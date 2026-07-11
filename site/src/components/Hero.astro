@@ -98,20 +98,15 @@ const flipWrong = [...flipCorrect]
     inset: 0;
     background-image: url('/assets/language-Flipper-hero.webp');
     background-size: cover;
-    background-position: center center;
-    /* Zoom + shift: guarantees the image fully covers the section on any screen,
-       and moves the character to the right (clear of the left text) and lower. */
-    /* scale 1.8 => 40% overhang on every side; translate stays well under 40%
-       so the image can never slide off an edge (no gap), while pushing the
-       character clear of the text. */
-    transform: translate(18%, 6%) scale(1.45);
-    transform-origin: center;
+    /* Photo already has the character on the right with open space on the left,
+       so no zoom/shift is needed — just frame the faces. */
+    background-position: center 30%;
     z-index: 0;
   }
-  /* Hebrew is RTL (text on the right), so mirror the shift — push the character
-     to the LEFT so it stays clear of the right-aligned text. */
+  /* Hebrew is RTL (text on the right): mirror the photo so the character sits on
+     the LEFT, clear of the right-aligned text. */
   :global(html[dir='rtl']) .hero-bg {
-    transform: translate(-18%, 6%) scale(1.45);
+    transform: scaleX(-1);
   }
   .hero-overlay {
     position: absolute;
@@ -213,14 +208,12 @@ const flipWrong = [...flipCorrect]
       min-height: 465px;
       align-items: flex-start;
     }
-    /* Mobile: Elementor uses -401px 0px offset; with cover+390px viewport
-       the image renders at ~832px wide, -401px shifts to show right portion */
+    /* Mobile: cover fits to height, so bias the crop toward the character. */
     .hero-bg {
-      background-position: center center;
-      transform: translate(14%, 5%) scale(1.35);
+      background-position: 70% 28%;
     }
     :global(html[dir='rtl']) .hero-bg {
-      transform: translate(-14%, 5%) scale(1.35);
+      transform: scaleX(-1);
     }
     .hero-overlay {
       background-color: rgba(29,0,91,0.25);
