@@ -86,14 +86,14 @@ const flipHref = lang === 'he' ? '/he/תפליפו/' : '/flip-it/';
     /* scale 1.8 => 40% overhang on every side; translate stays well under 40%
        so the image can never slide off an edge (no gap), while pushing the
        character clear of the text. */
-    transform: translate(34%, 8%) scale(1.8);
+    transform: translate(18%, 6%) scale(1.45);
     transform-origin: center;
     z-index: 0;
   }
   /* Hebrew is RTL (text on the right), so mirror the shift — push the character
      to the LEFT so it stays clear of the right-aligned text. */
   :global(html[dir='rtl']) .hero-bg {
-    transform: translate(-34%, 8%) scale(1.8);
+    transform: translate(-18%, 6%) scale(1.45);
   }
   .hero-overlay {
     position: absolute;
@@ -110,7 +110,7 @@ const flipHref = lang === 'he' ? '/he/תפליפו/' : '/flip-it/';
     left: 0;
     right: 0;
     bottom: 0;
-    height: 42%;
+    height: 22%;
     background: linear-gradient(180deg, rgba(29,0,91,0) 0%, #1D005B 100%);
     z-index: 1;
     pointer-events: none;
@@ -181,10 +181,10 @@ const flipHref = lang === 'he' ? '/he/תפליפו/' : '/flip-it/';
        the image renders at ~832px wide, -401px shifts to show right portion */
     .hero-bg {
       background-position: center center;
-      transform: translate(22%, 6%) scale(1.6);
+      transform: translate(14%, 5%) scale(1.35);
     }
     :global(html[dir='rtl']) .hero-bg {
-      transform: translate(-22%, 6%) scale(1.6);
+      transform: translate(-14%, 5%) scale(1.35);
     }
     .hero-overlay {
       background-color: rgba(29,0,91,0.25);
