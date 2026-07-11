@@ -7,6 +7,20 @@ interface Props {
 }
 const { lang } = Astro.props;
 const flipHref = lang === 'he' ? '/he/תפליפו/' : '/flip-it/';
+
+// Animated headline: show the phrase first as wrong-keyboard-layout gibberish,
+// then flip it to the correct words. EN flips English->Hebrew-layout; HE flips
+// Hebrew->English-layout (the mirror). Precompute the "wrong" string at build time.
+const EN2HE: Record<string, string> = { q:'/', w:"'", e:'ק', r:'ר', t:'א', y:'ט', u:'ו',
+  i:'ן', o:'ם', p:'פ', a:'ש', s:'ד', d:'ג', f:'כ', g:'ע', h:'י', j:'ח', k:'ל', l:'ך',
+  z:'ז', x:'ס', c:'ב', v:'ה', b:'נ', n:'מ', m:'צ', ',':'ת', '.':'ץ', ';':'ף', '/':'.' };
+const HE2EN: Record<string, string> = Object.fromEntries(
+  Object.entries(EN2HE).map(([en, he]) => [he, en])
+);
+const flipCorrect = lang === 'he' ? 'פשוט תפליפו' : 'Just Flip It.';
+const flipWrong = [...flipCorrect]
+  .map((ch) => (lang === 'he' ? HE2EN[ch] : EN2HE[ch.toLowerCase()]) ?? ch)
+  .join('');
 ---
 <section class="hero">
   <div class="hero-bg" aria-hidden="true"></div>
@@ -14,10 +28,10 @@ const flipHref = lang === 'he' ? '/he/תפליפו/' : '/flip-it/';
   <div class="container hero-content">
     <h1 class="hero-h1">
       <span class="h1-line1">{t(lang, 'hero.h1')}<span class="accent">{t(lang, 'hero.h1_accent')}</span></span>
-      {lang === 'en' && <span class="h1-flip accent" data-correct="Just Flip It.">Just Flip It.</span>}
+      <span class="h1-flip accent" data-correct={flipCorrect} data-wrong={flipWrong}>{flipCorrect}</span>
     </h1>
     <p class="hero-sub">
-      {t(lang, 'hero.subtitle_1')}<span class="accent">{t(lang, 'hero.subtitle_akuo')}</span>{t(lang, 'hero.subtitle_2')}<span class="accent">{t(lang, 'hero.subtitle_shalom')}</span>{t(lang, 'hero.subtitle_3')}
+      {t(lang, 'hero.subtitle_intro')}{t(lang, 'hero.subtitle_1')}<span class="accent">{t(lang, 'hero.subtitle_akuo')}</span>{t(lang, 'hero.subtitle_2')}<span class="accent">{t(lang, 'hero.subtitle_shalom')}</span>{t(lang, 'hero.subtitle_3')}
       <br />
       {t(lang, 'hero.subtitle_4')}<span class="accent">{t(lang, 'hero.subtitle_hotkey')}</span>{t(lang, 'hero.subtitle_5')}
     </p>
@@ -30,11 +44,10 @@ const flipHref = lang === 'he' ? '/he/תפליפו/' : '/flip-it/';
   // then FLIP it in place to the correct words — no folding, just typed + flip.
   const flipEl = document.querySelector('.hero-h1 .h1-flip[data-correct]');
   if (flipEl) {
-    const EN2HE = { q:'/', w:"'", e:'ק', r:'ר', t:'א', y:'ט', u:'ו', i:'ן', o:'ם',
-      p:'פ', a:'ש', s:'ד', d:'ג', f:'כ', g:'ע', h:'י', j:'ח', k:'ל', l:'ך', z:'ז',
-      x:'ס', c:'ב', v:'ה', b:'נ', n:'מ', m:'צ', ',':'ת', '.':'ץ', ';':'ף', '/':'.' };
+    // Both the correct words and their wrong-layout gibberish are precomputed
+    // at build time (per language) and passed via data attributes.
     const correct = flipEl.getAttribute('data-correct') || '';
-    const wrongArr = [...correct].map((ch) => EN2HE[ch.toLowerCase()] ?? ch);
+    const wrongArr = [...(flipEl.getAttribute('data-wrong') || '')];
     const correctArr = [...correct];
     const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
     const TYPE = 95, HOLD_TYPED = 500, HOLD_SELECT = 750, HOLD_CORRECT = 1600, HOLD_EMPTY = 550;
@@ -160,6 +173,13 @@ const flipHref = lang === 'he' ? '/he/תפליפו/' : '/flip-it/';
        on an English keyboard in the wrong layout. */
     direction: ltr;
     unicode-bidi: bidi-override;
+  }
+  /* Hebrew version: the wrong text is English (naturally LTR) and the correct text
+     is Hebrew (RTL) — let each state pick its own direction, right-aligned. */
+  :global(html[dir='rtl']) .h1-flip {
+    direction: rtl;
+    unicode-bidi: plaintext;
+    margin-inline-start: auto;
   }
   .h1-flip.typing::after {
     content: '|';

@@ -3,7 +3,6 @@
   "nav.contact": "צור קשר",
   "nav.flip": "תפליפו",
   "nav.lang_label": "EN",
-
   "hero.h1": "אל תתפלפו",
   "hero.h1_accent": "...",
   "hero.h1_rotating_1": "Dont flip out",
@@ -17,14 +16,12 @@
   "hero.subtitle_hotkey": "",
   "hero.subtitle_5": "",
   "hero.cta": "רוצה לנסות?",
-
   "how.h2": "מה זה?!",
   "how.body_p1": "אל תפרקו עצבים על המחשב…\n\nבמקום למחוק בעצבים, פשוט תלחצו על קיצור המקלדת שלכם",
   "how.body_cmd": "CMD + SHIFT + Y",
   "how.body_p2": "במאק, או ",
   "how.body_ctrl": "CTRL + SHIFT + Y",
   "how.body_p3": "בווינדוס.\n\nאנחנו באותו רגע נזהה את הג׳יבריש, ונהפוך את התווים לאותיות הנכונות (בעברית או אנגלית), ובשבריר שניה נעדכן הטקסט את מה שכתבתם על המסך. (אם בא לכם לתקן רק מילה אחת, פשוט תסמנו אותה קודם).\n\nוקטע הכי חזק? אנחנו גם נהפוך לכם אוטומטית את שפת המקלדת במחשב, ככה שאתם תוכלו פשוט להמשיך להקליד מאותה נקודה בלי לפספס פעימה.",
-
   "download.h2": "קישורים להורדה",
   "download.mac_title": "Mac DMG",
   "download.mac_sub": "הורידו עכשיו וקבלו 40 פליפים חינם",
@@ -32,7 +29,6 @@
   "download.win_sub": "הורידו עכשיו וקבלו 40 פליפים חינם",
   "download.premium_title": "לרכישת premium",
   "download.premium_sub": "פליפים ללא הגבלה + פיצ'רים נוספים",
-
   "solution.h2": "זה אשכרה ככה!",
   "solution.subtitle": "האמת… כבר התרגלתם לזה בלי לשים לב- להציץ כל רגע במסך רק כדי לוודא שאתם בשפה הנכונה.",
   "solution.card1_title": "Lightning-Fast Flipping",
@@ -43,13 +39,10 @@
   "solution.card3_body": "No cloud APIs, no servers, and zero lag because everything runs completely offline on your machine.",
   "solution.card4_title": "Automatic Layout Swap",
   "solution.card4_body": "It doesn't just fix the text on your screen—it seamlessly switches your computer's actual keyboard layout.",
-
   "truth.h2": "אמת בפנים",
   "truth.sub": "אצלי זה כבר היסטוריה…",
-
   "feeling.h2": "!בואו תנסו את זה",
   "feeling.cta": "לנסות עכשיו",
-
   "flipit.h1": "Flip it",
   "flipit.h1_dots": ". . .",
   "flipit.h2_line1": "Smashing Your Keyboard Through the Monitor...",
@@ -64,7 +57,6 @@
   "flipit.corp_sub1": "Need more then a single licence?",
   "flipit.corp_sub2": "We've got u!",
   "flipit.corp_cta": "Contact Us",
-
   "about.h1": "הסיפור שלנו",
   "about.h2_sub": "כתבנו פסקה מבריקה שלמה בלי להרים עיניים מהמקלדת.\nהרמנו מבט — והיא הייתה בשפה הלא נכונה.\nאז בנינו את האפליקציה הזאת כדי להציל את המחשב מהחלון.",
   "about.cta": "תנסו את זה",
@@ -76,7 +68,6 @@
   "about.body_p5": "Being bilingual typists who suffered through years of accidental gibberish, it has become our passion in life to make everyday typing entirely frustration-free.",
   "about.talk_h1": "תדברו איתנו",
   "about.talk_cta": "צרו קשר",
-
   "contact.h1_line1": "דברו איתנו",
   "contact.h1_line2": "Language Flipper.",
   "contact.h2": "צור קשר",
@@ -89,7 +80,6 @@
   "contact.success": "תודה — ניצור קשר בקרוב.",
   "contact.us_office": "משרד ארה\"ב",
   "contact.il_office": "משרדים ישראל",
-
   "footer.brand": "Language flipper",
   "footer.about_col": "אודות",
   "footer.about_us": "עלינו",
@@ -100,5 +90,6 @@
   "footer.made": "Made with ♡ by Language flipper",
   "footer.accessibility": "הצהרת נגישות",
   "footer.terms": "תנאי שימוש",
-  "footer.privacy": "פרטיות"
+  "footer.privacy": "פרטיות",
+  "hero.subtitle_intro": "את.ה באנגלית... "
 }
