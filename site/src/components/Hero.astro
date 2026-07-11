@@ -83,14 +83,17 @@ const flipHref = lang === 'he' ? '/he/תפליפו/' : '/flip-it/';
     background-position: center center;
     /* Zoom + shift: guarantees the image fully covers the section on any screen,
        and moves the character to the right (clear of the left text) and lower. */
-    transform: scale(1.6) translate(21%, 11%);
+    /* scale 1.8 => 40% overhang on every side; translate stays well under 40%
+       so the image can never slide off an edge (no gap), while pushing the
+       character clear of the text. */
+    transform: scale(1.8) translate(30%, 10%);
     transform-origin: center;
     z-index: 0;
   }
   /* Hebrew is RTL (text on the right), so mirror the shift — push the character
      to the LEFT so it stays clear of the right-aligned text. */
   :global(html[dir='rtl']) .hero-bg {
-    transform: scale(1.6) translate(-21%, 11%);
+    transform: scale(1.8) translate(-30%, 10%);
   }
   .hero-overlay {
     position: absolute;
@@ -98,6 +101,19 @@ const flipHref = lang === 'he' ? '/he/תפליפו/' : '/flip-it/';
     /* Exact Elementor value: #1D005B at opacity 0.17 */
     background-color: rgba(29,0,91,0.17);
     z-index: 1;
+  }
+  /* Fade the bottom of the hero photo into the purple background so there's no
+     hard image edge / visible gap where the next section begins. */
+  .hero::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 42%;
+    background: linear-gradient(180deg, rgba(29,0,91,0) 0%, #1D005B 100%);
+    z-index: 1;
+    pointer-events: none;
   }
   .hero-content {
     position: relative;
@@ -165,10 +181,10 @@ const flipHref = lang === 'he' ? '/he/תפליפו/' : '/flip-it/';
        the image renders at ~832px wide, -401px shifts to show right portion */
     .hero-bg {
       background-position: center center;
-      transform: scale(1.4) translate(14%, 8%);
+      transform: scale(1.6) translate(20%, 8%);
     }
     :global(html[dir='rtl']) .hero-bg {
-      transform: scale(1.4) translate(-14%, 8%);
+      transform: scale(1.6) translate(-20%, 8%);
     }
     .hero-overlay {
       background-color: rgba(29,0,91,0.25);
