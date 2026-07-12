@@ -32,6 +32,12 @@ const icons = {
 };
 ---
 <section class="solution-section">
+  <!-- tilt divider at the top (matches the Hebrew version / the download section above) -->
+  <div class="solution-shape-top" aria-hidden="true">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 100" preserveAspectRatio="none">
+      <path fill="currentColor" d="M0,6V0h1000v100L0,6z"></path>
+    </svg>
+  </div>
   <div class="container">
     <h2 class="sol-h2">{t(lang, 'solution.h2')}</h2>
     <div class="slash-decor" aria-hidden="true">
@@ -77,6 +83,21 @@ const icons = {
     align-items: center;
     overflow: hidden;
     text-align: center;
+  }
+  .solution-shape-top {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 2;
+    line-height: 0;
+    pointer-events: none;
+    color: var(--lf-bg-deep, #1D005B);
+  }
+  .solution-shape-top svg {
+    display: block;
+    width: 100%;
+    height: 60px;
   }
   .solution-section::before {
     content: '';
