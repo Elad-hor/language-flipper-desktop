@@ -1,0 +1,46 @@
+---
+// Straight magenta line under a heading that slowly rises into view on scroll.
+// Replaces the old diagonal-slash decoration site-wide.
+interface Props {
+  align?: 'start' | 'center';
+}
+const { align = 'start' } = Astro.props;
+---
+<div class:list={['heading-line', { center: align === 'center' }]} aria-hidden="true"></div>
+
+<style>
+  .heading-line {
+    width: 92px;
+    height: 4px;
+    background: var(--lf-magenta);
+    border-radius: 2px;
+    margin: 0.4rem 0 1.4rem;
+    opacity: 0;
+    transform: translateY(42px);
+    transition: opacity 1.4s ease-out, transform 1.4s ease-out;
+  }
+  .heading-line.center {
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .heading-line.is-in {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .heading-line { transition: none; opacity: 1; transform: none; }
+  }
+</style>
+
+<script>
+  // Reveal each line when it scrolls into view (runs once, observes all instances).
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e) => {
+      if (e.isIntersecting) {
+        e.target.classList.add('is-in');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.6 });
+  document.querySelectorAll('.heading-line').forEach((el) => io.observe(el));
+</script>

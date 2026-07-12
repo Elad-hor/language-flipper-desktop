@@ -4,6 +4,7 @@ import Header from '../../../components/Header.astro';
 import Hero from '../../../components/Hero.astro';
 import HowItWorks from '../../../components/HowItWorks.astro';
 import DownloadRow from '../../../components/DownloadRow.astro';
+import HeadingLine from '../../../components/HeadingLine.astro';
 import HardTruth from '../../../components/HardTruth.astro';
 import GetTheFeeling from '../../../components/GetTheFeeling.astro';
 import Footer from '../../../components/Footer.astro';
@@ -36,11 +37,7 @@ const lang = 'he' as const;
       </div>
       <div class="container he-solution-content">
         <h2 class="he-sol-h2">!זה אשכרה ככה</h2>
-        <div class="he-sol-slash" aria-hidden="true">
-          <svg aria-hidden="true" viewBox="0 0 640 512" xmlns="http://www.w3.org/2000/svg" width="28" height="28">
-            <path fill="var(--lf-magenta)" d="M594.53 508.63L6.18 53.9c-6.97-5.42-8.23-15.47-2.81-22.45L23.01 6.18C28.43-.8 38.49-2.06 45.47 3.37L633.82 458.1c6.97 5.42 8.23 15.47 2.81 22.45l-19.64 25.27c-5.42 6.98-15.48 8.23-22.46 2.81z"/>
-          </svg>
-        </div>
+        <HeadingLine align="center" />
         <blockquote class="he-sol-body">
           <p><strong>האמת… כבר התרגלתם לזה בלי לשים לב- להציץ כל רגע במסך רק כדי לוודא שאתם בשפה הנכונה.</strong>&nbsp;</p>
           <p><strong>לי כבר אין את הבעיה הזאת.&nbsp;</strong></p>
@@ -122,11 +119,6 @@ const lang = 'he' as const;
     color: var(--lf-white);
     font-weight: 700;
     margin-bottom: 0.4rem;
-  }
-  .he-sol-slash {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 1rem;
   }
   .he-sol-body {
     margin: 0 auto 1.8rem;

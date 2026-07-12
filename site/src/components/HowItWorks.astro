@@ -1,5 +1,6 @@
 ---
 import { type Lang, t } from '../i18n/ui';
+import HeadingLine from './HeadingLine.astro';
 
 interface Props {
   lang: Lang;
@@ -13,7 +14,7 @@ const { lang } = Astro.props;
     <div class="how-grid">
       <div class="how-text-col">
         <h2 class="how-h2">{t(lang, 'how.h2')}</h2>
-        <div class="how-line" aria-hidden="true"></div>
+        <HeadingLine />
         <div class="how-body">
           <p>{t(lang, 'how.body_p1')}</p>
           <p>( <span class="accent">{t(lang, 'how.body_cmd')}</span>{t(lang, 'how.body_p2')}<span class="accent">{t(lang, 'how.body_ctrl')}</span>{t(lang, 'how.body_p3')}</p>
@@ -46,19 +47,6 @@ const { lang } = Astro.props;
     </svg>
   </div>
 </section>
-
-<script>
-  // Slow reveal: the line rises up into place when the section scrolls into view.
-  const line = document.querySelector('.how-section .how-line');
-  if (line) {
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach((e) => {
-        if (e.isIntersecting) { line.classList.add('is-in'); io.disconnect(); }
-      });
-    }, { threshold: 0.6 });
-    io.observe(line);
-  }
-</script>
 
 <style>
   .how-section {
@@ -112,24 +100,6 @@ const { lang } = Astro.props;
     letter-spacing: -2px;
     color: var(--lf-white);
     margin-bottom: 0.5rem;
-  }
-  /* straight line under the heading; hidden until it slowly rises into view */
-  .how-line {
-    width: 92px;
-    height: 4px;
-    background: var(--lf-magenta);
-    border-radius: 2px;
-    margin: 0.4rem 0 1.5rem;
-    opacity: 0;
-    transform: translateY(42px);
-    transition: opacity 1.4s ease-out, transform 1.4s ease-out;
-  }
-  .how-line.is-in {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .how-line { transition: none; opacity: 1; transform: none; }
   }
   .how-body {
     color: var(--lf-white);

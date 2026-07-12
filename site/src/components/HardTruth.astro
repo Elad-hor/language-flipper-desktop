@@ -1,5 +1,6 @@
 ---
 import { type Lang, t } from '../i18n/ui';
+import HeadingLine from './HeadingLine.astro';
 
 interface Props {
   lang: Lang;
@@ -18,11 +19,7 @@ const { lang } = Astro.props;
   <div class="container truth-inner">
     <div class="truth-left">
       <h2 class="truth-h2">{t(lang, 'truth.h2')}</h2>
-      <div class="slash-decor" aria-hidden="true">
-        <svg viewBox="0 0 640 512" xmlns="http://www.w3.org/2000/svg" width="28" height="28">
-          <path fill="var(--lf-magenta)" d="M594.53 508.63L6.18 53.9c-6.97-5.42-8.23-15.47-2.81-22.45L23.01 6.18C28.43-.8 38.49-2.06 45.47 3.37L633.82 458.1c6.97 5.42 8.23 15.47 2.81 22.45l-19.64 25.27c-5.42 6.98-15.48 8.23-22.46 2.81z"/>
-        </svg>
-      </div>
+      <HeadingLine />
       <p class="truth-sub">{t(lang, 'truth.sub')}</p>
     </div>
   </div>
@@ -82,9 +79,6 @@ const { lang } = Astro.props;
     color: var(--lf-white);
     margin-bottom: 0.5rem;
   }
-  .slash-decor {
-    margin-bottom: 0.8rem;
-  }
   .truth-sub {
     color: var(--lf-white);
     font-size: 0.92rem;
@@ -111,8 +105,9 @@ const { lang } = Astro.props;
       line-height: 1.3em;
       letter-spacing: 0;
     }
-    .slash-decor {
-      justify-content: center;
+    .truth-left :global(.heading-line) {
+      margin-left: auto;
+      margin-right: auto;
     }
     .truth-sub {
       max-width: 100%;
