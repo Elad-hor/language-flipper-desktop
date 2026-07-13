@@ -15,8 +15,7 @@ try{
     await p.goto('http://localhost:4321'+path,{waitUntil:'networkidle'});
     await p.evaluate((s)=>document.querySelector(s)?.scrollIntoView({block:'center'}), sel);
     await p.waitForTimeout(2000);
-    const el=await p.$(sel);
-    if(el) await el.screenshot({path:'/tmp/scroll-'+name+'.png'});
+    await p.screenshot({path:'/tmp/scroll-'+name+'.png'}); // viewport (shows neighbours too)
     await p.close();
   }
   await b.close();
