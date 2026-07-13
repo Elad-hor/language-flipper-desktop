@@ -64,13 +64,16 @@ const lang = 'he' as const;
   /* ─── Hero ─── */
   .about-hero {
     position: relative;
-    background-image: url('/assets/how-it-works-1.webp');
+    background-image: url('/assets/about-language-flipper-hero.webp');
     background-size: cover;
     background-position: center center;
     min-height: 825px;
     display: flex;
     align-items: flex-start;
     overflow: hidden;
+    /* Hebrew is RTL (text on the right): mirror the photo so the character sits
+       on the LEFT, clear of the text. The content is un-mirrored below. */
+    transform: scaleX(-1);
   }
   .about-hero::before {
     content: '';
@@ -100,6 +103,8 @@ const lang = 'he' as const;
     width: 100%;
     direction: rtl;
     text-align: right;
+    /* undo the section mirror so the text reads normally */
+    transform: scaleX(-1);
   }
   .about-hero-h1 {
     /* bigger, with the same glow/graphic treatment as the home hero h1 */
