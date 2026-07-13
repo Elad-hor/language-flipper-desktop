@@ -3,6 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import DownloadRow from '../components/DownloadRow.astro';
+import FlipText from '../components/FlipText.astro';
 
 const lang = 'en';
 ---
@@ -17,7 +18,7 @@ const lang = 'en';
     <!-- Hero: "Our story" typed heading + subtitle at bottom-left, solutions.webp bg -->
     <section class="about-hero">
       <div class="about-hero-content">
-        <h1 class="about-hero-h1">Our story</h1>
+        <h1 class="about-hero-h1"><FlipText text="Our story" lang={lang} /></h1>
         <h2 class="about-hero-h2">
           We typed an entire brilliant paragraph while looking at the keyboard.<br />
           We looked up, and it was in the wrong language.<br />

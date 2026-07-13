@@ -3,6 +3,7 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Header from '../../../components/Header.astro';
 import Footer from '../../../components/Footer.astro';
 import DownloadRow from '../../../components/DownloadRow.astro';
+import FlipText from '../../../components/FlipText.astro';
 
 const lang = 'he' as const;
 ---
@@ -17,7 +18,7 @@ const lang = 'he' as const;
     <!-- Hero: "קצת עלינו" heading + subtitle, how-it-works-1.webp bg (tech tunnel) -->
     <section class="about-hero">
       <div class="about-hero-content">
-        <h1 class="about-hero-h1">קצת עלינו</h1>
+        <h1 class="about-hero-h1"><FlipText text="קצת עלינו" lang={lang} /></h1>
         <h2 class="about-hero-h2">
           Language Flipper מתקן אוטומטית טעויות של אנגלית-עברית בכל תוכנה ובכל אתר. פשוט לוחצים, וממשיכים לעבוד.
         </h2>
