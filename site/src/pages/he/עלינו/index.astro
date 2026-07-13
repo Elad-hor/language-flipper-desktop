@@ -4,6 +4,7 @@ import Header from '../../../components/Header.astro';
 import Footer from '../../../components/Footer.astro';
 import DownloadRow from '../../../components/DownloadRow.astro';
 import FlipText from '../../../components/FlipText.astro';
+import HeadingLine from '../../../components/HeadingLine.astro';
 
 const lang = 'he' as const;
 ---
@@ -31,7 +32,7 @@ const lang = 'he' as const;
       <div class="about-body-grid container">
         <div class="about-text-col">
           <h2 class="about-h2">זה כל הסיפור</h2>
-          <div class="about-divider"></div>
+          <HeadingLine />
           <p>כולנו יודעים בדיוק איך הסרט הזה נגמר.</p>
           <p>אתם לגמרי בקטע. הרגע הקלדתם את הפסקה הכי מבריקה ומנוסחת בקריירה שלכם. האצבעות עפות על המקלדת. אתם מרימים מבט מלאי ביטחון למסך, מוכנים ללחוץ שלח… והנשמה שלכם פשוט עוזבת את הגוף.</p>
           <p>במקום הודעה גאונית, אתם בוהים במסך מלא בג׳יבריש טהור. akuo, nv ph,tun vneks, akf cvbnkh,?</p>
@@ -153,22 +154,16 @@ const lang = 'he' as const;
   }
   .about-text-col p {
     color: #333;
-    font-size: 0.9rem;
+    font-size: 1.12rem;
     line-height: 1.8;
-    margin-bottom: 1rem;
+    margin-bottom: 1.1rem;
   }
   .about-h2 {
-    font-size: clamp(1.4rem, 2.5vw, 1.9rem);
+    font-size: clamp(2rem, 4vw, 2.9rem);
     color: var(--lf-magenta);
     font-weight: 700;
     margin-bottom: 0.85rem;
     line-height: 1.2;
-  }
-  .about-divider {
-    width: 44px;
-    height: 3px;
-    background: var(--lf-magenta);
-    margin-bottom: 1.4rem;
   }
 
   /* Right deco col */
