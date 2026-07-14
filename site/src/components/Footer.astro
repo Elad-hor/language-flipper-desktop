@@ -8,7 +8,6 @@ const { lang } = Astro.props;
 
 const aboutHref = lang === 'he' ? '/he/עלינו/' : '/about-us/';
 const homeHref = lang === 'he' ? '/he/בית/' : '/';
-const solutionsHref = '/solutions/';
 const contactHref = lang === 'he' ? '/he/צור-קשר/' : '/contact-us/';
 const flipHref = lang === 'he' ? '/he/תפליפו/' : '/flip-it/';
 const termsHref = lang === 'he' ? '/he/תנאי-שימוש/' : '/terms-of-service/';
@@ -54,7 +53,6 @@ const accessibilityHref = lang === 'he'
       <ul>
         <li><a href={aboutHref}>{t(lang, 'footer.about_us')}</a></li>
         <li><a href={homeHref}>{t(lang, 'footer.home')}</a></li>
-        {lang === 'en' && <li><a href={solutionsHref}>Technology</a></li>}
       </ul>
     </div>
 
