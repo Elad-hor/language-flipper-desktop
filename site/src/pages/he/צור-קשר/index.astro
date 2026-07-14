@@ -20,7 +20,8 @@ const lang = 'he' as const;
     <section class="cu-hero">
       <div class="cu-hero-content container">
         <h1 class="cu-hero-h1">
-          <FlipText text="דברו איתנו." lang={lang} />
+          דברו איתנו<br />
+          <FlipText text="Language Flipper." lang={lang} />
         </h1>
       </div>
     </section>
@@ -98,9 +99,9 @@ const lang = 'he' as const;
     background-image: url('/assets/home-page-main.webp');
     background-size: cover;
     background-position: center center;
-    min-height: 560px;
+    min-height: 825px;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     overflow: hidden;
   }
   .cu-hero::before {
@@ -257,7 +258,7 @@ const lang = 'he' as const;
 
   /* ── Mobile ── */
   @media (max-width: 767px) {
-    .cu-hero { min-height: 300px; }
+    .cu-hero { min-height: 500px; }
     .cu-hero-content { padding: 80px 20px 48px; }
 
     .cu-form-layout {
