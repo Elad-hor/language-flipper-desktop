@@ -3,6 +3,8 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Header from '../../../components/Header.astro';
 import Footer from '../../../components/Footer.astro';
 import ContactForm from '../../../components/ContactForm.astro';
+import FlipText from '../../../components/FlipText.astro';
+import HeadingLine from '../../../components/HeadingLine.astro';
 
 const lang = 'he' as const;
 ---
@@ -14,12 +16,11 @@ const lang = 'he' as const;
   <Header lang={lang} />
   <main id="content">
 
-    <!-- ── Hero: "דברו איתנו" + typing animation, wave background ── -->
+    <!-- ── Hero: "דברו איתנו" + animated flip, wave background ── -->
     <section class="cu-hero">
       <div class="cu-hero-content container">
         <h1 class="cu-hero-h1">
-          דברו איתנו<br />
-          <span class="cu-hero-typing" aria-hidden="true">Language Flipper.</span>
+          <FlipText text="דברו איתנו." lang={lang} />
         </h1>
       </div>
     </section>
@@ -29,7 +30,7 @@ const lang = 'he' as const;
       <div class="cu-form-layout">
         <div class="cu-form-col">
           <h2 class="cu-h2">צור קשר</h2>
-          <div class="cu-divider"></div>
+          <HeadingLine align="center" />
           <ContactForm lang={lang} />
         </div>
         <div class="cu-deco-col" aria-hidden="true">
@@ -97,33 +98,44 @@ const lang = 'he' as const;
     background-image: url('/assets/home-page-main.webp');
     background-size: cover;
     background-position: center center;
-    min-height: 420px;
+    min-height: 560px;
     display: flex;
     align-items: center;
+    overflow: hidden;
   }
   .cu-hero::before {
     content: '';
     position: absolute;
     inset: 0;
     background: rgba(8, 0, 40, 0.45);
+    z-index: 0;
+  }
+  /* Bottom purple fade — matches Home/About/Flip-It heroes */
+  .cu-hero::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 32%;
+    background: linear-gradient(180deg, rgba(29,0,91,0) 0%, #1D005B 100%);
+    z-index: 0;
+    pointer-events: none;
   }
   .cu-hero-content {
     position: relative;
     z-index: 1;
-    padding: 80px 20px 60px;
+    padding: 100px 20px 80px;
     width: 100%;
     text-align: right;
   }
   .cu-hero-h1 {
-    font-size: clamp(2.4rem, 5vw, 3.8rem);
-    font-weight: 800;
+    font-size: clamp(2.8rem, 5.9vw, 82px);
+    font-weight: 600;
+    letter-spacing: -2.5px;
     color: #fff;
-    line-height: 1.15;
-  }
-  .cu-hero-typing {
-    display: inline-block;
-    color: #fff;
-    font-weight: 800;
+    line-height: 1.1;
+    text-shadow: 0 2px 28px rgba(0,0,0,0.65);
   }
 
   /* ── Form section ── */
@@ -147,20 +159,13 @@ const lang = 'he' as const;
     z-index: 1;
   }
   .cu-h2 {
-    font-size: clamp(1.6rem, 2.8vw, 2.2rem);
+    font-size: clamp(2rem, 4vw, 2.9rem);
     color: var(--lf-magenta);
     font-weight: 700;
     text-align: center;
     margin-bottom: 0.6rem;
     line-height: 1.2;
     align-self: center;
-  }
-  .cu-divider {
-    width: 44px;
-    height: 3px;
-    background: var(--lf-magenta);
-    margin: 0 auto 2.4rem;
-    flex-shrink: 0;
   }
 
   /* Deco column: circuit-board image */
@@ -245,15 +250,15 @@ const lang = 'he' as const;
     margin-inline-start: 0;
   }
   .cu-office-addr {
-    font-size: 0.92rem;
+    font-size: 1.05rem;
     color: #fff;
     line-height: 1.7;
   }
 
   /* ── Mobile ── */
   @media (max-width: 767px) {
-    .cu-hero { min-height: 240px; }
-    .cu-hero-content { padding: 60px 20px 36px; }
+    .cu-hero { min-height: 300px; }
+    .cu-hero-content { padding: 80px 20px 48px; }
 
     .cu-form-layout {
       grid-template-columns: 1fr;
