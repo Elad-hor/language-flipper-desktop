@@ -16,23 +16,28 @@ const EN2HE: Record<string, string> = { q:'/', w:"'", e:'ק', r:'ר', t:'א', y:
 const HE2EN: Record<string, string> = Object.fromEntries(
   Object.entries(EN2HE).map(([en, he]) => [he, en])
 );
+// Decide the flip direction from the TEXT's script, not the page language:
+// Hebrew text -> flips to English-layout gibberish; English text -> Hebrew-layout gibberish.
+const hasHebrew = /[א-ת]/.test(text);
 const wrong = [...text]
-  .map((ch) => (lang === 'he' ? HE2EN[ch] : EN2HE[ch.toLowerCase()]) ?? ch)
+  .map((ch) => (hasHebrew ? HE2EN[ch] : EN2HE[ch.toLowerCase()]) ?? ch)
   .join('');
 ---
-<span class="flip-text" data-correct={text} data-wrong={wrong}>{text}</span>
+<span class:list={['flip-text', hasHebrew ? 'ft-rtl' : 'ft-ltr']} data-correct={text} data-wrong={wrong}>{text}</span>
 
 <style>
   .flip-text {
     display: inline-block;
     min-height: 1.05em;
     white-space: nowrap;
-    /* wrong-layout Hebrew (in EN) shown left-to-right */
+  }
+  /* English phrase: wrong-layout Hebrew gibberish shown left-to-right */
+  .flip-text.ft-ltr {
     direction: ltr;
     unicode-bidi: bidi-override;
   }
-  /* Hebrew page: correct text is Hebrew (RTL), wrong text is English (LTR) */
-  :global(html[dir='rtl']) .flip-text {
+  /* Hebrew phrase: correct text is Hebrew (RTL), wrong text is English (LTR) */
+  .flip-text.ft-rtl {
     direction: rtl;
     unicode-bidi: plaintext;
   }
