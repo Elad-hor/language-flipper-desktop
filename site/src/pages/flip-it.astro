@@ -25,7 +25,7 @@ const lang: Lang = 'en';
       <div class="fi-hero-overlay" aria-hidden="true"></div>
       <div class="container fi-hero-content">
         <h1 class="fi-h1">
-          <FlipText text={t(lang, 'flipit.h1')} lang={lang} /><span class="fi-dot"> .</span><span class="fi-dot"> .</span><span class="fi-dot"> .</span>
+          <FlipText text={t(lang, 'flipit.h1') + '. . .'} lang={lang} />
         </h1>
         <h2 class="fi-h2">
           {t(lang, 'flipit.h2_line1')}<br />{t(lang, 'flipit.h2_line2')}<span class="fi-dot"> .</span><span class="fi-dot"> .</span><span class="fi-dot"> .</span>
@@ -39,11 +39,6 @@ const lang: Lang = 'en';
 
     <!-- ── Try It Live section ───────────────────────────────────────── -->
     <section class="fi-live-section">
-      <div class="fi-live-shape" aria-hidden="true">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 100" preserveAspectRatio="none">
-          <path class="fi-shape-fill" d="M0,6V0h1000v100L0,6z"></path>
-        </svg>
-      </div>
       <div class="fi-live-overlay" aria-hidden="true"></div>
       <div class="container fi-live-content">
         <h2 class="fi-live-h2">{t(lang, 'flipit.live_h2')}</h2>
@@ -177,7 +172,7 @@ const lang: Lang = 'en';
   /* ─── Hero ──────────────────────────────────────────────────────── */
   .fi-hero {
     position: relative;
-    min-height: 935px;
+    min-height: 825px;
     display: flex;
     align-items: flex-start;
     overflow: hidden;
@@ -415,7 +410,7 @@ const lang: Lang = 'en';
 
   /* ─── Footer (matches home Footer.astro styles) ─────────────────── */
   .site-footer {
-    background: var(--lf-footer);
+    background: var(--lf-bg-deep);
     color: var(--lf-white);
     padding-top: 56px;
   }
@@ -485,7 +480,7 @@ const lang: Lang = 'en';
   .footer-bottom {
     border-top: 1px solid rgba(255,255,255,0.08);
     padding: 18px 0;
-    background: var(--lf-footer);
+    background: var(--lf-bg-deep);
   }
   .footer-bottom-inner {
     display: flex;
