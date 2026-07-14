@@ -5,6 +5,8 @@ import Button from '../../../components/Button.astro';
 import DownloadRow from '../../../components/DownloadRow.astro';
 import TryItWidget from '../../../components/TryItWidget.astro';
 import Footer from '../../../components/Footer.astro';
+import FlipText from '../../../components/FlipText.astro';
+import HeadingLine from '../../../components/HeadingLine.astro';
 import { type Lang, t } from '../../../i18n/ui';
 
 const lang: Lang = 'he';
@@ -24,7 +26,7 @@ const lang: Lang = 'he';
       <div class="fi-hero-overlay" aria-hidden="true"></div>
       <div class="container fi-hero-content">
         <h1 class="fi-h1">
-          {t(lang, 'flipit.h1')}<span class="fi-dot"> .</span><span class="fi-dot"> .</span><span class="fi-dot"> .</span>
+          <FlipText text={t(lang, 'flipit.h1')} lang={lang} /><span class="fi-dot"> .</span><span class="fi-dot"> .</span><span class="fi-dot"> .</span>
         </h1>
         <h2 class="fi-h2">
           {t(lang, 'flipit.h2_line1')}<br />{t(lang, 'flipit.h2_line2')}<span class="fi-dot"> .</span><span class="fi-dot"> .</span><span class="fi-dot"> .</span>
@@ -46,6 +48,7 @@ const lang: Lang = 'he';
       <div class="fi-live-overlay" aria-hidden="true"></div>
       <div class="container fi-live-content">
         <h2 class="fi-live-h2">{t(lang, 'flipit.live_h2')}</h2>
+        <HeadingLine align="center" />
         <p class="fi-live-sub">
           {t(lang, 'flipit.live_sub_1')}<strong>{t(lang, 'flipit.live_sub_bold')}</strong>{t(lang, 'flipit.live_sub_2')}
         </p>
@@ -77,6 +80,7 @@ const lang: Lang = 'he';
       <div class="fi-corp-overlay" aria-hidden="true"></div>
       <div class="container fi-corp-content">
         <h3 class="fi-corp-h3">{t(lang, 'flipit.corp_h3')}</h3>
+        <HeadingLine align="center" />
         <p class="fi-corp-sub1">{t(lang, 'flipit.corp_sub1')}</p>
         <p class="fi-corp-sub2">{t(lang, 'flipit.corp_sub2')}</p>
         <Button href="/he/צור-קשר/" label={t(lang, 'flipit.corp_cta')} />
@@ -110,7 +114,7 @@ const lang: Lang = 'he';
   /* ─── Hero ──────────────────────────────────────────────────────── */
   .fi-hero {
     position: relative;
-    min-height: 700px;
+    min-height: 935px;
     display: flex;
     align-items: flex-start;
     overflow: hidden;
@@ -129,6 +133,18 @@ const lang: Lang = 'he';
     background-color: rgba(29,0,91,0.17);
     z-index: 1;
   }
+  /* Bottom purple fade — same as Home/About heroes */
+  .fi-hero::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 32%;
+    background: linear-gradient(180deg, rgba(29,0,91,0) 0%, #1D005B 100%);
+    z-index: 1;
+    pointer-events: none;
+  }
   .fi-hero-content {
     position: relative;
     z-index: 2;
@@ -136,11 +152,11 @@ const lang: Lang = 'he';
     padding-bottom: 140px;
   }
   .fi-h1 {
-    font-size: clamp(2.8rem, 5.5vw, 72px);
-    font-weight: 700;
+    font-size: clamp(2.8rem, 5.9vw, 82px);
+    font-weight: 600;
     color: var(--lf-white);
     line-height: 1.1;
-    letter-spacing: -1px;
+    letter-spacing: -2.5px;
     margin-bottom: 0.75rem;
     text-shadow: 0 2px 28px rgba(0,0,0,0.65);
   }
@@ -159,7 +175,7 @@ const lang: Lang = 'he';
 
   @media (max-width: 767px) {
     .fi-hero {
-      min-height: 460px;
+      min-height: 560px;
     }
     .fi-hero-bg {
       background-position: 60% top;
@@ -221,14 +237,14 @@ const lang: Lang = 'he';
     width: 100%;
   }
   .fi-live-h2 {
-    font-size: clamp(2rem, 4vw, 3rem);
+    font-size: clamp(2rem, 4vw, 2.9rem);
     font-weight: 700;
     color: var(--lf-white);
-    margin-bottom: 1rem;
+    margin-bottom: 0.85rem;
     text-shadow: 0 2px 20px rgba(0,0,0,0.5);
   }
   .fi-live-sub {
-    font-size: 1rem;
+    font-size: 1.12rem;
     color: var(--lf-white);
     margin-bottom: 1.5rem;
     text-shadow: 0 1px 10px rgba(0,0,0,0.6);
