@@ -3,12 +3,18 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Header from '../../../components/Header.astro';
 import Footer from '../../../components/Footer.astro';
 import LegalText from '../../../components/LegalText.astro';
+import { breadcrumb } from '../../../schema';
 
 const lang = 'he' as const;
 ---
 <BaseLayout
-  title="מדיניות פרטיות - languageflipper.com"
+  title="מדיניות פרטיות — Language Flipper"
+  description="כיצד Language Flipper מטפל בנתונים שלכם. האפליקציה פועלת לחלוטין במצב לא מקוון ולעולם לא שולחת את הטקסט שלכם לשרת. העמוד מסביר על אנליטיקה, עוגיות ושירותי צד שלישי."
   lang={lang}
+  schema={breadcrumb(
+    { name: 'בית', url: encodeURI('https://languageflipper.com/he/בית/') },
+    { name: 'מדיניות פרטיות', url: encodeURI('https://languageflipper.com/he/פרטיות/') },
+  )}
 >
   <Header lang={lang} />
   <main id="content">

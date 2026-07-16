@@ -5,13 +5,18 @@ import Footer from '../../../components/Footer.astro';
 import ContactForm from '../../../components/ContactForm.astro';
 import FlipText from '../../../components/FlipText.astro';
 import HeadingLine from '../../../components/HeadingLine.astro';
+import { breadcrumb } from '../../../schema';
 
 const lang = 'he' as const;
 ---
 <BaseLayout
-  title="צור קשר - languageflipper.com"
+  title="צור קשר — Language Flipper"
   description="צרו קשר עם Language Flipper. משרד ישראל: רח' שלמה בן יוסף 16, תל אביב. משרד ארה&quot;ב: Los Angeles."
   lang={lang}
+  schema={breadcrumb(
+    { name: 'בית', url: encodeURI('https://languageflipper.com/he/בית/') },
+    { name: 'צור קשר', url: encodeURI('https://languageflipper.com/he/צור-קשר/') },
+  )}
 >
   <Header lang={lang} />
   <main id="content">
@@ -193,11 +198,24 @@ const lang = 'he' as const;
   }
 
   /* ── Office cards ── */
+  /* Vibrant purple background that darkens into the footer — same treatment as
+     the HP "Get the feeling" / About "Talk to us" sections. Cards float on top. */
   .cu-offices-section {
-    background: var(--lf-bg-deep);
+    position: relative;
+    background-image: url('/assets/our-partners.webp');
+    background-size: cover;
+    background-position: center center;
     padding: 0 0 140px;
   }
+  .cu-offices-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-color: rgba(29,0,91,0.69);
+  }
   .cu-offices-grid {
+    position: relative;
+    z-index: 1;
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 0 12px;

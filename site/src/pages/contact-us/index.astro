@@ -8,12 +8,17 @@ import Footer from '../../components/Footer.astro';
 import ContactForm from '../../components/ContactForm.astro';
 import FlipText from '../../components/FlipText.astro';
 import HeadingLine from '../../components/HeadingLine.astro';
+import { breadcrumb } from '../../schema';
 
 const lang = 'en';
 ---
 <BaseLayout
-  title="contact us - languageflipper.com"
-  description="Contact ךשמעושעק&nbsp;כךןפפקר. Language&nbsp;Flipper. Get in touch US Office Los Angeles Coming soon Israel Office 16 Shlomo Be Yosef St Tel Aviv, 0369125"
+  title="Contact Language Flipper — Get in Touch"
+  description="Questions, enterprise licensing, or feedback? Reach the Language Flipper team at our Tel Aviv or Los Angeles office."
+  schema={breadcrumb(
+    { name: 'Home', url: 'https://languageflipper.com/' },
+    { name: 'Contact Us', url: 'https://languageflipper.com/contact-us/' },
+  )}
   lang={lang}
 >
   <Header lang={lang} />
@@ -196,11 +201,24 @@ const lang = 'en';
   }
 
   /* ── Office cards ── */
+  /* Vibrant purple background that darkens into the footer — same treatment as
+     the HP "Get the feeling" / About "Talk to us" sections. Cards float on top. */
   .cu-offices-section {
-    background: var(--lf-bg-deep);
+    position: relative;
+    background-image: url('/assets/our-partners.webp');
+    background-size: cover;
+    background-position: center center;
     padding: 0 0 140px;
   }
+  .cu-offices-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-color: rgba(29,0,91,0.69);
+  }
   .cu-offices-grid {
+    position: relative;
+    z-index: 1;
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 0 12px;

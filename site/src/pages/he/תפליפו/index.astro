@@ -8,13 +8,21 @@ import Footer from '../../../components/Footer.astro';
 import FlipText from '../../../components/FlipText.astro';
 import HeadingLine from '../../../components/HeadingLine.astro';
 import { type Lang, t } from '../../../i18n/ui';
+import { softwareApplication, breadcrumb } from '../../../schema';
 
 const lang: Lang = 'he';
 ---
 <BaseLayout
-  title="תפליפו | Language Flipper - אל תתפלפו, פשוט תפליפו"
-  description="לחצו CTRL + SHIFT + Y ותראו את הגיבריש הופך לטקסט תקין. נסו את Language Flipper עכשיו - 40 פליפים חינם!"
+  title="חלופה ללנגאובר | Language Flipper — תיקון גיבריש בלחיצה"
+  description="לנגאובר לא עובד על מאק? Language Flipper כן. תקנו גיבריש עברית-אנגלית ב-CTRL+SHIFT+Y, בכל תוכנה, ב-Mac וב-Windows. נסו עכשיו חינם."
   lang={lang}
+  schema={[
+    softwareApplication(lang),
+    breadcrumb(
+      { name: 'בית', url: encodeURI('https://languageflipper.com/he/בית/') },
+      { name: 'תפליפו', url: encodeURI('https://languageflipper.com/he/תפליפו/') },
+    ),
+  ]}
 >
   <Header lang={lang} />
 
@@ -66,9 +74,6 @@ const lang: Lang = 'he';
     </div>
     <DownloadRow lang={lang} />
 
-    <!-- Gradient transition between Download and Corp sections -->
-    <div class="fi-gradient-bridge-2" aria-hidden="true"></div>
-
     <!-- ── Corporation CTA ───────────────────────────────────────────── -->
     <section class="fi-corp-section">
       <div class="fi-corp-bg" aria-hidden="true"></div>
@@ -99,12 +104,6 @@ const lang: Lang = 'he';
     pointer-events: none;
   }
 
-  .fi-gradient-bridge-2 {
-    height: 60px;
-    background: linear-gradient(180deg, var(--lf-bg-deep) 0%, rgba(5,0,20,0.9) 100%);
-    position: relative;
-    z-index: 1;
-  }
 
   /* ─── Hero ──────────────────────────────────────────────────────── */
   .fi-hero {

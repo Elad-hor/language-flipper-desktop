@@ -3,12 +3,18 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import LegalText from '../components/LegalText.astro';
+import { breadcrumb } from '../schema';
 
 const lang = 'en';
 ---
 <BaseLayout
-  title="Privacy Policy - languageflipper.com"
+  title="Privacy Policy — Language Flipper"
+  description="How Language Flipper handles your data. The app runs entirely offline and never sends your text to any server; this page covers analytics, cookies, and third-party services."
   lang={lang}
+  schema={breadcrumb(
+    { name: 'Home', url: 'https://languageflipper.com/' },
+    { name: 'Privacy Policy', url: 'https://languageflipper.com/privacy-policy/' },
+  )}
 >
   <Header lang={lang} />
   <main id="content">

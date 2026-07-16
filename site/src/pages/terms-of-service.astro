@@ -3,12 +3,18 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import LegalText from '../components/LegalText.astro';
+import { breadcrumb } from '../schema';
 
 const lang = 'en';
 ---
 <BaseLayout
-  title="Terms of Service - languageflipper.com"
+  title="Terms of Service — Language Flipper"
+  description="The terms of service for Language Flipper — licensing, the free trial, purchases and refunds, and acceptable use of the Hebrew-English keyboard-layout fixer."
   lang={lang}
+  schema={breadcrumb(
+    { name: 'Home', url: 'https://languageflipper.com/' },
+    { name: 'Terms of Service', url: 'https://languageflipper.com/terms-of-service/' },
+  )}
 >
   <Header lang={lang} />
   <main id="content">

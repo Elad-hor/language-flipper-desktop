@@ -7,13 +7,16 @@ import DownloadRow from '../components/DownloadRow.astro';
 import HeadingLine from '../components/HeadingLine.astro';
 import GetTheFeeling from '../components/GetTheFeeling.astro';
 import Footer from '../components/Footer.astro';
+import { softwareApplication } from '../schema';
 
 const lang = 'en';
 ---
 <BaseLayout
-  title="Language Flipper | Fix Keyboard Layout Typing Mistakes Instantly"
-  description="Stop wasting time retyping gibberish. Language Flipper fixes text typed in the wrong keyboard layout across all your apps. Download now and get 40 free flips!"
+  title="Language Flipper — Fix Hebrew↔English Keyboard Gibberish"
+  description="Typed Hebrew in English mode? One hotkey fixes it instantly. Language Flipper converts gibberish to correct text on Mac & Windows. 40 free flips."
   lang={lang}
+  schema={softwareApplication(lang)}
+  preloadImage="/assets/language-Flipper-hero.webp"
 >
   <Header lang={lang} />
   <main id="content">
@@ -29,11 +32,6 @@ const lang = 'en';
     <!-- "The Hard Truth" — heading + blockquote + CTA (mirrors the Hebrew "זה אשכרה ככה") -->
     <section class="en-solution-section">
       <div class="en-solution-overlay" aria-hidden="true"></div>
-      <div class="en-solution-shape-top" aria-hidden="true">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 100" preserveAspectRatio="none">
-          <path fill="currentColor" d="M0,6V0h1000v100L0,6z"></path>
-        </svg>
-      </div>
       <div class="container en-solution-content">
         <h2 class="en-sol-h2">The Hard Truth</h2>
         <HeadingLine align="center" />
@@ -88,21 +86,6 @@ const lang = 'en';
     inset: 0;
     background-color: rgba(29, 0, 91, 0.60);
     z-index: 0;
-  }
-  .en-solution-shape-top {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 2;
-    line-height: 0;
-    pointer-events: none;
-    color: var(--lf-bg-deep, #1D005B);
-  }
-  .en-solution-shape-top svg {
-    display: block;
-    width: 100%;
-    height: 60px;
   }
   .en-solution-content {
     position: relative;

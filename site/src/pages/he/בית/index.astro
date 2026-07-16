@@ -7,13 +7,16 @@ import DownloadRow from '../../../components/DownloadRow.astro';
 import HeadingLine from '../../../components/HeadingLine.astro';
 import GetTheFeeling from '../../../components/GetTheFeeling.astro';
 import Footer from '../../../components/Footer.astro';
+import { softwareApplication } from '../../../schema';
 
 const lang = 'he' as const;
 ---
 <BaseLayout
-  title="Language Flipper | אל תתפלפו... פשוט תפליפו! מחליף שפה"
+  title="Language Flipper | תיקון גיבריש מקלדת עברית-אנגלית"
   description="עייפתם לכתוב גיבריש? Language Flipper מתקן טעויות מקלדת עברית-אנגלית ברגע. הורידו עכשיו וקבלו 40 פליפים חינם!"
   lang={lang}
+  schema={softwareApplication(lang)}
+  preloadImage="/assets/language-Flipper-hero.webp"
 >
   <Header lang={lang} />
   <main id="content">
@@ -29,11 +32,6 @@ const lang = 'he' as const;
     <!-- Hebrew "זה אשכרה ככה!" section — heading + paragraph + CTA (no solution cards) -->
     <section class="he-solution-section">
       <div class="he-solution-overlay" aria-hidden="true"></div>
-      <div class="he-solution-shape-top" aria-hidden="true">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 100" preserveAspectRatio="none">
-          <path fill="currentColor" d="M0,6V0h1000v100L0,6z"></path>
-        </svg>
-      </div>
       <div class="container he-solution-content">
         <h2 class="he-sol-h2">זה אשכרה ככה!</h2>
         <HeadingLine align="center" />
@@ -90,21 +88,6 @@ const lang = 'he' as const;
     z-index: 0;
   }
   /* Tilt shape at top matching the Elementor section */
-  .he-solution-shape-top {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 2;
-    line-height: 0;
-    pointer-events: none;
-    color: var(--lf-bg-deep, #09002a);
-  }
-  .he-solution-shape-top svg {
-    display: block;
-    width: 100%;
-    height: 60px;
-  }
   .he-solution-content {
     position: relative;
     z-index: 3;

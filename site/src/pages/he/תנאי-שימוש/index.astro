@@ -3,12 +3,18 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Header from '../../../components/Header.astro';
 import Footer from '../../../components/Footer.astro';
 import LegalText from '../../../components/LegalText.astro';
+import { breadcrumb } from '../../../schema';
 
 const lang = 'he' as const;
 ---
 <BaseLayout
-  title="תנאי שימוש - languageflipper.com"
+  title="תנאי שימוש — Language Flipper"
+  description="תנאי השימוש של Language Flipper — רישוי, גרסת הניסיון החינמית, רכישות והחזרים, ושימוש הוגן בכלי לתיקון גיבריש מקלדת עברית-אנגלית."
   lang={lang}
+  schema={breadcrumb(
+    { name: 'בית', url: encodeURI('https://languageflipper.com/he/בית/') },
+    { name: 'תנאי שימוש', url: encodeURI('https://languageflipper.com/he/תנאי-שימוש/') },
+  )}
 >
   <Header lang={lang} />
   <main id="content">

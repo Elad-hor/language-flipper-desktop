@@ -22,8 +22,21 @@ const { heading } = Astro.props;
 
 <style>
   .legal-section {
+    position: relative;
     background: #fff;
     padding: 120px 0 240px;
+  }
+  /* Fade the white legal body into the footer purple over the empty bottom
+     padding (no text is covered) — a fade before the footer like every page */
+  .legal-section::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 180px;
+    background: linear-gradient(180deg, rgba(255,255,255,0) 0%, var(--lf-bg-deep) 100%);
+    pointer-events: none;
   }
   .legal-layout {
     display: grid;

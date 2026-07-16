@@ -5,13 +5,18 @@ import Footer from '../components/Footer.astro';
 import DownloadRow from '../components/DownloadRow.astro';
 import FlipText from '../components/FlipText.astro';
 import HeadingLine from '../components/HeadingLine.astro';
+import { breadcrumb } from '../schema';
 
 const lang = 'en';
 ---
 <BaseLayout
-  title="About Us | Don't Flip Out, Just Flip It"
-  description="We've all typed a whole paragraph in gibberish. Instead of throwing your keyboard out the window, meet the app that fixes it. thats what its all about"
+  title="About Language Flipper — The Hebrew-English Keyboard Fixer"
+  description="Two bilingual developers got fed up typing gibberish and built Language Flipper. Here's the story behind the hotkey that fixes Hebrew-English typos instantly."
   lang={lang}
+  schema={breadcrumb(
+    { name: 'Home', url: 'https://languageflipper.com/' },
+    { name: 'About Us', url: 'https://languageflipper.com/about-us/' },
+  )}
 >
   <Header lang={lang} />
   <main id="content">
@@ -54,7 +59,7 @@ const lang = 'en';
     <!-- Talk to us: dark animated background section -->
     <section class="talk-section">
       <div class="talk-inner container">
-        <h1 class="talk-h1">Talk to us</h1>
+        <h2 class="talk-h1">Talk to us</h2>
         <a href="/contact-us/" class="talk-cta">lets get in touch</a>
       </div>
     </section>
@@ -186,19 +191,22 @@ const lang = 'en';
   /* ─── Talk to us ─── */
   .talk-section {
     position: relative;
-    background-image: url('/assets/about-food-check-back.webp');
+    background-image: url('/assets/our-partners.webp');
     background-size: cover;
-    background-position: center top;
+    background-position: center center;
     min-height: 560px;
     display: flex;
     align-items: center;
   }
+  /* Vibrant purple overlay — same treatment as the HP "Get the feeling" section */
   .talk-section::before {
     content: '';
     position: absolute;
     inset: 0;
-    background: rgba(4, 0, 40, 0.58);
+    background-color: rgba(29,0,91,0.69);
   }
+  /* No artificial bottom fade — the image's own vignette darkens into the footer,
+     exactly like the HP "Get the feeling" section. */
   .talk-inner {
     position: relative;
     z-index: 1;

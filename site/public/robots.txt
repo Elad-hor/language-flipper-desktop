@@ -1,0 +1,23 @@
+User-agent: *
+Allow: /
+
+# AI search / answer engines — explicitly welcome (we want to be cited)
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+Sitemap: https://languageflipper.com/sitemap-index.xml

@@ -12,11 +12,12 @@
     "diff": "node capture/scripts/diff.mjs"
   },
   "dependencies": {
+    "@astrojs/sitemap": "^3.2.1",
     "astro": "^4.16.0"
   },
   "devDependencies": {
-    "playwright": "^1.48.0",
     "pixelmatch": "^6.0.0",
+    "playwright": "^1.48.0",
     "pngjs": "^7.0.0"
   }
 }

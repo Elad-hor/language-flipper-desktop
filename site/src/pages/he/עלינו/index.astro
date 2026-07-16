@@ -5,6 +5,7 @@ import Footer from '../../../components/Footer.astro';
 import DownloadRow from '../../../components/DownloadRow.astro';
 import FlipText from '../../../components/FlipText.astro';
 import HeadingLine from '../../../components/HeadingLine.astro';
+import { breadcrumb } from '../../../schema';
 
 const lang = 'he' as const;
 ---
@@ -12,6 +13,10 @@ const lang = 'he' as const;
   title="עלינו | Language Flipper - אל תתפלפו, פשוט תפליפו"
   description="כתבנו פסקה מבריקה שלמה בלי להרים עיניים מהמקלדת. הרמנו מבט — והיא הייתה בשפה הלא נכונה. אז בנינו את האפליקציה הזאת."
   lang={lang}
+  schema={breadcrumb(
+    { name: 'בית', url: encodeURI('https://languageflipper.com/he/בית/') },
+    { name: 'עלינו', url: encodeURI('https://languageflipper.com/he/עלינו/') },
+  )}
 >
   <Header lang={lang} />
   <main id="content">
@@ -53,7 +58,7 @@ const lang = 'he' as const;
     <!-- Talk to us: dark animated background section -->
     <section class="talk-section">
       <div class="talk-inner container">
-        <h1 class="talk-h1">תדברו איתנו</h1>
+        <h2 class="talk-h1">תדברו איתנו</h2>
         <a href="/he/צור-קשר/" class="talk-cta">צרו קשר</a>
       </div>
     </section>
@@ -188,19 +193,22 @@ const lang = 'he' as const;
   /* ─── Talk to us ─── */
   .talk-section {
     position: relative;
-    background-image: url('/assets/about-food-check-back.webp');
+    background-image: url('/assets/our-partners.webp');
     background-size: cover;
-    background-position: center top;
+    background-position: center center;
     min-height: 560px;
     display: flex;
     align-items: center;
   }
+  /* Vibrant purple overlay — same treatment as the HP "Get the feeling" section */
   .talk-section::before {
     content: '';
     position: absolute;
     inset: 0;
-    background: rgba(4, 0, 40, 0.58);
+    background-color: rgba(29,0,91,0.69);
   }
+  /* No artificial bottom fade — the image's own vignette darkens into the footer,
+     exactly like the HP "Get the feeling" section. */
   .talk-inner {
     position: relative;
     z-index: 1;

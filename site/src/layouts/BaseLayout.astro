@@ -2,14 +2,22 @@
 import '../styles/tokens.css';
 import '../styles/global.css';
 import { dir, type Lang } from '../i18n/ui';
+import Seo from '../components/Seo.astro';
 
 interface Props {
   title: string;
   description?: string;
   lang?: Lang;
+  image?: string;
+  /** Hero/LCP image to preload (CSS backgrounds aren't preload-discoverable). */
+  preloadImage?: string;
+  /** Page-specific JSON-LD (SoftwareApplication, FAQPage, BreadcrumbList…). */
+  schema?: object | object[];
 }
 
-const { title, description, lang = 'en' } = Astro.props;
+const { title, description, lang = 'en', image, preloadImage, schema } = Astro.props;
+const fontHref =
+  'https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400..900;1,400..900&display=swap';
 ---
 <!doctype html>
 <html lang={lang} dir={dir(lang)}>
@@ -18,13 +26,15 @@ const { title, description, lang = 'en' } = Astro.props;
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
     {description && <meta name="description" content={description} />}
+    <Seo title={title} description={description} lang={lang} image={image} schema={schema} />
     <link rel="icon" type="image/webp" href="/assets/languageFlipper-logo.webp" />
+    {preloadImage && <link rel="preload" as="image" href={preloadImage} fetchpriority="high" />}
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100..900;1,100..900&display=swap"
-      rel="stylesheet"
-    />
+    {/* Non-blocking font load (media=print flip) — keeps fonts off the critical render path */}
+    <link rel="preload" as="style" href={fontHref} />
+    <link rel="stylesheet" href={fontHref} media="print" onload="this.media='all'" />
+    <noscript><link rel="stylesheet" href={fontHref} /></noscript>
   </head>
   <body>
     <slot />
