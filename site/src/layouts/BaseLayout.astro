@@ -27,7 +27,9 @@ const fontHref =
     <title>{title}</title>
     {description && <meta name="description" content={description} />}
     <Seo title={title} description={description} lang={lang} image={image} schema={schema} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" type="image/webp" href="/assets/languageFlipper-logo.webp" />
+    <link rel="apple-touch-icon" href="/favicon.svg" />
     {preloadImage && <link rel="preload" as="image" href={preloadImage} fetchpriority="high" />}
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

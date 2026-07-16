@@ -20,7 +20,9 @@ const accessibilityHref = lang === 'he'
 <footer class="site-footer">
   <div class="container footer-top">
     <div class="footer-brand-col">
-      <a href="/" class="footer-brand">{t(lang, 'footer.brand')}</a>
+      <a href={homeHref} class="footer-brand" aria-label="Language Flipper home">
+        <img src="/assets/languageFlipper-logo.webp" alt="Language Flipper" class="footer-logo" width="180" height="28" />
+      </a>
       <div class="social-icons">
         <!-- Facebook -->
         <a href={SOCIAL_LINKS.facebook} class="social-icon" aria-label="Facebook" target="_blank" rel="noopener noreferrer">
@@ -104,15 +106,27 @@ const accessibilityHref = lang === 'he'
     flex-direction: column;
     gap: 1rem;
   }
+  /* Logo and the social row share one width so they line up as a tidy block */
+  .footer-brand-col {
+    --footer-brand-w: 210px;
+  }
   .footer-brand {
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: var(--lf-white);
+    display: block;
+    width: var(--footer-brand-w);
+    max-width: 100%;
+  }
+  .footer-logo {
+    display: block;
+    width: 100%;
+    height: auto;
   }
   .social-icons {
     display: flex;
-    gap: 0.75rem;
-    flex-wrap: wrap;
+    width: var(--footer-brand-w);
+    max-width: 100%;
+    justify-content: space-between;
+    gap: 0.5rem;
+    flex-wrap: nowrap;
   }
   .social-icon {
     display: flex;

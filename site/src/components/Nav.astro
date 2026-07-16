@@ -12,21 +12,46 @@ const contactHref = lang === 'he' ? '/he/צור-קשר/' : '/contact-us/';
 const flipHref = lang === 'he' ? '/he/תפליפו/' : '/flip-it/';
 ---
 <nav class="nav">
-  <ul class="nav-links">
-    <li><a href={aboutHref}>{t(lang, 'nav.about')}</a></li>
-    <li><a href={contactHref}>{t(lang, 'nav.contact')}</a></li>
-    <li><a href={flipHref}>{t(lang, 'nav.flip')}</a></li>
-  </ul>
-  <LanguageSwitcher lang={lang} />
-  <button class="burger" aria-label="Toggle menu" aria-expanded="false">
-    <svg viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg" width="22" height="22" aria-hidden="true">
-      <path fill="currentColor" d="M104 333H896C929 333 958 304 958 271S929 208 896 208H104C71 208 42 237 42 271S71 333 104 333ZM104 583H896C929 583 958 554 958 521S929 458 896 458H104C71 458 42 487 42 521S71 583 104 583ZM104 833H896C929 833 958 804 958 771S929 708 896 708H104C71 708 42 737 42 771S71 833 104 833Z"/>
-    </svg>
+  <button class="burger" aria-label="Toggle menu" aria-expanded="false" aria-controls="nav-menu">
+    <span class="bar bar-top" aria-hidden="true"></span>
+    <span class="bar bar-mid" aria-hidden="true"></span>
+    <span class="bar bar-bot" aria-hidden="true"></span>
   </button>
+  <div class="nav-menu" id="nav-menu">
+    <ul class="nav-links">
+      <li><a href={aboutHref}>{t(lang, 'nav.about')}</a></li>
+      <li><a href={contactHref}>{t(lang, 'nav.contact')}</a></li>
+      <li><a href={flipHref}>{t(lang, 'nav.flip')}</a></li>
+    </ul>
+    <LanguageSwitcher lang={lang} />
+  </div>
 </nav>
+
+<script>
+  document.querySelectorAll('.nav').forEach((nav) => {
+    const burger = nav.querySelector('.burger');
+    const menu = nav.querySelector('.nav-menu');
+    if (!burger || !menu) return;
+    const setOpen = (open: boolean) => {
+      menu.classList.toggle('open', open);
+      burger.setAttribute('aria-expanded', String(open));
+    };
+    burger.addEventListener('click', () => setOpen(!menu.classList.contains('open')));
+    // Close after tapping a link, and on Escape.
+    menu.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => setOpen(false)));
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') setOpen(false);
+    });
+  });
+</script>
 
 <style>
   .nav {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+  .nav-menu {
     display: flex;
     align-items: center;
     gap: 1.5rem;
@@ -50,14 +75,61 @@ const flipHref = lang === 'he' ? '/he/תפליפו/' : '/flip-it/';
   .nav-links a:hover { opacity: 1; }
   .burger {
     display: none;
+    position: relative;
+    width: 26px;
+    height: 22px;
     background: none;
     border: none;
     color: var(--lf-white);
     cursor: pointer;
     padding: 0;
+    order: 2; /* keep burger on the trailing side */
   }
+  .burger .bar {
+    position: absolute;
+    left: 2px;
+    right: 2px;
+    top: 50%;
+    height: 2.5px;
+    margin-top: -1.25px;
+    background: currentColor;
+    border-radius: 3px;
+    transform-origin: center;
+    /* spin the top/bottom bars around the middle, then settle into an X */
+    transition: transform 0.45s cubic-bezier(0.68, -0.4, 0.27, 1.4), opacity 0.25s ease;
+  }
+  .burger .bar-top { transform: translateY(-7px) rotate(0deg); }
+  .burger .bar-mid { transform: translateY(0) rotate(0deg); }
+  .burger .bar-bot { transform: translateY(7px) rotate(0deg); }
+  /* Open state: top & bottom circle around (405° / -405°) and cross into an X */
+  .burger[aria-expanded='true'] .bar-top { transform: translateY(0) rotate(405deg); }
+  .burger[aria-expanded='true'] .bar-mid { opacity: 0; transform: scaleX(0); }
+  .burger[aria-expanded='true'] .bar-bot { transform: translateY(0) rotate(-405deg); }
+
   @media (max-width: 767px) {
-    .nav-links { display: none; }
     .burger { display: flex; }
+    /* Full-width dropdown panel below the sticky header */
+    .nav-menu {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.4rem;
+      background: rgba(29, 0, 91, 0.98);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      padding: 1.75rem 20px 2rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .nav-menu.open { display: flex; }
+    .nav-links {
+      flex-direction: column;
+      align-items: center;
+      gap: 1.4rem;
+    }
+    .nav-links a { font-size: 0.95rem; }
   }
 </style>
