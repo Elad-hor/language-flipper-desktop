@@ -198,31 +198,43 @@ Index: `MEMORY.md` (read this first in new sessions)
 
 ## Marketing Site (languageflipper.com)
 
-The marketing site was rebuilt as a **static [Astro](https://astro.build) site living in `site/`**,
-replacing the old WordPress + Elementor build. It is **prompt-editable**: change a component/page,
-`npm run build`, redeploy — no WordPress/Elementor.
+The marketing site was rebuilt as a **static [Astro](https://astro.build) site in `site/`**, replacing
+WordPress + Elementor. It is **live** (PR #1 merged to `main`, deployed to Hostinger — WordPress is gone)
+and **prompt-editable**: change a component/page, push to `main`, and CI deploys it automatically.
 
-- **Stack:** Astro (static output), plain CSS tokens (`site/src/styles/tokens.css` — brand palette +
-  Poppins), i18n via `site/src/i18n/` (`en.json`/`he.json` + `ui.ts`'s `t(lang,key)`/`dir(lang)`).
-- **Pages (13):** 7 English (`/`, `/about-us`, `/solutions`, `/flip-it`, `/contact-us`,
-  `/terms-of-service`, `/privacy-policy`) + a 6-page Hebrew RTL mirror under `/he/…` (literal Hebrew
-  dir names, e.g. `site/src/pages/he/בית/index.astro`). No Hebrew `/solutions`.
-- **Contact form:** `site/contact/contact.php` emails **falafeltikunim@gmail.com** (deploys to web
-  root as `/contact.php`; lives outside `dist/` so Astro ignores it).
-- **Try-It widget:** `site/src/components/TryItWidget.astro` — ported from `marketing-site/try-it-widget.html`;
-  its inlined char map is a copy of `flipper_daemon/layouts/en_he_map.json` and can drift.
-- **Hosting/DNS unchanged:** Hostinger (origin) behind Cloudflare. Deploy = swap the files in
-  `public_html/` (back up WordPress first). See **`site/DEPLOY.md`** for the full runbook.
-- **Fidelity tooling:** `site/capture/` holds the live-site capture (`capture.mjs`), downloaded assets,
-  reference screenshots, and a screenshot-diff harness. Run visual checks with
-  `node capture/scripts/verify.mjs [pages…]` and links with `node capture/scripts/linkaudit.mjs`
-  (both spawn the preview server as a child of one foreground process — the sandbox reaps backgrounded
-  servers, so never background `npm run preview` directly).
-- **Fidelity metric caveat:** the diff harness reports high pixel-mismatch % (~27–52%) even on faithful
-  pages because Elementor's parallax/animated backgrounds sit at different scroll offsets than a static
-  capture. **Judge fidelity visually, not by the %.**
-- **Known replica quirks (faithful to live site):** `/solutions` is a styled **404** page; footer "home"
-  → `/about-us`; hero headline is static (original rotated EN↔HE).
+- **Stack:** Astro (static output), CSS tokens (`site/src/styles/tokens.css` — brand palette + Poppins),
+  i18n via `site/src/i18n/` (`en.json`/`he.json` + `ui.ts`'s `t(lang,key)`/`dir(lang)`).
+- **Pages (13):** 7 English + a 6-page Hebrew RTL mirror under `/he/…` (literal Hebrew dir names, e.g.
+  `site/src/pages/he/בית/index.astro`). `/solutions/` is **EN-only** and is now the **FAQ page** (real
+  Q&A content + FAQPage schema — no longer the styled 404 it was during the replica phase).
+- **Standing rule:** every content/design change must be applied to **both** the EN and HE versions.
+- **Deploy = automatic (CI):** `.github/workflows/deploy.yml` builds the site and uploads it to Hostinger
+  over **FTPS via `curl`** (per-file) on every push to `main`. The Hostinger FTP account is rooted at the
+  **web root**, so the upload target is `/` (NOT `/public_html/`). Requires repo secrets `FTP_SERVER`,
+  `FTP_USERNAME`, `FTP_PASSWORD` (host/user/password — not stored in the repo). Manual fallback + backup
+  runbook in `site/DEPLOY.md`. Hosting (Hostinger) + DNS (Cloudflare) unchanged. Cloudflare cache is not
+  auto-purged (no MCP purge tool), but HTML isn't cached by default so it's usually unnecessary.
+- **SEO/analytics** — all injected by `BaseLayout` via `site/src/components/Seo.astro`: per-page
+  title/description, canonical, **hreflang** (en/he/x-default; EN↔HE pairs in `site/src/i18n/routes.ts`),
+  Open Graph + Twitter, **GA4** (`GT-5D9377V7` → GA4 `G-2CP4BEC4B8`) + **Microsoft Clarity** (`wrfoldcd1d`)
+  (IDs in `site/src/seo-config.ts`), and **JSON-LD** (Organization+WebSite site-wide + per-page
+  SoftwareApplication / FAQPage / BreadcrumbList built by `site/src/schema.ts`). Also: `@astrojs/sitemap`
+  → `/sitemap-index.xml` (with `lastmod`), `site/public/robots.txt` (welcomes AI crawlers +
+  sitemap), `site/public/llms.txt`, `site/public/favicon.svg`. Search Console: domain already verified —
+  just submit `sitemap-index.xml`. GA4/Clarity only fire on the live domain, not on `npm run preview`.
+- **Contact form:** `site/contact/contact.php` (deploys to web root as `/contact.php`; lives outside
+  `dist/`) emails **falafeltikunim@gmail.com**. `ContactForm.astro` reveals the success banner
+  **client-side** on `?sent=1` (a static build can't read query params at build time) and posts a hidden
+  `redirect` field so Hebrew submissions return to the Hebrew page. If Hostinger `mail()` deliverability
+  is poor, swap to SMTP — the form/action stays the same.
+- **Try-It widget:** `site/src/components/TryItWidget.astro` — inlined char map is a copy of
+  `flipper_daemon/layouts/en_he_map.json` and can drift.
+- **Mobile nav:** `site/src/components/Nav.astro` has an animated hamburger (JS toggles a full-width
+  dropdown; the bars spin 405° into an X).
+- **Fidelity tooling:** `site/capture/` (`capture.mjs`, `verify.mjs`, `linkaudit.mjs`). Scripts spawn the
+  preview server as a foreground child — the sandbox reaps backgrounded servers, so never background
+  `npm run preview`. The diff harness reports high pixel-mismatch % even on faithful pages (Elementor
+  parallax offsets) — **judge fidelity visually, not by the %.**
 
 ---
 
