@@ -196,6 +196,36 @@ Index: `MEMORY.md` (read this first in new sessions)
 
 ---
 
+## Marketing Site (languageflipper.com)
+
+The marketing site was rebuilt as a **static [Astro](https://astro.build) site living in `site/`**,
+replacing the old WordPress + Elementor build. It is **prompt-editable**: change a component/page,
+`npm run build`, redeploy — no WordPress/Elementor.
+
+- **Stack:** Astro (static output), plain CSS tokens (`site/src/styles/tokens.css` — brand palette +
+  Poppins), i18n via `site/src/i18n/` (`en.json`/`he.json` + `ui.ts`'s `t(lang,key)`/`dir(lang)`).
+- **Pages (13):** 7 English (`/`, `/about-us`, `/solutions`, `/flip-it`, `/contact-us`,
+  `/terms-of-service`, `/privacy-policy`) + a 6-page Hebrew RTL mirror under `/he/…` (literal Hebrew
+  dir names, e.g. `site/src/pages/he/בית/index.astro`). No Hebrew `/solutions`.
+- **Contact form:** `site/contact/contact.php` emails **falafeltikunim@gmail.com** (deploys to web
+  root as `/contact.php`; lives outside `dist/` so Astro ignores it).
+- **Try-It widget:** `site/src/components/TryItWidget.astro` — ported from `marketing-site/try-it-widget.html`;
+  its inlined char map is a copy of `flipper_daemon/layouts/en_he_map.json` and can drift.
+- **Hosting/DNS unchanged:** Hostinger (origin) behind Cloudflare. Deploy = swap the files in
+  `public_html/` (back up WordPress first). See **`site/DEPLOY.md`** for the full runbook.
+- **Fidelity tooling:** `site/capture/` holds the live-site capture (`capture.mjs`), downloaded assets,
+  reference screenshots, and a screenshot-diff harness. Run visual checks with
+  `node capture/scripts/verify.mjs [pages…]` and links with `node capture/scripts/linkaudit.mjs`
+  (both spawn the preview server as a child of one foreground process — the sandbox reaps backgrounded
+  servers, so never background `npm run preview` directly).
+- **Fidelity metric caveat:** the diff harness reports high pixel-mismatch % (~27–52%) even on faithful
+  pages because Elementor's parallax/animated backgrounds sit at different scroll offsets than a static
+  capture. **Judge fidelity visually, not by the %.**
+- **Known replica quirks (faithful to live site):** `/solutions` is a styled **404** page; footer "home"
+  → `/about-us`; hero headline is static (original rotated EN↔HE).
+
+---
+
 ## MCP Servers Available
 
 - **context7** — fetch up-to-date library docs (use before assuming API syntax)

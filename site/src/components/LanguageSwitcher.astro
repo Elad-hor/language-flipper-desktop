@@ -1,0 +1,29 @@
+---
+import { type Lang, t } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const targetLang = lang === 'en' ? 'he' : 'en';
+const targetHref = lang === 'en' ? '/he/בית/' : '/';
+const label = t(lang, 'nav.lang_label');
+---
+<a href={targetHref} class="lang-switcher" aria-label={`Switch to ${targetLang}`}>
+  <span class="lang-label">{label}</span>
+</a>
+
+<style>
+  .lang-switcher {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: var(--lf-white);
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    opacity: 0.9;
+    transition: opacity 0.2s;
+  }
+  .lang-switcher:hover { opacity: 1; }
+</style>

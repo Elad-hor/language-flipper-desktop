@@ -1,0 +1,544 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Button from '../components/Button.astro';
+import DownloadRow from '../components/DownloadRow.astro';
+import TryItWidget from '../components/TryItWidget.astro';
+import FlipText from '../components/FlipText.astro';
+import HeadingLine from '../components/HeadingLine.astro';
+import { type Lang, t } from '../i18n/ui';
+import { softwareApplication, breadcrumb } from '../schema';
+import { SOCIAL_LINKS } from '../seo-config';
+
+const lang: Lang = 'en';
+---
+<BaseLayout
+  title="Langover Alternative for Mac & Windows — Language Flipper"
+  description="Langover is Windows-only. Language Flipper works on Mac too. Fix Hebrew-English keyboard mistakes instantly with one hotkey. Try it free — 40 flips included."
+  lang={lang}
+  schema={[
+    softwareApplication(lang),
+    breadcrumb(
+      { name: 'Home', url: 'https://languageflipper.com/' },
+      { name: 'Flip It', url: 'https://languageflipper.com/flip-it/' },
+    ),
+  ]}
+>
+  <Header lang={lang} />
+
+  <main id="content">
+
+    <!-- ── Hero ─────────────────────────────────────────────────────── -->
+    <section class="fi-hero">
+      <div class="fi-hero-bg" aria-hidden="true"></div>
+      <div class="fi-hero-overlay" aria-hidden="true"></div>
+      <div class="container fi-hero-content">
+        <h1 class="fi-h1">
+          <FlipText text={t(lang, 'flipit.h1') + '. . .'} lang={lang} />
+        </h1>
+        <h2 class="fi-h2">
+          {t(lang, 'flipit.h2_line1')}<br />{t(lang, 'flipit.h2_line2')}<span class="fi-dot"> .</span><span class="fi-dot"> .</span><span class="fi-dot"> .</span>
+        </h2>
+        <Button href="#demo" label={t(lang, 'flipit.cta')} />
+      </div>
+    </section>
+
+    <!-- Gradient transition: hero photo fades into dark "Try It Live" section -->
+    <div class="fi-gradient-bridge" aria-hidden="true"></div>
+
+    <!-- ── Try It Live section ───────────────────────────────────────── -->
+    <section class="fi-live-section">
+      <div class="fi-live-overlay" aria-hidden="true"></div>
+      <div class="container fi-live-content">
+        <h2 class="fi-live-h2">{t(lang, 'flipit.live_h2')}</h2>
+        <HeadingLine align="center" />
+        <p class="fi-live-sub">
+          {t(lang, 'flipit.live_sub_1')}<strong>{t(lang, 'flipit.live_sub_bold')}</strong>{t(lang, 'flipit.live_sub_2')}
+        </p>
+        <Button href="#demo" label={t(lang, 'flipit.cta')} />
+      </div>
+    </section>
+
+    <!-- ── Widget section (white) ────────────────────────────────────── -->
+    <section class="fi-widget-section" id="demo">
+      <div class="container">
+        <TryItWidget />
+      </div>
+    </section>
+
+    <!-- ── Download Now ──────────────────────────────────────────────── -->
+    <div class="fi-download-shape" aria-hidden="true">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 100" preserveAspectRatio="none">
+        <path class="fi-dl-shape-fill" d="M0,6V0h1000v100L0,6z"></path>
+      </svg>
+    </div>
+    <DownloadRow lang={lang} />
+
+    <!-- ── Corporation CTA ───────────────────────────────────────────── -->
+    <section class="fi-corp-section">
+      <div class="fi-corp-bg" aria-hidden="true"></div>
+      <div class="fi-corp-overlay" aria-hidden="true"></div>
+      <div class="container fi-corp-content">
+        <h3 class="fi-corp-h3">{t(lang, 'flipit.corp_h3')}</h3>
+        <HeadingLine align="center" />
+        <p class="fi-corp-sub1">{t(lang, 'flipit.corp_sub1')}</p>
+        <p class="fi-corp-sub2">{t(lang, 'flipit.corp_sub2')}</p>
+        <Button href="/contact-us/" label={t(lang, 'flipit.corp_cta')} />
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ── Footer (flip-it variant with About + Contact cols) ────────── -->
+  <footer class="site-footer">
+    <div class="container footer-top">
+      <div class="footer-brand-col">
+        <a href="/" class="footer-brand" aria-label="Language Flipper home">
+          <img src="/assets/languageFlipper-logo.webp" alt="Language Flipper" class="footer-logo" width="180" height="28" />
+        </a>
+        <div class="social-icons">
+          <!-- Facebook -->
+          <a href={SOCIAL_LINKS.facebook} class="social-icon" aria-label="Facebook" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path fill="currentColor" d="M504 256C504 119 393 8 256 8S8 119 8 256c0 123.78 90.69 226.38 209.25 245V327.69h-63V256h63v-54.64c0-62.15 37-96.48 93.67-96.48 27.14 0 55.52 4.84 55.52 4.84v61h-31.28c-30.8 0-40.41 19.12-40.41 38.73V256h68.78l-11 71.69h-57.78V501C413.31 482.38 504 379.78 504 256z"/>
+            </svg>
+          </a>
+          <!-- Instagram -->
+          <a href={SOCIAL_LINKS.instagram} class="social-icon" aria-label="Instagram" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path fill="currentColor" d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/>
+            </svg>
+          </a>
+          <!-- YouTube -->
+          <a href={SOCIAL_LINKS.youtube} class="social-icon" aria-label="YouTube" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 576 512" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path fill="currentColor" d="M549.655 124.083c-6.281-23.65-24.787-42.276-48.284-48.597C458.781 64 288 64 288 64S117.22 64 74.629 75.486c-23.497 6.322-42.003 24.947-48.284 48.597-11.412 42.867-11.412 132.305-11.412 132.305s0 89.438 11.412 132.305c6.281 23.65 24.787 41.5 48.284 47.821C117.22 448 288 448 288 448s170.78 0 213.371-11.486c23.497-6.321 42.003-24.171 48.284-47.821 11.412-42.867 11.412-132.305 11.412-132.305s0-89.438-11.412-132.305zm-317.51 213.508V175.185l142.739 81.205-142.739 81.201z"/>
+            </svg>
+          </a>
+          <!-- LinkedIn -->
+          <a href={SOCIAL_LINKS.linkedin} class="social-icon" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path fill="currentColor" d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z"/>
+            </svg>
+          </a>
+          <!-- TikTok -->
+          <a href={SOCIAL_LINKS.tiktok} class="social-icon" aria-label="TikTok" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path fill="currentColor" d="M448,209.91a210.06,210.06,0,0,1-122.77-39.25V349.38A162.55,162.55,0,1,1,185,188.31V278.2a74.62,74.62,0,1,0,52.23,71.18V0l88,0a121.18,121.18,0,0,0,1.86,22.17h0A122.18,122.18,0,0,0,381,102.39a121.43,121.43,0,0,0,67,20.14Z"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- About column -->
+      <div class="footer-col">
+        <h4 class="footer-col-title">{t(lang, 'footer.about_col')}</h4>
+        <ul>
+          <li><a href="/about-us/">{t(lang, 'footer.about_us')}</a></li>
+          <li><a href="/">{t(lang, 'footer.home')}</a></li>
+        </ul>
+      </div>
+
+      <!-- Contact column -->
+      <div class="footer-col">
+        <h4 class="footer-col-title">{t(lang, 'footer.contact_col')}</h4>
+        <ul>
+          <li><a href="/contact-us/">{t(lang, 'footer.lets_talk')}</a></li>
+          <li><a href="/flip-it/">{t(lang, 'footer.flip_it')}</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="container footer-bottom-inner">
+        <span class="made">{t(lang, 'footer.made')}</span>
+        <div class="legal-links">
+          <a href="/accessibility-statement-EN.pdf" target="_blank" rel="noopener">{t(lang, 'footer.accessibility')}</a>
+          <a href="/terms-of-service/">{t(lang, 'footer.terms')}</a>
+          <a href="/privacy-policy/">{t(lang, 'footer.privacy')}</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</BaseLayout>
+
+<style>
+  /* ─── Hero ──────────────────────────────────────────────────────── */
+  /* ─── Gradient bridge (hero photo → dark keyboard section) ────── */
+  .fi-gradient-bridge {
+    height: 60px;
+    background: linear-gradient(180deg, rgba(29,0,91,0) 0%, rgba(5,0,20,0.85) 100%);
+    margin-top: -60px;
+    position: relative;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  /* ─── Hero ──────────────────────────────────────────────────────── */
+  .fi-hero {
+    position: relative;
+    min-height: 825px;
+    display: flex;
+    align-items: flex-start;
+    overflow: hidden;
+  }
+  .fi-hero-bg {
+    position: absolute;
+    inset: 0;
+    background-image: url('/assets/home-page-main.webp');
+    background-size: cover;
+    background-position: top center;
+    z-index: 0;
+  }
+  .fi-hero-overlay {
+    position: absolute;
+    inset: 0;
+    background-color: rgba(29,0,91,0.17);
+    z-index: 1;
+  }
+  /* Bottom purple fade — same as Home/About heroes */
+  .fi-hero::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 32%;
+    background: linear-gradient(180deg, rgba(29,0,91,0) 0%, #1D005B 100%);
+    z-index: 1;
+    pointer-events: none;
+  }
+  .fi-hero-content {
+    position: relative;
+    z-index: 2;
+    padding-top: 180px;
+    padding-bottom: 140px;
+    /* Left-aligned within container — no max-width cap */
+  }
+  .fi-h1 {
+    font-size: clamp(2.8rem, 5.9vw, 82px);
+    font-weight: 600;
+    color: var(--lf-white);
+    line-height: 1.1;
+    letter-spacing: -2.5px;
+    margin-bottom: 0.75rem;
+    text-shadow: 0 2px 28px rgba(0,0,0,0.65);
+  }
+  .fi-h2 {
+    font-size: clamp(0.95rem, 1.6vw, 1.15rem);
+    font-weight: 500;
+    color: var(--lf-white);
+    line-height: 1.55;
+    letter-spacing: -0.2px;
+    margin-bottom: 1.8rem;
+    text-shadow: 0 1px 14px rgba(0,0,0,0.7);
+  }
+  .fi-dot {
+    color: var(--lf-magenta);
+  }
+
+  @media (max-width: 767px) {
+    .fi-hero {
+      min-height: 560px;
+    }
+    .fi-hero-bg {
+      background-position: 60% top;
+    }
+    .fi-hero-overlay {
+      background-color: rgba(29,0,91,0.30);
+    }
+    .fi-hero-content {
+      padding-top: 120px;
+      padding-bottom: 80px;
+    }
+    .fi-h1 {
+      font-size: clamp(2.4rem, 12vw, 3.2rem);
+    }
+    .fi-h2 {
+      font-size: 0.95rem;
+    }
+  }
+
+  /* ─── Try It Live ────────────────────────────────────────────────── */
+  .fi-live-section {
+    position: relative;
+    min-height: 560px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    overflow: hidden;
+    background-image: url('/assets/how-it-works-1.webp');
+    background-size: cover;
+    background-position: center;
+  }
+  /* Tilt shape: white wedge coming down from hero, pointing into this dark section */
+  .fi-live-shape {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 2;
+    line-height: 0;
+    pointer-events: none;
+  }
+  .fi-live-shape svg {
+    display: block;
+    width: 100%;
+    height: 80px;
+  }
+  /* Tilt shape: fills with the hero's bottom color creating a diagonal edge */
+  .fi-shape-fill {
+    fill: #09002a;
+  }
+  .fi-live-overlay {
+    position: absolute;
+    inset: 0;
+    background-color: rgba(29,0,91,0.58);
+    z-index: 0;
+  }
+  .fi-live-content {
+    position: relative;
+    z-index: 3;
+    padding: 140px 1rem 100px;
+    width: 100%;
+  }
+  .fi-live-h2 {
+    font-size: clamp(2rem, 4vw, 2.9rem);
+    font-weight: 700;
+    color: var(--lf-white);
+    margin-bottom: 0.85rem;
+    text-shadow: 0 2px 20px rgba(0,0,0,0.5);
+  }
+  .fi-live-sub {
+    font-size: 1.12rem;
+    color: var(--lf-white);
+    margin-bottom: 1.5rem;
+    text-shadow: 0 1px 10px rgba(0,0,0,0.6);
+  }
+  .fi-live-sub strong {
+    font-weight: 700;
+  }
+
+  @media (max-width: 767px) {
+    .fi-live-section {
+      min-height: 440px;
+    }
+    .fi-live-content {
+      padding: 140px 1rem 80px;
+    }
+    .fi-live-h2 {
+      font-size: 1.8rem;
+    }
+  }
+
+  /* ─── Widget section (white) ────────────────────────────────────── */
+  .fi-widget-section {
+    background: #ffffff;
+    padding: 100px 0 160px;
+  }
+
+  /* ─── Download shape connector ──────────────────────────────────── */
+  /* White → purple tilt: a white angled wedge sits on top of the purple download bg */
+  .fi-download-shape {
+    position: relative;
+    background: var(--lf-bg-deep);
+    line-height: 0;
+    overflow: hidden;
+    height: 80px;
+  }
+  .fi-download-shape svg {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 80px;
+  }
+  /* The shape fill is white (the white widget section bleeds down as a tilt) */
+  .fi-dl-shape-fill {
+    fill: #ffffff;
+  }
+
+  /* ─── Corporation CTA ───────────────────────────────────────────── */
+  .fi-corp-section {
+    position: relative;
+    min-height: 480px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    overflow: hidden;
+  }
+  .fi-corp-bg {
+    position: absolute;
+    inset: 0;
+    background-image: url('/assets/our-partners.webp');
+    background-size: cover;
+    background-position: center;
+    z-index: 0;
+  }
+  .fi-corp-overlay {
+    position: absolute;
+    inset: 0;
+    background-color: rgba(29,0,91,0.72);
+    z-index: 1;
+  }
+  .fi-corp-content {
+    position: relative;
+    z-index: 2;
+    padding: 120px 1rem;
+    width: 100%;
+  }
+  .fi-corp-h3 {
+    font-size: clamp(2.2rem, 5vw, 3.5rem);
+    font-weight: 700;
+    color: var(--lf-white);
+    margin-bottom: 0.75rem;
+    text-shadow: 0 2px 24px rgba(0,0,0,0.6);
+  }
+  .fi-corp-sub1 {
+    font-size: 1rem;
+    color: var(--lf-white);
+    margin-bottom: 0.25rem;
+    letter-spacing: -0.3px;
+  }
+  .fi-corp-sub2 {
+    font-size: 1rem;
+    color: var(--lf-white);
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.3px;
+  }
+
+  @media (max-width: 767px) {
+    .fi-corp-h3 {
+      font-size: 2rem;
+    }
+  }
+
+  /* ─── Footer (matches home Footer.astro styles) ─────────────────── */
+  .site-footer {
+    background: var(--lf-bg-deep);
+    color: var(--lf-white);
+    padding-top: 56px;
+    /* Separator line kept the same colour as the fade above, so it blends in
+       (not viewable) — the section fades smoothly into the footer instead */
+    border-top: 1px solid var(--lf-bg-deep);
+  }
+  .footer-top {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    gap: 3rem;
+    padding-bottom: 40px;
+  }
+  .footer-brand-col {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    --footer-brand-w: 210px;
+  }
+  .footer-brand {
+    display: block;
+    width: var(--footer-brand-w);
+    max-width: 100%;
+    text-decoration: none;
+  }
+  .footer-logo {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .social-icons {
+    display: flex;
+    width: var(--footer-brand-w);
+    max-width: 100%;
+    justify-content: space-between;
+    gap: 0.5rem;
+    flex-wrap: nowrap;
+  }
+  .social-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.12);
+    color: var(--lf-white);
+    transition: background 0.2s;
+    text-decoration: none;
+  }
+  .social-icon:hover { background: rgba(255,255,255,0.25); }
+  .social-icon svg {
+    width: 16px;
+    height: 16px;
+  }
+  .footer-col {
+    min-width: 120px;
+  }
+  .footer-col-title {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--lf-white);
+    margin-bottom: 0.75rem;
+  }
+  .footer-col ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+  .footer-col ul a {
+    color: rgba(255,255,255,0.7);
+    font-size: 0.85rem;
+    transition: color 0.2s;
+    text-decoration: none;
+  }
+  .footer-col ul a:hover { color: var(--lf-white); }
+  .footer-bottom {
+    border-top: 1px solid rgba(255,255,255,0.08);
+    padding: 18px 0;
+    background: var(--lf-bg-deep);
+  }
+  .footer-bottom-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .made {
+    font-size: 0.78rem;
+    color: rgba(255,255,255,0.6);
+  }
+  .legal-links {
+    display: flex;
+    gap: 1.25rem;
+    flex-wrap: wrap;
+  }
+  .legal-links a {
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.6);
+    transition: color 0.2s;
+    text-decoration: none;
+  }
+  .legal-links a:hover { color: var(--lf-white); }
+
+  @media (max-width: 767px) {
+    .footer-top {
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: auto auto;
+      gap: 1.5rem;
+    }
+    .footer-brand-col {
+      grid-column: 1 / -1;
+    }
+    .footer-bottom-inner {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .legal-links {
+      gap: 0.75rem;
+    }
+  }
+</style>

@@ -1,0 +1,21 @@
+/* Global resets + base element styles. Section-specific styling lives in components. */
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+
+body {
+  font-family: var(--lf-font);
+  color: var(--lf-text);
+  background: var(--lf-bg-deep);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+img { max-width: 100%; display: block; }
+a { color: inherit; text-decoration: none; }
+
+h1, h2, h3, h4 { margin: 0; font-weight: 700; line-height: 1.2; }
+p { margin: 0; }
+
+.container { max-width: var(--lf-maxw); margin: 0 auto; padding: 0 20px; }
+
+[dir="rtl"] { text-align: right; }

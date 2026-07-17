@@ -1,0 +1,113 @@
+---
+import { alternatesFor } from '../i18n/routes';
+import { GA4_MEASUREMENT_ID, CLARITY_PROJECT_ID, DEFAULT_OG_IMAGE, SITE_NAME, SOCIAL_LINKS } from '../seo-config';
+import type { Lang } from '../i18n/ui';
+
+interface Props {
+  title: string;
+  description?: string;
+  lang: Lang;
+  image?: string;
+  schema?: object | object[];
+}
+const { title, description, lang, image = DEFAULT_OG_IMAGE, schema } = Astro.props;
+
+// Site-wide entity graph — emitted on every page.
+const siteWideSchema = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Organization',
+      '@id': 'https://languageflipper.com/#organization',
+      name: SITE_NAME,
+      url: 'https://languageflipper.com',
+      logo: {
+        '@type': 'ImageObject',
+        url: 'https://languageflipper.com/assets/languageFlipper-logo.webp',
+      },
+      sameAs: Object.values(SOCIAL_LINKS),
+      contactPoint: {
+        '@type': 'ContactPoint',
+        contactType: 'customer support',
+        email: 'falafeltikunim@gmail.com',
+        availableLanguage: ['English', 'Hebrew'],
+      },
+      address: {
+        '@type': 'PostalAddress',
+        streetAddress: '16 Shlomo Ben Yosef St',
+        addressLocality: 'Tel Aviv',
+        addressCountry: 'IL',
+        postalCode: '0369125',
+      },
+    },
+    {
+      '@type': 'WebSite',
+      '@id': 'https://languageflipper.com/#website',
+      name: SITE_NAME,
+      url: 'https://languageflipper.com',
+      publisher: { '@id': 'https://languageflipper.com/#organization' },
+      inLanguage: ['en', 'he'],
+    },
+  ],
+};
+const pageSchemas = schema ? (Array.isArray(schema) ? schema : [schema]) : [];
+
+const site = Astro.site!; // configured in astro.config.mjs
+const pathname = Astro.url.pathname;
+const canonical = new URL(pathname, site).href;
+
+const { en, he } = alternatesFor(pathname);
+const enUrl = en ? new URL(en, site).href : null;
+const heUrl = he ? new URL(he, site).href : null;
+const ogImage = new URL(image, site).href;
+const ogLocale = lang === 'he' ? 'he_IL' : 'en_US';
+---
+<link rel="canonical" href={canonical} />
+{enUrl && <link rel="alternate" hreflang="en" href={enUrl} />}
+{heUrl && <link rel="alternate" hreflang="he" href={heUrl} />}
+{enUrl && <link rel="alternate" hreflang="x-default" href={enUrl} />}
+
+{/* Open Graph */}
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content={SITE_NAME} />
+<meta property="og:title" content={title} />
+{description && <meta property="og:description" content={description} />}
+<meta property="og:url" content={canonical} />
+<meta property="og:image" content={ogImage} />
+<meta property="og:locale" content={ogLocale} />
+
+{/* Twitter */}
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+{description && <meta name="twitter:description" content={description} />}
+<meta name="twitter:image" content={ogImage} />
+
+{/* Structured data — site-wide entity graph + any page-specific schema */}
+<script type="application/ld+json" set:html={JSON.stringify(siteWideSchema)} />
+{pageSchemas.map((s) => (
+  <script type="application/ld+json" set:html={JSON.stringify(s)} />
+))}
+
+{/* Google Analytics 4 — only emitted when a Measurement ID is configured */}
+{GA4_MEASUREMENT_ID && (
+  <Fragment>
+    <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${GA4_MEASUREMENT_ID}`}></script>
+    <script is:inline set:html={`
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', '${GA4_MEASUREMENT_ID}');
+    `}></script>
+  </Fragment>
+)}
+
+{/* Microsoft Clarity — only emitted when a project ID is configured */}
+{CLARITY_PROJECT_ID && (
+  <script is:inline set:html={`
+    (function(c,l,a,r,i,t,y){
+      c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+      t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+      y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "${CLARITY_PROJECT_ID}");
+  `}></script>
+)}

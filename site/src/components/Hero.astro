@@ -1,0 +1,238 @@
+---
+import Button from './Button.astro';
+import { type Lang, t } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const flipHref = lang === 'he' ? '/he/תפליפו/' : '/flip-it/';
+
+// Animated headline: show the phrase first as wrong-keyboard-layout gibberish,
+// then flip it to the correct words. EN flips English->Hebrew-layout; HE flips
+// Hebrew->English-layout (the mirror). Precompute the "wrong" string at build time.
+const EN2HE: Record<string, string> = { q:'/', w:"'", e:'ק', r:'ר', t:'א', y:'ט', u:'ו',
+  i:'ן', o:'ם', p:'פ', a:'ש', s:'ד', d:'ג', f:'כ', g:'ע', h:'י', j:'ח', k:'ל', l:'ך',
+  z:'ז', x:'ס', c:'ב', v:'ה', b:'נ', n:'מ', m:'צ', ',':'ת', '.':'ץ', ';':'ף', '/':'.' };
+const HE2EN: Record<string, string> = Object.fromEntries(
+  Object.entries(EN2HE).map(([en, he]) => [he, en])
+);
+const flipCorrect = lang === 'he' ? 'פשוט תפליפו' : 'Just Flip It.';
+const flipWrong = [...flipCorrect]
+  .map((ch) => (lang === 'he' ? HE2EN[ch] : EN2HE[ch.toLowerCase()]) ?? ch)
+  .join('');
+---
+<section class="hero">
+  <div class="hero-bg" aria-hidden="true"></div>
+  <div class="hero-overlay" aria-hidden="true"></div>
+  <div class="container hero-content">
+    <h1 class="hero-h1">
+      <span class="h1-line1">{t(lang, 'hero.h1')}<span class="accent">{t(lang, 'hero.h1_accent')}</span></span>
+      <span class="h1-flip accent" data-correct={flipCorrect} data-wrong={flipWrong}>{flipCorrect}</span>
+    </h1>
+    <p class="hero-sub">
+      {t(lang, 'hero.subtitle_intro')}{t(lang, 'hero.subtitle_1')}<span class="accent">{t(lang, 'hero.subtitle_akuo')}</span>{t(lang, 'hero.subtitle_2')}<span class="accent">{t(lang, 'hero.subtitle_shalom')}</span>{t(lang, 'hero.subtitle_3')}
+      <br />
+      {t(lang, 'hero.subtitle_4')}<span class="accent">{t(lang, 'hero.subtitle_hotkey')}</span>{t(lang, 'hero.subtitle_5')}
+    </p>
+    <Button href={flipHref} label={t(lang, 'hero.cta')} />
+  </div>
+</section>
+
+<script>
+  // Animated hero headline: TYPE the wrong-keyboard-layout text (shown left-to-right),
+  // then FLIP it in place to the correct words — no folding, just typed + flip.
+  const flipEl = document.querySelector('.hero-h1 .h1-flip[data-correct]');
+  if (flipEl) {
+    // Both the correct words and their wrong-layout gibberish are precomputed
+    // at build time (per language) and passed via data attributes.
+    const correct = flipEl.getAttribute('data-correct') || '';
+    const wrongArr = [...(flipEl.getAttribute('data-wrong') || '')];
+    const correctArr = [...correct];
+    const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+    const TYPE = 95, HOLD_TYPED = 500, HOLD_SELECT = 750, HOLD_CORRECT = 1600, HOLD_EMPTY = 550;
+
+    async function run() {
+      // Respect reduced-motion: just show the correct text, no animation.
+      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        flipEl.textContent = correct;
+        return;
+      }
+      flipEl.textContent = '';
+      while (true) {
+        // 1) Type the wrong-layout text, character by character.
+        flipEl.classList.add('typing');
+        for (let i = 1; i <= wrongArr.length; i++) { flipEl.textContent = wrongArr.slice(0, i).join(''); await sleep(TYPE); }
+        flipEl.classList.remove('typing');
+        await sleep(HOLD_TYPED);
+        // 2) Highlight (select) the typed text, like selecting it before the hotkey.
+        flipEl.classList.add('selected');
+        await sleep(HOLD_SELECT);
+        // 3) Flip to the correct words AND deselect at the same moment, so the
+        //    corrected text is shown without the highlight.
+        flipEl.textContent = correctArr.join('');
+        flipEl.classList.remove('selected');
+        await sleep(HOLD_CORRECT);
+        // 4) Clear and repeat.
+        flipEl.textContent = '';
+        await sleep(HOLD_EMPTY);
+      }
+    }
+    run();
+  }
+</script>
+
+<style>
+  .hero {
+    position: relative;
+    /* Fixed height so the image always fully covers the section and never
+       resizes when the animated headline changes. */
+    height: 64vh;
+    min-height: 500px;
+    display: flex;
+    align-items: flex-start;
+    overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background-image: url('/assets/language-Flipper-hero.webp');
+    background-size: cover;
+    /* Photo already has the character on the right with open space on the left,
+       so no zoom/shift is needed — just frame the faces. */
+    background-position: center 30%;
+    z-index: 0;
+  }
+  /* Hebrew is RTL (text on the right): mirror the photo so the character sits on
+     the LEFT, clear of the right-aligned text. */
+  :global(html[dir='rtl']) .hero-bg {
+    transform: scaleX(-1);
+  }
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    /* Exact Elementor value: #1D005B at opacity 0.17 */
+    background-color: rgba(29,0,91,0.17);
+    z-index: 1;
+  }
+  /* Fade the bottom of the hero photo into the purple background so there's no
+     hard image edge / visible gap where the next section begins. */
+  .hero::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 22%;
+    background: linear-gradient(180deg, rgba(29,0,91,0) 0%, #1D005B 100%);
+    z-index: 1;
+    pointer-events: none;
+  }
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    padding-top: 130px;
+    padding-bottom: 50px;
+    max-width: 700px;
+  }
+  .hero-h1 {
+    font-size: clamp(2.8rem, 5.9vw, 85px);
+    font-weight: 600;
+    color: var(--lf-white);
+    line-height: 100px;
+    letter-spacing: -3.5px;
+    margin-bottom: 1rem;
+    text-shadow: 0 2px 28px rgba(0,0,0,0.65);
+  }
+  .accent {
+    color: var(--lf-magenta);
+  }
+  .h1-line1 { display: block; }
+  /* Animated headline: "types" the wrong-layout text (shown LTR), then flips it
+     in place to the correct words. No folding/rotate — just a typed + flip effect. */
+  .h1-flip {
+    display: block;
+    /* hug the text so the selection highlight wraps just the words, not the line */
+    width: fit-content;
+    /* Smaller than line 1 so the wrong-layout text fits on one line without
+       running off the screen. */
+    font-size: clamp(3rem, 5.8vw, 84px);
+    line-height: 1.1;
+    letter-spacing: -1.5px;
+    /* Always one line with a reserved height, so typing/flipping/clearing never
+       reflows the headline (which was resizing the hero image). */
+    white-space: nowrap;
+    min-height: 96px;
+    margin-top: 4px;
+    /* Force the Hebrew "wrong layout" text to lay out left-to-right, as if typed
+       on an English keyboard in the wrong layout. */
+    direction: ltr;
+    unicode-bidi: bidi-override;
+  }
+  /* Hebrew version: the wrong text is English (naturally LTR) and the correct text
+     is Hebrew (RTL) — let each state pick its own direction, right-aligned. */
+  :global(html[dir='rtl']) .h1-flip {
+    direction: rtl;
+    unicode-bidi: plaintext;
+    /* fit-content block sits at the inline-start edge (the right, in RTL) */
+    margin-inline-start: 0;
+    margin-inline-end: auto;
+    text-align: right;
+  }
+  .h1-flip.typing::after {
+    content: '|';
+    margin-left: 2px;
+    font-weight: 400;
+    animation: lf-caret 0.9s step-end infinite;
+  }
+  @keyframes lf-caret { 0%, 50% { opacity: 1; } 50.01%, 100% { opacity: 0; } }
+  /* Text-selection highlight shown right before the flip (like selecting text,
+     then pressing the hotkey). */
+  .h1-flip.selected {
+    background-color: #2a6fff;
+    color: #fff;
+  }
+  .hero-sub {
+    color: var(--lf-white);
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 35px;
+    letter-spacing: -0.9px;
+    margin-bottom: 1.8rem;
+    text-shadow: 0 1px 14px rgba(0,0,0,0.7);
+    max-width: 560px;
+  }
+
+  @media (max-width: 767px) {
+    .hero {
+      min-height: 465px;
+      align-items: flex-start;
+    }
+    /* Mobile: cover fits to height, so bias the crop toward the character. */
+    .hero-bg {
+      background-position: 70% 28%;
+    }
+    :global(html[dir='rtl']) .hero-bg {
+      transform: scaleX(-1);
+    }
+    .hero-overlay {
+      background-color: rgba(29,0,91,0.25);
+    }
+    .hero-content {
+      padding-top: 80px;
+      padding-bottom: 60px;
+    }
+    .hero-h1 {
+      font-size: 67px;
+      line-height: 1.1;
+      letter-spacing: 1.4px;
+    }
+    .h1-flip { font-size: 48px; min-height: 56px; margin-top: 4px; white-space: nowrap; }
+    .hero-sub {
+      font-size: 18px;
+      line-height: 1.3em;
+      letter-spacing: 0;
+      max-width: 100%;
+    }
+  }
+</style>

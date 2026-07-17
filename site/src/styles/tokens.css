@@ -1,0 +1,32 @@
+/*
+ * Design tokens — extracted 1:1 from the live Elementor kit (post-6.css / post-14.css).
+ * Original Elementor global variable names kept in comments for traceability.
+ */
+:root {
+  /* Brand palette */
+  --lf-white:    #FFFFFF; /* e-global-color-primary / text */
+  --lf-bg-deep:  #1D005B; /* e-global-color-45dfa26 — main purple background */
+  --lf-ink:      #212529; /* e-global-color-0cbbe66 — near-black sections */
+  --lf-navy-1:   #071D39; /* e-global-color-25fe158 */
+  --lf-navy-2:   #03224B; /* e-global-color-b084047 */
+  --lf-blurple:  #5E4AFF; /* e-global-color-db1f14e */
+  --lf-magenta:  #D147FE; /* e-global-color-secondary — accent / CTA / pink text */
+  --lf-gold:     #FFCE00; /* e-global-color-accent — "Download Now" */
+  --lf-peach:    #FFBC7D;
+  --lf-footer:   #020101; /* footer near-black */
+
+  /* Text */
+  --lf-text:        var(--lf-white);
+  --lf-text-muted:  #cbb8e6;
+
+  /* Gradients (from home post-14.css) */
+  --lf-section-gradient: linear-gradient(180deg, rgba(33,37,41,0) 0%, #1D005B 100%);
+  --lf-section-gradient-78: linear-gradient(180deg, rgba(33,37,41,0) 0%, #1D005B 78%);
+
+  /* Typography */
+  --lf-font: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+
+  /* Layout */
+  --lf-radius: 12px;
+  --lf-maxw: 1140px;
+}

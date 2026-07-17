@@ -1,0 +1,141 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Header from '../../../components/Header.astro';
+import Hero from '../../../components/Hero.astro';
+import HowItWorks from '../../../components/HowItWorks.astro';
+import DownloadRow from '../../../components/DownloadRow.astro';
+import HeadingLine from '../../../components/HeadingLine.astro';
+import GetTheFeeling from '../../../components/GetTheFeeling.astro';
+import Footer from '../../../components/Footer.astro';
+import { softwareApplication } from '../../../schema';
+
+const lang = 'he' as const;
+---
+<BaseLayout
+  title="Language Flipper | תיקון גיבריש מקלדת עברית-אנגלית"
+  description="עייפתם לכתוב גיבריש? Language Flipper מתקן טעויות מקלדת עברית-אנגלית ברגע. הורידו עכשיו וקבלו 40 פליפים חינם!"
+  lang={lang}
+  schema={softwareApplication(lang)}
+  preloadImage="/assets/language-Flipper-hero.webp"
+>
+  <Header lang={lang} />
+  <main id="content">
+    <Hero lang={lang} />
+    <!-- Two empty gradient spacers between hero and how-it-works -->
+    <div class="gradient-spacer"></div>
+    <div class="gradient-spacer"></div>
+    <HowItWorks lang={lang} />
+    <!-- Empty gradient spacer between how-it-works and download -->
+    <div class="gradient-spacer-lg"></div>
+    <DownloadRow lang={lang} />
+
+    <!-- Hebrew "זה אשכרה ככה!" section — heading + paragraph + CTA (no solution cards) -->
+    <section class="he-solution-section">
+      <div class="he-solution-overlay" aria-hidden="true"></div>
+      <div class="container he-solution-content">
+        <h2 class="he-sol-h2">זה אשכרה ככה!</h2>
+        <HeadingLine align="center" />
+        <blockquote class="he-sol-body">
+          <p><strong>האמת… כבר התרגלתם לזה בלי לשים לב- להציץ כל רגע במסך רק כדי לוודא שאתם בשפה הנכונה.</strong>&nbsp;</p>
+          <p><strong>לי כבר אין את הבעיה הזאת.&nbsp;</strong></p>
+          <p><strong>רוצים לראות איך זה עובד?&nbsp;&nbsp;</strong></p>
+          <p><strong>בנינו לכם חדר נקי לניסויים!&nbsp;</strong><strong>לחצו על הקישור למטה ותעשו סיבוב על הפליפר שלנו.</strong></p>
+        </blockquote>
+        <a href="/he/תפליפו/" class="he-sol-cta">?רוצה לנסות</a>
+      </div>
+    </section>
+
+    <GetTheFeeling lang={lang} />
+  </main>
+  <Footer lang={lang} />
+</BaseLayout>
+
+<style>
+  /* Elementor gradient spacer sections: 180deg transparent → #1D005B */
+  .gradient-spacer {
+    background: linear-gradient(180deg, #21252900 0%, #1D005B 100%);
+    height: 40px;
+    display: block;
+  }
+  .gradient-spacer-lg {
+    background: linear-gradient(180deg, #21252900 0%, #1D005B 78%);
+    height: 40px;
+    display: block;
+  }
+  @media (max-width: 767px) {
+    .gradient-spacer,
+    .gradient-spacer-lg {
+      height: 20px;
+    }
+  }
+
+  /* ── Hebrew "זה אשכרה ככה!" section ── */
+  .he-solution-section {
+    position: relative;
+    min-height: 560px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    overflow: hidden;
+    background-image: url('/assets/how-it-works-1.webp');
+    background-size: cover;
+    background-position: center center;
+  }
+  .he-solution-overlay {
+    position: absolute;
+    inset: 0;
+    background-color: rgba(29, 0, 91, 0.60);
+    z-index: 0;
+  }
+  /* Tilt shape at top matching the Elementor section */
+  .he-solution-content {
+    position: relative;
+    z-index: 3;
+    padding: 165px 1rem 145px;
+    width: 100%;
+    direction: rtl;
+  }
+  .he-sol-h2 {
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    color: var(--lf-white);
+    font-weight: 700;
+    margin-bottom: 0.4rem;
+  }
+  .he-sol-body {
+    margin: 0 auto 1.8rem;
+    max-width: 640px;
+    color: var(--lf-white);
+    font-size: 0.95rem;
+    line-height: 1.8;
+    font-style: normal;
+    border: none;
+    padding: 0;
+  }
+  .he-sol-body p {
+    margin-bottom: 0.2rem;
+  }
+  .he-sol-body strong {
+    font-weight: 700;
+  }
+  .he-sol-cta {
+    display: inline-block;
+    background: var(--lf-magenta);
+    color: var(--lf-white);
+    padding: 8px 28px;
+    border-radius: 40px;
+    font-weight: 600;
+    font-size: 0.88rem;
+    text-decoration: none;
+    transition: opacity 0.2s;
+  }
+  .he-sol-cta:hover { opacity: 0.85; }
+
+  @media (max-width: 767px) {
+    .he-solution-section {
+      min-height: 420px;
+    }
+    .he-solution-content {
+      padding: 115px 1rem 95px;
+    }
+  }
+</style>

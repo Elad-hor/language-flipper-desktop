@@ -1,0 +1,193 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import HeadingLine from '../components/HeadingLine.astro';
+import { faqPage, breadcrumb } from '../schema';
+
+const lang = 'en';
+
+// Single source of truth: drives BOTH the visible accordion and the FAQPage
+// JSON-LD (Google requires the schema to match on-page content).
+const faqs = [
+  {
+    q: 'What is Language Flipper?',
+    a: "Language Flipper is a lightweight desktop app for macOS and Windows that instantly fixes text typed in the wrong keyboard layout. If you typed in English when you meant Hebrew (or vice versa), press Ctrl+Shift+Y on Windows or Cmd+Shift+Y on Mac and it converts the gibberish to the correct text in place — no retyping.",
+  },
+  {
+    q: 'Is Language Flipper a Langover alternative?',
+    a: 'Yes. Language Flipper is a modern alternative to Langover. Langover is Windows-only; Language Flipper runs on both macOS and Windows, is actively maintained with regular releases, switches your keyboard layout automatically after each flip, and starts free with 40 flips.',
+  },
+  {
+    q: 'Is there a Langover for Mac?',
+    a: 'Langover itself is Windows-only, so Mac users have no native Langover option. Language Flipper fills that gap: it is a native macOS app that fixes Hebrew-English keyboard gibberish with a single hotkey (Cmd+Shift+Y), and it also runs on Windows.',
+  },
+  {
+    q: 'Does Language Flipper work on Mac and Windows?',
+    a: 'Yes. Language Flipper ships as a native Mac app (.dmg) and a native Windows installer (.exe). Both fix Hebrew-English text and switch the keyboard layout automatically.',
+  },
+  {
+    q: 'How much does Language Flipper cost?',
+    a: 'Language Flipper is free for the first 40 flips (lifetime, no account required). After that, a premium license is $9.99 per year via Gumroad and unlocks unlimited flips, with a 14-day money-back guarantee.',
+  },
+  {
+    q: 'How do I fix Hebrew gibberish typed in English?',
+    a: 'Select the mistyped text (or leave it unselected to fix the current line), then press Ctrl+Shift+Y on Windows or Cmd+Shift+Y on Mac. Language Flipper maps each character to its correct Hebrew or English equivalent, replaces the text on screen, and switches your keyboard layout to match.',
+  },
+  {
+    q: 'Does it work in all applications?',
+    a: 'Yes. Language Flipper works at the operating-system level, so it works in virtually any app — Outlook, Slack, VS Code, Chrome, WhatsApp Web, Word, Excel, and more.',
+  },
+  {
+    q: 'Is my text sent to the cloud?',
+    a: 'No. Language Flipper runs entirely offline on your machine. Your text is never sent to any server or API — the character mapping is a local lookup table baked into the app.',
+  },
+];
+---
+<BaseLayout
+  title="Language Flipper FAQ — Langover Alternative, Pricing & How It Works"
+  description="Answers about Language Flipper: how it fixes Hebrew-English keyboard gibberish, Mac & Windows support, pricing, privacy, and how it compares to Langover."
+  lang={lang}
+  schema={[
+    faqPage(lang, faqs),
+    breadcrumb(
+      { name: 'Home', url: 'https://languageflipper.com/' },
+      { name: 'FAQ', url: 'https://languageflipper.com/solutions/' },
+    ),
+  ]}
+>
+  <Header lang={lang} />
+  <main id="content">
+    <!-- Hero -->
+    <section class="faq-hero">
+      <div class="container faq-hero-inner">
+        <h1 class="faq-h1">Frequently Asked Questions</h1>
+        <p class="faq-sub">
+          Everything about fixing Hebrew-English keyboard gibberish with Language Flipper —
+          pricing, Mac &amp; Windows support, privacy, and how it compares to Langover.
+        </p>
+      </div>
+    </section>
+
+    <!-- FAQ list -->
+    <section class="faq-section">
+      <div class="container faq-list">
+        <h2 class="faq-list-h2">Questions &amp; answers</h2>
+        <HeadingLine align="center" />
+        {faqs.map((item) => (
+          <details class="faq-item">
+            <summary class="faq-q">{item.q}</summary>
+            <p class="faq-a">{item.a}</p>
+          </details>
+        ))}
+      </div>
+    </section>
+  </main>
+  <Footer lang={lang} />
+</BaseLayout>
+
+<style>
+  .faq-hero {
+    position: relative;
+    background-image: url('/assets/home-page-main.webp');
+    background-size: cover;
+    background-position: center center;
+    min-height: 420px;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+  }
+  .faq-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(8, 0, 40, 0.55);
+    z-index: 0;
+  }
+  .faq-hero::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 40%;
+    background: linear-gradient(180deg, rgba(29,0,91,0) 0%, var(--lf-bg-deep) 100%);
+    z-index: 0;
+    pointer-events: none;
+  }
+  .faq-hero-inner {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 120px 20px 80px;
+    width: 100%;
+  }
+  .faq-h1 {
+    font-size: clamp(2.2rem, 5vw, 3.4rem);
+    font-weight: 700;
+    color: var(--lf-white);
+    letter-spacing: -1px;
+    text-shadow: 0 2px 24px rgba(0,0,0,0.6);
+    margin-bottom: 1rem;
+  }
+  .faq-sub {
+    font-size: 1.05rem;
+    color: var(--lf-white);
+    max-width: 640px;
+    margin: 0 auto;
+    line-height: 1.6;
+    text-shadow: 0 1px 10px rgba(0,0,0,0.6);
+  }
+
+  .faq-section {
+    background: var(--lf-bg-deep);
+    padding: 80px 0 140px;
+  }
+  .faq-list {
+    max-width: 820px;
+  }
+  .faq-list-h2 {
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    color: var(--lf-white);
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 0.4rem;
+  }
+  .faq-item {
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+    padding: 1.25rem 0;
+  }
+  .faq-q {
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--lf-white);
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+  }
+  .faq-q::-webkit-details-marker { display: none; }
+  .faq-q::after {
+    content: '+';
+    color: var(--lf-magenta);
+    font-size: 1.6rem;
+    font-weight: 400;
+    line-height: 1;
+    transition: transform 0.2s;
+  }
+  .faq-item[open] .faq-q::after { transform: rotate(45deg); }
+  .faq-a {
+    color: rgba(255,255,255,0.82);
+    font-size: 1rem;
+    line-height: 1.75;
+    margin: 0.9rem 0 0;
+  }
+
+  @media (max-width: 767px) {
+    .faq-hero { min-height: 320px; }
+    .faq-hero-inner { padding: 96px 20px 60px; }
+    .faq-q { font-size: 1.05rem; }
+  }
+</style>

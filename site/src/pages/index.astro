@@ -1,0 +1,139 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Hero from '../components/Hero.astro';
+import HowItWorks from '../components/HowItWorks.astro';
+import DownloadRow from '../components/DownloadRow.astro';
+import HeadingLine from '../components/HeadingLine.astro';
+import GetTheFeeling from '../components/GetTheFeeling.astro';
+import Footer from '../components/Footer.astro';
+import { softwareApplication } from '../schema';
+
+const lang = 'en';
+---
+<BaseLayout
+  title="Language Flipper — Fix Hebrew↔English Keyboard Gibberish"
+  description="Typed Hebrew in English mode? One hotkey fixes it instantly. Language Flipper converts gibberish to correct text on Mac & Windows. 40 free flips."
+  lang={lang}
+  schema={softwareApplication(lang)}
+  preloadImage="/assets/language-Flipper-hero.webp"
+>
+  <Header lang={lang} />
+  <main id="content">
+    <Hero lang={lang} />
+    <!-- Two empty gradient spacers between hero and how-it-works -->
+    <div class="gradient-spacer"></div>
+    <div class="gradient-spacer"></div>
+    <HowItWorks lang={lang} />
+    <!-- Empty gradient spacer between how-it-works and download -->
+    <div class="gradient-spacer-lg"></div>
+    <DownloadRow lang={lang} />
+
+    <!-- "The Hard Truth" — heading + blockquote + CTA (mirrors the Hebrew "זה אשכרה ככה") -->
+    <section class="en-solution-section">
+      <div class="en-solution-overlay" aria-hidden="true"></div>
+      <div class="container en-solution-content">
+        <h2 class="en-sol-h2">The Hard Truth</h2>
+        <HeadingLine align="center" />
+        <blockquote class="en-sol-body">
+          <p><strong>You've gotten so used to it you don't even notice — glancing at your screen every few seconds just to make sure you're in the right language.</strong></p>
+          <p><strong>I don't have that problem anymore.</strong></p>
+          <p><strong>Want to see how it works?</strong></p>
+          <p><strong>We built you a clean room to experiment in! Hit the button below and take our flipper for a spin.</strong></p>
+        </blockquote>
+        <a href="/flip-it/" class="en-sol-cta">Try it now</a>
+      </div>
+    </section>
+
+    <GetTheFeeling lang={lang} />
+  </main>
+  <Footer lang={lang} />
+</BaseLayout>
+
+<style>
+  /* Elementor gradient spacer sections: 180deg transparent → #1D005B */
+  .gradient-spacer {
+    background: linear-gradient(180deg, #21252900 0%, #1D005B 100%);
+    height: 40px;
+    display: block;
+  }
+  .gradient-spacer-lg {
+    background: linear-gradient(180deg, #21252900 0%, #1D005B 78%);
+    height: 40px;
+    display: block;
+  }
+  @media (max-width: 767px) {
+    .gradient-spacer,
+    .gradient-spacer-lg {
+      height: 20px;
+    }
+  }
+
+  /* ── "The Hard Truth" section (mirrors the Hebrew "זה אשכרה ככה") ── */
+  .en-solution-section {
+    position: relative;
+    min-height: 560px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    overflow: hidden;
+    background-image: url('/assets/how-it-works-1.webp');
+    background-size: cover;
+    background-position: center center;
+  }
+  .en-solution-overlay {
+    position: absolute;
+    inset: 0;
+    background-color: rgba(29, 0, 91, 0.60);
+    z-index: 0;
+  }
+  .en-solution-content {
+    position: relative;
+    z-index: 3;
+    padding: 165px 1rem 145px;
+    width: 100%;
+  }
+  .en-sol-h2 {
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    color: var(--lf-white);
+    font-weight: 700;
+    margin-bottom: 0.4rem;
+  }
+  .en-sol-body {
+    margin: 0 auto 1.8rem;
+    max-width: 640px;
+    color: var(--lf-white);
+    font-size: 0.95rem;
+    line-height: 1.8;
+    font-style: normal;
+    border: none;
+    padding: 0;
+  }
+  .en-sol-body p {
+    margin-bottom: 0.2rem;
+  }
+  .en-sol-body strong {
+    font-weight: 700;
+  }
+  .en-sol-cta {
+    display: inline-block;
+    background: var(--lf-magenta);
+    color: var(--lf-white);
+    padding: 8px 28px;
+    border-radius: 40px;
+    font-weight: 600;
+    font-size: 0.88rem;
+    text-decoration: none;
+    transition: opacity 0.2s;
+  }
+  .en-sol-cta:hover { opacity: 0.85; }
+
+  @media (max-width: 767px) {
+    .en-solution-section {
+      min-height: 420px;
+    }
+    .en-solution-content {
+      padding: 115px 1rem 95px;
+    }
+  }
+</style>

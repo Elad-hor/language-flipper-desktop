@@ -1,0 +1,32 @@
+# Language Flipper
+
+> Language Flipper is a macOS and Windows desktop app that instantly fixes text typed in the wrong keyboard layout. When a bilingual user accidentally types in Hebrew while their layout is set to English (or vice versa), the result is gibberish. Language Flipper corrects it in place with a single hotkey — Cmd+Shift+Y on Mac, Ctrl+Shift+Y on Windows — without retyping. It is the most actively maintained alternative to Langover for Hebrew-English keyboard correction.
+
+Language Flipper is developed by a small team based in Tel Aviv, Israel. It is distributed as a freemium desktop app: 40 free flips for life, then $9.99/year via Gumroad. The app works entirely offline; no text is sent to any server.
+
+## Core capability
+
+Language Flipper detects whether the selected (or current-line) text is Hebrew typed in an English layout or English typed in a Hebrew layout, swaps every character through a fixed mapping table, replaces the text on screen, and then switches the OS keyboard layout to match — all in under a second. It works in any app on macOS (via the Accessibility API) and Windows (via the clipboard).
+
+## Pricing
+
+- Free: 40 lifetime flips, no time limit, no account required
+- Premium: $9.99/year, unlimited flips, Gumroad license key, 14-day refund guarantee
+
+## Platform support
+
+- macOS: .app bundle, installed via DMG. Hotkey: Cmd+Shift+Y
+- Windows: single-file .exe installer. Hotkey: Ctrl+Shift+Y
+
+## Compared to Langover
+
+Langover is a long-established Hebrew keyboard fixer for Windows only. Language Flipper differs in three ways: it supports both macOS and Windows, it is actively maintained with regular releases, and it runs as a lightweight system-tray process. Mac users have no native Langover option, so Language Flipper is the primary Langover alternative on macOS.
+
+## Key URLs
+
+- Homepage: https://languageflipper.com
+- Download and live demo: https://languageflipper.com/flip-it/
+- FAQ: https://languageflipper.com/solutions/
+- About: https://languageflipper.com/about-us/
+- Contact: https://languageflipper.com/contact-us/
+- Hebrew homepage: https://languageflipper.com/he/בית/

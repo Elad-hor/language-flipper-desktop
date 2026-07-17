@@ -1,0 +1,247 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Header from '../../../components/Header.astro';
+import Footer from '../../../components/Footer.astro';
+import DownloadRow from '../../../components/DownloadRow.astro';
+import FlipText from '../../../components/FlipText.astro';
+import HeadingLine from '../../../components/HeadingLine.astro';
+import { breadcrumb } from '../../../schema';
+
+const lang = 'he' as const;
+---
+<BaseLayout
+  title="עלינו | Language Flipper - אל תתפלפו, פשוט תפליפו"
+  description="כתבנו פסקה מבריקה שלמה בלי להרים עיניים מהמקלדת. הרמנו מבט — והיא הייתה בשפה הלא נכונה. אז בנינו את האפליקציה הזאת."
+  lang={lang}
+  schema={breadcrumb(
+    { name: 'בית', url: encodeURI('https://languageflipper.com/he/בית/') },
+    { name: 'עלינו', url: encodeURI('https://languageflipper.com/he/עלינו/') },
+  )}
+>
+  <Header lang={lang} />
+  <main id="content">
+
+    <!-- Hero: "קצת עלינו" heading + subtitle, how-it-works-1.webp bg (tech tunnel) -->
+    <section class="about-hero">
+      <div class="about-hero-content">
+        <h1 class="about-hero-h1"><FlipText text="קצת עלינו" lang={lang} /></h1>
+        <h2 class="about-hero-h2">
+          Language Flipper מתקן אוטומטית טעויות של אנגלית-עברית בכל תוכנה ובכל אתר. פשוט לוחצים, וממשיכים לעבוד.
+        </h2>
+        <a href="/he/תפליפו/" class="about-cta">תנסו את זה</a>
+      </div>
+    </section>
+
+    <!-- About Language Flipper: white bg, content + right circuit deco -->
+    <section class="about-body-section">
+      <div class="about-body-grid container">
+        <div class="about-text-col">
+          <h2 class="about-h2">זה כל הסיפור</h2>
+          <HeadingLine />
+          <p>כולנו יודעים בדיוק איך הסרט הזה נגמר.</p>
+          <p>אתם לגמרי בקטע. הרגע הקלדתם את הפסקה הכי מבריקה ומנוסחת בקריירה שלכם. האצבעות עפות על המקלדת. אתם מרימים מבט מלאי ביטחון למסך, מוכנים ללחוץ שלח… והנשמה שלכם פשוט עוזבת את הגוף.</p>
+          <p>במקום הודעה גאונית, אתם בוהים במסך מלא בג׳יבריש טהור. akuo, nv ph,tun vneks, akf cvbnkh,?</p>
+          <p>Language Flipper הוא כפתור ה-Undo שחלמתם עליו מאז שנות ה-90. אפליקציה קלילה וסופר-מהירה לווינדוס ומאק, שלוקחת את טעויות המקלדת המעצבנות האלה והופכת אותן ברגע חזרה למילים של בני אדם.</p>
+          <p>זה בכלל לא משנה איפה אתם עובדים. ל-Language Flipper לא אכפת אם אתם עמוק בתוך מסמך Word, קוברים את עצמכם ב-Excel, כותבים אימייל ב-Chrome, חופרים לקולגות ב-Slack או מסתמסים ב-WhatsApp. אם אפשר להקליד שם, אפשר לעשות שם פליפ.</p>
+          <p>אל תתפלפו. פשוט תפליפו.</p>
+        </div>
+        <!-- Right column: decorative circuit-board image -->
+        <div class="about-deco-col" aria-hidden="true">
+          <img src="/assets/Language-Flipper.webp" alt="" />
+        </div>
+      </div>
+    </section>
+
+    <!-- Download Now -->
+    <DownloadRow lang={lang} />
+
+    <!-- Talk to us: dark animated background section -->
+    <section class="talk-section">
+      <div class="talk-inner container">
+        <h2 class="talk-h1">תדברו איתנו</h2>
+        <a href="/he/צור-קשר/" class="talk-cta">צרו קשר</a>
+      </div>
+    </section>
+
+  </main>
+  <Footer lang={lang} />
+</BaseLayout>
+
+<style>
+  /* ─── Hero ─── */
+  .about-hero {
+    position: relative;
+    background-image: url('/assets/about-language-flipper-hero.webp');
+    background-size: cover;
+    background-position: center center;
+    min-height: 825px;
+    display: flex;
+    align-items: flex-start;
+    overflow: hidden;
+    /* Hebrew is RTL (text on the right): mirror the photo so the character sits
+       on the LEFT, clear of the text. The content is un-mirrored below. */
+    transform: scaleX(-1);
+  }
+  .about-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(6, 0, 30, 0.48);
+    z-index: 0;
+  }
+  /* Bottom fade into purple (same effect as the home hero) */
+  .about-hero::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 32%;
+    background: linear-gradient(180deg, rgba(29,0,91,0) 0%, #1D005B 100%);
+    z-index: 0;
+    pointer-events: none;
+  }
+  .about-hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: var(--lf-maxw);
+    margin: 0 auto;
+    padding: 80px 20px 60px;
+    width: 100%;
+    direction: rtl;
+    text-align: right;
+    /* undo the section mirror so the text reads normally */
+    transform: scaleX(-1);
+  }
+  .about-hero-h1 {
+    /* bigger, with the same glow/graphic treatment as the home hero h1 */
+    font-size: clamp(2.8rem, 5.9vw, 82px);
+    font-weight: 600;
+    letter-spacing: -2.5px;
+    color: var(--lf-white);
+    margin-bottom: 1.1rem;
+    line-height: 1.1;
+    text-shadow: 0 2px 28px rgba(0,0,0,0.65);
+  }
+  .about-hero-h2 {
+    font-size: clamp(0.8rem, 1.4vw, 0.95rem);
+    font-weight: 400;
+    color: var(--lf-white);
+    line-height: 1.8;
+    margin-bottom: 1.75rem;
+    max-width: 580px;
+  }
+  .about-cta {
+    display: inline-block;
+    background: var(--lf-magenta);
+    color: var(--lf-white);
+    padding: 10px 28px;
+    border-radius: 40px;
+    font-weight: 600;
+    font-size: 0.88rem;
+    transition: opacity 0.2s;
+  }
+  .about-cta:hover { opacity: 0.85; }
+
+  /* ─── About body (white bg, 2-col) ─── */
+  .about-body-section {
+    background: #fff;
+    padding: 100px 0 160px;
+  }
+  .about-body-grid {
+    display: grid;
+    grid-template-columns: 55fr 45fr;
+    gap: 0;
+    align-items: stretch;
+  }
+  .about-text-col {
+    padding-inline-end: 2rem;
+  }
+  .about-text-col p {
+    color: #333;
+    font-size: 1.12rem;
+    line-height: 1.8;
+    margin-bottom: 1.1rem;
+  }
+  .about-h2 {
+    font-size: clamp(2rem, 4vw, 2.9rem);
+    color: var(--lf-magenta);
+    font-weight: 700;
+    margin-bottom: 0.85rem;
+    line-height: 1.2;
+  }
+
+  /* Right deco col */
+  .about-deco-col {
+    overflow: hidden;
+    position: relative;
+    min-height: 300px;
+  }
+  .about-deco-col img {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: left center;
+    max-width: none;
+    opacity: 0.95;
+  }
+
+  /* ─── Talk to us ─── */
+  .talk-section {
+    position: relative;
+    background-image: url('/assets/our-partners.webp');
+    background-size: cover;
+    background-position: center center;
+    min-height: 560px;
+    display: flex;
+    align-items: center;
+  }
+  /* Vibrant purple overlay — same treatment as the HP "Get the feeling" section */
+  .talk-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-color: rgba(29,0,91,0.69);
+  }
+  /* No artificial bottom fade — the image's own vignette darkens into the footer,
+     exactly like the HP "Get the feeling" section. */
+  .talk-inner {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding-top: 96px;
+    padding-bottom: 96px;
+    width: 100%;
+  }
+  .talk-h1 {
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    color: var(--lf-white);
+    font-weight: 800;
+    margin-bottom: 1.5rem;
+  }
+  .talk-cta {
+    display: inline-block;
+    background: var(--lf-magenta);
+    color: var(--lf-white);
+    padding: 12px 32px;
+    border-radius: 40px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: opacity 0.2s;
+  }
+  .talk-cta:hover { opacity: 0.85; }
+
+  /* ─── Mobile ─── */
+  @media (max-width: 767px) {
+    .about-hero { min-height: 500px; }
+    .about-body-grid {
+      grid-template-columns: 1fr;
+    }
+    .about-deco-col { display: none; }
+    .about-text-col { padding-inline-end: 0; }
+  }
+</style>

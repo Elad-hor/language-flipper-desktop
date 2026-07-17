@@ -1,0 +1,341 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Header from '../../../components/Header.astro';
+import Button from '../../../components/Button.astro';
+import DownloadRow from '../../../components/DownloadRow.astro';
+import TryItWidget from '../../../components/TryItWidget.astro';
+import Footer from '../../../components/Footer.astro';
+import FlipText from '../../../components/FlipText.astro';
+import HeadingLine from '../../../components/HeadingLine.astro';
+import { type Lang, t } from '../../../i18n/ui';
+import { softwareApplication, breadcrumb } from '../../../schema';
+
+const lang: Lang = 'he';
+---
+<BaseLayout
+  title="חלופה ללנגאובר | Language Flipper — תיקון גיבריש בלחיצה"
+  description="לנגאובר לא עובד על מאק? Language Flipper כן. תקנו גיבריש עברית-אנגלית ב-CTRL+SHIFT+Y, בכל תוכנה, ב-Mac וב-Windows. נסו עכשיו חינם."
+  lang={lang}
+  schema={[
+    softwareApplication(lang),
+    breadcrumb(
+      { name: 'בית', url: encodeURI('https://languageflipper.com/he/בית/') },
+      { name: 'תפליפו', url: encodeURI('https://languageflipper.com/he/תפליפו/') },
+    ),
+  ]}
+>
+  <Header lang={lang} />
+
+  <main id="content">
+
+    <!-- ── Hero ─────────────────────────────────────────────────────── -->
+    <section class="fi-hero">
+      <div class="fi-hero-bg" aria-hidden="true"></div>
+      <div class="fi-hero-overlay" aria-hidden="true"></div>
+      <div class="container fi-hero-content">
+        <h1 class="fi-h1">
+          <FlipText text={t(lang, 'flipit.h1') + '. . .'} lang={lang} />
+        </h1>
+        <h2 class="fi-h2">
+          {t(lang, 'flipit.h2_line1')}<br />{t(lang, 'flipit.h2_line2')}<span class="fi-dot"> .</span><span class="fi-dot"> .</span><span class="fi-dot"> .</span>
+        </h2>
+        <Button href="#demo" label={t(lang, 'flipit.cta')} />
+      </div>
+    </section>
+
+    <!-- Gradient transition: hero photo fades into dark "Try It Live" section -->
+    <div class="fi-gradient-bridge" aria-hidden="true"></div>
+
+    <!-- ── Try It Live section ───────────────────────────────────────── -->
+    <section class="fi-live-section">
+      <div class="fi-live-overlay" aria-hidden="true"></div>
+      <div class="container fi-live-content">
+        <h2 class="fi-live-h2">{t(lang, 'flipit.live_h2')}</h2>
+        <HeadingLine align="center" />
+        <p class="fi-live-sub">
+          {t(lang, 'flipit.live_sub_1')}<strong>{t(lang, 'flipit.live_sub_bold')}</strong>{t(lang, 'flipit.live_sub_2')}
+        </p>
+        <Button href="#demo" label={t(lang, 'flipit.cta')} />
+      </div>
+    </section>
+
+    <!-- ── Widget section (white) ────────────────────────────────────── -->
+    <section class="fi-widget-section" id="demo">
+      <div class="container">
+        <TryItWidget />
+      </div>
+    </section>
+
+    <!-- ── Download Now ──────────────────────────────────────────────── -->
+    <div class="fi-download-shape" aria-hidden="true">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 100" preserveAspectRatio="none">
+        <path class="fi-dl-shape-fill" d="M0,6V0h1000v100L0,6z"></path>
+      </svg>
+    </div>
+    <DownloadRow lang={lang} />
+
+    <!-- ── Corporation CTA ───────────────────────────────────────────── -->
+    <section class="fi-corp-section">
+      <div class="fi-corp-bg" aria-hidden="true"></div>
+      <div class="fi-corp-overlay" aria-hidden="true"></div>
+      <div class="container fi-corp-content">
+        <h3 class="fi-corp-h3">{t(lang, 'flipit.corp_h3')}</h3>
+        <HeadingLine align="center" />
+        <p class="fi-corp-sub1">{t(lang, 'flipit.corp_sub1')}</p>
+        <p class="fi-corp-sub2">{t(lang, 'flipit.corp_sub2')}</p>
+        <Button href="/he/צור-קשר/" label={t(lang, 'flipit.corp_cta')} />
+      </div>
+    </section>
+
+  </main>
+
+  <Footer lang={lang} />
+
+</BaseLayout>
+
+<style>
+  /* ─── Gradient bridges ──────────────────────────────────────────── */
+  .fi-gradient-bridge {
+    height: 60px;
+    background: linear-gradient(180deg, rgba(29,0,91,0) 0%, rgba(5,0,20,0.85) 100%);
+    margin-top: -60px;
+    position: relative;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+
+  /* ─── Hero ──────────────────────────────────────────────────────── */
+  .fi-hero {
+    position: relative;
+    min-height: 825px;
+    display: flex;
+    align-items: flex-start;
+    overflow: hidden;
+  }
+  .fi-hero-bg {
+    position: absolute;
+    inset: 0;
+    background-image: url('/assets/home-page-main.webp');
+    background-size: cover;
+    background-position: top center;
+    z-index: 0;
+  }
+  .fi-hero-overlay {
+    position: absolute;
+    inset: 0;
+    background-color: rgba(29,0,91,0.17);
+    z-index: 1;
+  }
+  /* Bottom purple fade — same as Home/About heroes */
+  .fi-hero::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 32%;
+    background: linear-gradient(180deg, rgba(29,0,91,0) 0%, #1D005B 100%);
+    z-index: 1;
+    pointer-events: none;
+  }
+  .fi-hero-content {
+    position: relative;
+    z-index: 2;
+    padding-top: 180px;
+    padding-bottom: 140px;
+  }
+  .fi-h1 {
+    font-size: clamp(2.8rem, 5.9vw, 82px);
+    font-weight: 600;
+    color: var(--lf-white);
+    line-height: 1.1;
+    letter-spacing: -2.5px;
+    margin-bottom: 0.75rem;
+    text-shadow: 0 2px 28px rgba(0,0,0,0.65);
+  }
+  .fi-h2 {
+    font-size: clamp(0.95rem, 1.6vw, 1.15rem);
+    font-weight: 500;
+    color: var(--lf-white);
+    line-height: 1.55;
+    letter-spacing: -0.2px;
+    margin-bottom: 1.8rem;
+    text-shadow: 0 1px 14px rgba(0,0,0,0.7);
+  }
+  .fi-dot {
+    color: var(--lf-magenta);
+  }
+
+  @media (max-width: 767px) {
+    .fi-hero {
+      min-height: 560px;
+    }
+    .fi-hero-bg {
+      background-position: 60% top;
+    }
+    .fi-hero-overlay {
+      background-color: rgba(29,0,91,0.30);
+    }
+    .fi-hero-content {
+      padding-top: 120px;
+      padding-bottom: 80px;
+    }
+    .fi-h1 {
+      font-size: clamp(2.4rem, 12vw, 3.2rem);
+    }
+    .fi-h2 {
+      font-size: 0.95rem;
+    }
+  }
+
+  /* ─── Try It Live ────────────────────────────────────────────────── */
+  .fi-live-section {
+    position: relative;
+    min-height: 560px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    overflow: hidden;
+    background-image: url('/assets/how-it-works-1.webp');
+    background-size: cover;
+    background-position: center;
+  }
+  .fi-live-shape {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 2;
+    line-height: 0;
+    pointer-events: none;
+  }
+  .fi-live-shape svg {
+    display: block;
+    width: 100%;
+    height: 80px;
+  }
+  .fi-shape-fill {
+    fill: #09002a;
+  }
+  .fi-live-overlay {
+    position: absolute;
+    inset: 0;
+    background-color: rgba(29,0,91,0.58);
+    z-index: 0;
+  }
+  .fi-live-content {
+    position: relative;
+    z-index: 3;
+    padding: 140px 1rem 100px;
+    width: 100%;
+  }
+  .fi-live-h2 {
+    font-size: clamp(2rem, 4vw, 2.9rem);
+    font-weight: 700;
+    color: var(--lf-white);
+    margin-bottom: 0.85rem;
+    text-shadow: 0 2px 20px rgba(0,0,0,0.5);
+  }
+  .fi-live-sub {
+    font-size: 1.12rem;
+    color: var(--lf-white);
+    margin-bottom: 1.5rem;
+    text-shadow: 0 1px 10px rgba(0,0,0,0.6);
+  }
+  .fi-live-sub strong {
+    font-weight: 700;
+  }
+
+  @media (max-width: 767px) {
+    .fi-live-section {
+      min-height: 440px;
+    }
+    .fi-live-content {
+      padding: 140px 1rem 80px;
+    }
+    .fi-live-h2 {
+      font-size: 1.8rem;
+    }
+  }
+
+  /* ─── Widget section (white) ────────────────────────────────────── */
+  .fi-widget-section {
+    background: #ffffff;
+    padding: 100px 0 160px;
+  }
+
+  /* ─── Download shape connector ──────────────────────────────────── */
+  .fi-download-shape {
+    position: relative;
+    background: var(--lf-bg-deep);
+    line-height: 0;
+    overflow: hidden;
+    height: 80px;
+  }
+  .fi-download-shape svg {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 80px;
+  }
+  .fi-dl-shape-fill {
+    fill: #ffffff;
+  }
+
+  /* ─── Corporation CTA ───────────────────────────────────────────── */
+  .fi-corp-section {
+    position: relative;
+    min-height: 480px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    overflow: hidden;
+  }
+  .fi-corp-bg {
+    position: absolute;
+    inset: 0;
+    background-image: url('/assets/our-partners.webp');
+    background-size: cover;
+    background-position: center;
+    z-index: 0;
+  }
+  .fi-corp-overlay {
+    position: absolute;
+    inset: 0;
+    background-color: rgba(29,0,91,0.72);
+    z-index: 1;
+  }
+  .fi-corp-content {
+    position: relative;
+    z-index: 2;
+    padding: 120px 1rem;
+    width: 100%;
+  }
+  .fi-corp-h3 {
+    font-size: clamp(2.2rem, 5vw, 3.5rem);
+    font-weight: 700;
+    color: var(--lf-white);
+    margin-bottom: 0.75rem;
+    text-shadow: 0 2px 24px rgba(0,0,0,0.6);
+  }
+  .fi-corp-sub1 {
+    font-size: 1rem;
+    color: var(--lf-white);
+    margin-bottom: 0.25rem;
+    letter-spacing: -0.3px;
+  }
+  .fi-corp-sub2 {
+    font-size: 1rem;
+    color: var(--lf-white);
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.3px;
+  }
+
+  @media (max-width: 767px) {
+    .fi-corp-h3 {
+      font-size: 2rem;
+    }
+  }
+</style>

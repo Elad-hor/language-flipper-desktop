@@ -1,0 +1,53 @@
+---
+import Nav from './Nav.astro';
+import { type Lang } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const homeHref = lang === 'he' ? '/he/בית/' : '/';
+---
+<header class="site-header">
+  <div class="header-inner container">
+    <a href={homeHref} class="logo-link" aria-label="Language flipper home">
+      <img
+        src="/assets/languageFlipper-logo.webp"
+        alt="Language flipper"
+        class="logo-img"
+        width="180"
+        height="28"
+      />
+    </a>
+    <Nav lang={lang} />
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(29, 0, 91, 0.92);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+  }
+  .header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 28px;
+    padding-bottom: 28px;
+  }
+  .logo-link {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+  }
+  .logo-img {
+    height: 46px;
+    width: auto;
+    display: block;
+  }
+</style>

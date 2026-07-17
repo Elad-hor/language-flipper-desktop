@@ -1,0 +1,116 @@
+---
+interface Props {
+  heading: string;
+}
+const { heading } = Astro.props;
+---
+<section class="legal-section">
+  <div class="legal-layout container">
+    <div class="legal-content">
+      <h2 class="legal-heading">{heading}</h2>
+      <div class="legal-divider"></div>
+      <div class="legal-body">
+        <slot />
+      </div>
+    </div>
+    <!-- Right column: decorative circuit image (matches live Elementor right-col bg slideshow) -->
+    <div class="legal-deco" aria-hidden="true">
+      <img src="/assets/Language-Flipper.webp" alt="" />
+    </div>
+  </div>
+</section>
+
+<style>
+  .legal-section {
+    position: relative;
+    background: #fff;
+    padding: 120px 0 240px;
+  }
+  /* Fade the white legal body into the footer purple over the empty bottom
+     padding (no text is covered) — a fade before the footer like every page */
+  .legal-section::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 180px;
+    background: linear-gradient(180deg, rgba(255,255,255,0) 0%, var(--lf-bg-deep) 100%);
+    pointer-events: none;
+  }
+  .legal-layout {
+    display: grid;
+    grid-template-columns: 55fr 45fr;
+    gap: 0;
+    align-items: stretch;
+  }
+  .legal-content {
+    padding-inline-end: 2.5rem;
+  }
+  .legal-heading {
+    font-size: clamp(1.6rem, 2.8vw, 2.2rem);
+    color: var(--lf-magenta);
+    font-weight: 700;
+    line-height: 1.25;
+    margin-bottom: 1rem;
+  }
+  .legal-divider {
+    width: 44px;
+    height: 3px;
+    background: var(--lf-magenta);
+    margin-bottom: 1.4rem;
+  }
+  .legal-body {
+    color: #333;
+    font-size: 0.92rem;
+    line-height: 1.9;
+  }
+  .legal-body p {
+    margin-bottom: 1.2rem;
+  }
+  .legal-body ul {
+    margin: 0.6rem 0 1.4rem;
+    margin-inline-start: 1.4rem;
+    padding: 0;
+  }
+  .legal-body li {
+    margin-bottom: 0.8rem;
+  }
+  .legal-body a {
+    color: var(--lf-magenta);
+    text-decoration: underline;
+  }
+
+  /* Right deco column: fill column height, show circuit circle (on left of image) */
+  .legal-deco {
+    overflow: hidden;
+    position: relative;
+    min-height: 300px;
+  }
+  .legal-deco img {
+    /* Source image: 1920×1046 with tech circle on LEFT side.
+       Fill the column height and show the left portion of the image. */
+    display: block;
+    width: auto;
+    height: 100%;
+    min-height: 300px;
+    max-width: none;
+    object-fit: cover;
+    object-position: left center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    opacity: 0.95;
+  }
+
+  @media (max-width: 767px) {
+    .legal-layout {
+      grid-template-columns: 1fr;
+    }
+    .legal-deco { display: none; }
+    .legal-content { padding-inline-end: 0; }
+  }
+</style>

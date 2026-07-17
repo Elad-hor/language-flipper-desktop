@@ -1,0 +1,70 @@
+---
+import Button from './Button.astro';
+import { type Lang, t } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const flipHref = lang === 'he' ? '/he/תפליפו/' : '/flip-it/';
+---
+<section class="feeling-section">
+  <div class="feeling-bg" aria-hidden="true"></div>
+  <div class="feeling-overlay" aria-hidden="true"></div>
+  <div class="container feeling-inner">
+    <h2 class="feeling-h2">{t(lang, 'feeling.h2')}</h2>
+    <Button href={flipHref} label={t(lang, 'feeling.cta')} />
+  </div>
+</section>
+
+<style>
+  .feeling-section {
+    position: relative;
+    min-height: 340px;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+  }
+  .feeling-bg {
+    position: absolute;
+    inset: 0;
+    background-image: url('/assets/our-partners.webp');
+    background-size: cover;
+    background-position: center center;
+    z-index: 0;
+  }
+  .feeling-overlay {
+    position: absolute;
+    inset: 0;
+    /* Exact Elementor value: #1D005B at opacity 0.69 */
+    background-color: rgba(29,0,91,0.69);
+    z-index: 1;
+  }
+  .feeling-inner {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.6rem;
+    text-align: center;
+    padding-top: 46px;
+    padding-bottom: 46px;
+    width: 100%;
+  }
+  .feeling-h2 {
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    color: var(--lf-white);
+    font-weight: 700;
+  }
+
+  @media (max-width: 767px) {
+    .feeling-section {
+      min-height: 420px;
+    }
+    .feeling-inner {
+      padding-top: 64px;
+      padding-bottom: 64px;
+    }
+  }
+</style>

@@ -1,0 +1,87 @@
+---
+// Animated "wrong keyboard layout" headline: types the phrase as layout-gibberish,
+// highlights it (like selecting), then flips it to the correct words. Same effect as
+// the home hero. EN flips English->Hebrew-layout; HE flips Hebrew->English-layout.
+import { type Lang } from '../i18n/ui';
+
+interface Props {
+  text: string;
+  lang: Lang;
+}
+const { text, lang } = Astro.props;
+
+const EN2HE: Record<string, string> = { q:'/', w:"'", e:'ק', r:'ר', t:'א', y:'ט', u:'ו',
+  i:'ן', o:'ם', p:'פ', a:'ש', s:'ד', d:'ג', f:'כ', g:'ע', h:'י', j:'ח', k:'ל', l:'ך',
+  z:'ז', x:'ס', c:'ב', v:'ה', b:'נ', n:'מ', m:'צ', ',':'ת', '.':'ץ', ';':'ף', '/':'.' };
+const HE2EN: Record<string, string> = Object.fromEntries(
+  Object.entries(EN2HE).map(([en, he]) => [he, en])
+);
+// Decide the flip direction from the TEXT's script, not the page language:
+// Hebrew text -> flips to English-layout gibberish; English text -> Hebrew-layout gibberish.
+const hasHebrew = /[א-ת]/.test(text);
+const wrong = [...text]
+  .map((ch) => (hasHebrew ? HE2EN[ch] : EN2HE[ch.toLowerCase()]) ?? ch)
+  .join('');
+---
+<span class:list={['flip-text', hasHebrew ? 'ft-rtl' : 'ft-ltr']} data-correct={text} data-wrong={wrong}>{text}</span>
+
+<style>
+  .flip-text {
+    display: inline-block;
+    min-height: 1.05em;
+    white-space: nowrap;
+  }
+  /* English phrase: wrong-layout Hebrew gibberish shown left-to-right */
+  .flip-text.ft-ltr {
+    direction: ltr;
+    unicode-bidi: bidi-override;
+  }
+  /* Hebrew phrase: correct text is Hebrew (RTL), wrong text is English (LTR) */
+  .flip-text.ft-rtl {
+    direction: rtl;
+    unicode-bidi: plaintext;
+  }
+  .flip-text.typing::after {
+    content: '|';
+    margin-left: 2px;
+    font-weight: 400;
+    animation: ft-caret 0.9s step-end infinite;
+  }
+  @keyframes ft-caret { 0%, 50% { opacity: 1; } 50.01%, 100% { opacity: 0; } }
+  /* selection highlight shown right before the flip */
+  .flip-text.selected {
+    background-color: #2a6fff;
+    color: #fff;
+  }
+</style>
+
+<script>
+  document.querySelectorAll('.flip-text[data-correct]').forEach((el) => {
+    if ((el as HTMLElement).dataset.ftInit) return;
+    (el as HTMLElement).dataset.ftInit = '1';
+    const correct = el.getAttribute('data-correct') || '';
+    const wrongArr = [...(el.getAttribute('data-wrong') || '')];
+    const correctArr = [...correct];
+    const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+    const TYPE = 95, HOLD_TYPED = 500, HOLD_SELECT = 750, HOLD_CORRECT = 1600, HOLD_EMPTY = 550;
+    (async function run() {
+      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        el.textContent = correct; return;
+      }
+      el.textContent = '';
+      while (true) {
+        el.classList.add('typing');
+        for (let i = 1; i <= wrongArr.length; i++) { el.textContent = wrongArr.slice(0, i).join(''); await sleep(TYPE); }
+        el.classList.remove('typing');
+        await sleep(HOLD_TYPED);
+        el.classList.add('selected');
+        await sleep(HOLD_SELECT);
+        el.textContent = correctArr.join('');
+        el.classList.remove('selected');
+        await sleep(HOLD_CORRECT);
+        el.textContent = '';
+        await sleep(HOLD_EMPTY);
+      }
+    })();
+  });
+</script>
