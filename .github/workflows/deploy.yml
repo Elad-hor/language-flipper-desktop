@@ -2,6 +2,7 @@ name: Deploy site to Hostinger
 
 # Auto-build the Astro site and upload it to Hostinger over FTPS whenever the
 # site changes on main. No more manual File Manager uploads.
+# (re-run trigger)
 on:
   push:
     branches: [main]
