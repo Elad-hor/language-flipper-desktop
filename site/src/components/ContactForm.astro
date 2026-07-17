@@ -7,7 +7,9 @@ interface Props {
   lang?: Lang;
 }
 const { lang = 'en' } = Astro.props;
-const sent = Astro.url.searchParams.get('sent') === '1';
+// Static build → ?sent=1 is detected client-side (see <script> below). PHP is
+// told which page to return to so Hebrew submissions come back to the Hebrew page.
+const redirectPath = lang === 'he' ? '/he/צור-קשר/' : '/contact-us/';
 
 const labels = {
   firstName: lang === 'he' ? 'שם' : 'First Name',
@@ -16,19 +18,22 @@ const labels = {
   company: lang === 'he' ? 'חברה' : 'Company',
   message: lang === 'he' ? 'תוכן ההודעה' : 'Message',
   submit: lang === 'he' ? 'שגר' : 'SUBMIT',
-  success: lang === 'he' ? 'תודה — ניצור קשר בקרוב.' : "Thanks — we'll be in touch.",
+  success: lang === 'he'
+    ? 'ההודעה נשלחה בהצלחה! ניצור אתכם קשר בקרוב.'
+    : "Your message was sent successfully! We'll be in touch soon.",
 };
 ---
 
-{sent ? (
-  <div class="cf-success">
-    <p>{labels.success}</p>
-  </div>
-) : (
-  <form class="cf-form" method="post" action="/contact.php">
+<div class="cf-success" hidden role="status" aria-live="polite">
+  <div class="cf-success-icon" aria-hidden="true">✓</div>
+  <p>{labels.success}</p>
+</div>
 
-    <!-- Honeypot: real users leave this empty; bots fill it -->
-    <input type="text" name="website" style="display:none" tabindex="-1" autocomplete="off" />
+<form class="cf-form" method="post" action="/contact.php">
+
+  <!-- Honeypot: real users leave this empty; bots fill it -->
+  <input type="text" name="website" style="display:none" tabindex="-1" autocomplete="off" />
+  <input type="hidden" name="redirect" value={redirectPath} />
 
     <div class="cf-row">
       <div class="cf-field">
@@ -62,16 +67,50 @@ const labels = {
     </div>
 
   </form>
-)}
+
+<script>
+  // The site is statically built, so ?sent=1 (set by contact.php's redirect on
+  // a successful send) must be handled in the browser: reveal the confirmation,
+  // hide the form, then strip the query so a refresh doesn't re-show it.
+  (function () {
+    if (new URLSearchParams(window.location.search).get('sent') !== '1') return;
+    const ok = document.querySelector('.cf-success');
+    const form = document.querySelector('.cf-form');
+    if (ok) ok.hidden = false;
+    if (form) form.hidden = true;
+    if (ok) ok.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    history.replaceState(null, '', window.location.pathname);
+  })();
+</script>
 
 <style>
   /* ── Success state ── */
   .cf-success {
     text-align: center;
-    padding: 3rem 1rem;
-    font-size: 1.1rem;
+    padding: 2.5rem 1rem;
+    max-width: 640px;
+    margin: 0 auto;
+  }
+  .cf-success-icon {
+    width: 58px;
+    height: 58px;
+    margin: 0 auto 1.1rem;
+    border-radius: 50%;
+    background: var(--lf-magenta);
+    color: #fff;
+    font-size: 1.9rem;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 6px 20px rgba(209, 71, 254, 0.35);
+  }
+  .cf-success p {
+    font-size: 1.15rem;
     color: var(--lf-magenta);
     font-weight: 600;
+    margin: 0;
+    line-height: 1.5;
   }
 
   /* ── Form layout ── */

@@ -15,8 +15,17 @@ function fail(int $code, string $msg): never {
 
 if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') fail(405, 'Method not allowed');
 
+// Where to send the user back to (their own language page). Only accept a safe
+// same-site absolute path; anything else falls back to the English contact page.
+$redirect = $_POST['redirect'] ?? '/contact-us/';
+if (!is_string($redirect) || $redirect === '' || $redirect[0] !== '/'
+    || strncmp($redirect, '//', 2) === 0 || preg_match('/[\r\n]/', $redirect)) {
+  $redirect = '/contact-us/';
+}
+$success = $redirect . '?sent=1';
+
 // Honeypot: real users leave 'website' empty; bots fill it.
-if (!empty($_POST['website'] ?? '')) { header('Location: /contact-us/?sent=1'); exit; }
+if (!empty($_POST['website'] ?? '')) { header('Location: ' . $success); exit; }
 
 $first   = trim($_POST['first_name'] ?? '');
 $last    = trim($_POST['last_name'] ?? '');
@@ -40,5 +49,5 @@ $headers = 'From: Language Flipper <no-reply@languageflipper.com>' . "\r\n"
 
 if (!mail(TO, $subject, $body, $headers)) fail(500, 'Send failed');
 
-header('Location: /contact-us/?sent=1');
+header('Location: ' . $success);
 exit;
