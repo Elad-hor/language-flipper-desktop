@@ -4,7 +4,7 @@
 // it can be swapped for SMTP at deploy time — the form/action stays the same.
 declare(strict_types=1);
 
-const TO = 'falafeltikikunim@gmail.com';
+const TO = 'falafeltikunim@gmail.com';
 
 function fail(int $code, string $msg): never {
   http_response_code($code);

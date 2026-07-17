@@ -207,7 +207,7 @@ replacing the old WordPress + Elementor build. It is **prompt-editable**: change
 - **Pages (13):** 7 English (`/`, `/about-us`, `/solutions`, `/flip-it`, `/contact-us`,
   `/terms-of-service`, `/privacy-policy`) + a 6-page Hebrew RTL mirror under `/he/…` (literal Hebrew
   dir names, e.g. `site/src/pages/he/בית/index.astro`). No Hebrew `/solutions`.
-- **Contact form:** `site/contact/contact.php` emails **falafeltikikunim@gmail.com** (deploys to web
+- **Contact form:** `site/contact/contact.php` emails **falafeltikunim@gmail.com** (deploys to web
   root as `/contact.php`; lives outside `dist/` so Astro ignores it).
 - **Try-It widget:** `site/src/components/TryItWidget.astro` — ported from `marketing-site/try-it-widget.html`;
   its inlined char map is a copy of `flipper_daemon/layouts/en_he_map.json` and can drift.
