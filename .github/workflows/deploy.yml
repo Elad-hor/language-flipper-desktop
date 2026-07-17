@@ -60,5 +60,5 @@ jobs:
             set ftp:ssl-protect-data true;
             set net:timeout 20; set net:max-retries 3; set net:reconnect-interval-base 5;
             open -u '$FTP_USERNAME','$FTP_PASSWORD' '$HOST';
-            mirror -R --verbose --delete --parallel=4 ./_deploy/ /public_html/;
+            mirror -R --verbose --parallel=4 ./_deploy/ /;
           "
