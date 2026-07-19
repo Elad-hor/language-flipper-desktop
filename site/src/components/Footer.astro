@@ -148,8 +148,10 @@ const accessibilityHref = lang === 'he'
     min-width: 120px;
   }
   .footer-col-title {
-    font-size: 0.9rem;
+    font-size: 1.2rem;
     font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
     color: var(--lf-white);
     margin-bottom: 0.75rem;
   }
@@ -162,11 +164,16 @@ const accessibilityHref = lang === 'he'
     gap: 0.4rem;
   }
   .footer-col ul a {
-    color: rgba(255,255,255,0.7);
-    font-size: 0.85rem;
+    color: rgba(255,255,255,0.85);
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
     transition: color 0.2s;
   }
   .footer-col ul a:hover { color: var(--lf-white); }
+  /* Hebrew reads smaller than uppercase Latin at the same px — bump RTL footer. */
+  :global(html[dir="rtl"]) .footer-col-title { font-size: 1.45rem; }
+  :global(html[dir="rtl"]) .footer-col ul a { font-size: 1.35rem; }
   .footer-bottom {
     border-top: 1px solid rgba(255,255,255,0.08);
     padding: 18px 0;

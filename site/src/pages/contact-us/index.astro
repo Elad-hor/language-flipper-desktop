@@ -34,16 +34,13 @@ const lang = 'en';
       </div>
     </section>
 
-    <!-- ── Get in touch: form + circuit-board deco on right ── -->
+    <!-- ── Get in touch: centered form (no side image) ── -->
     <section class="cu-form-section">
       <div class="cu-form-layout">
         <div class="cu-form-col">
           <h2 class="cu-h2">Get in touch</h2>
           <HeadingLine align="center" />
           <ContactForm />
-        </div>
-        <div class="cu-deco-col" aria-hidden="true">
-          <img src="/assets/Language-Flipper.webp" alt="" class="cu-deco-img" />
         </div>
       </div>
     </section>
@@ -107,7 +104,9 @@ const lang = 'en';
     background-image: url('/assets/home-page-main.webp');
     background-size: cover;
     background-position: center center;
-    min-height: 825px;
+    /* Match the home hero height exactly */
+    height: 64vh;
+    min-height: 500px;
     display: flex;
     align-items: flex-start;
     overflow: hidden;
@@ -139,7 +138,7 @@ const lang = 'en';
     text-align: left;
   }
   .cu-hero-h1 {
-    font-size: clamp(2.8rem, 5.9vw, 82px);
+    font-size: clamp(2.8rem, 8.85vw, 123px);
     font-weight: 600;
     letter-spacing: -2.5px;
     color: #fff;
@@ -155,12 +154,12 @@ const lang = 'en';
     position: relative;
   }
   .cu-form-layout {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    min-height: 620px;
+    display: block;
   }
   .cu-form-col {
-    padding: 72px 48px 80px 48px;
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 80px 24px 90px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -168,30 +167,13 @@ const lang = 'en';
     z-index: 1;
   }
   .cu-h2 {
-    font-size: clamp(2rem, 4vw, 2.9rem);
+    font-size: clamp(2rem, 6vw, 4.35rem);
     color: var(--lf-magenta);
     font-weight: 700;
     text-align: center;
     margin-bottom: 0.6rem;
     line-height: 1.2;
     align-self: center;
-  }
-
-  /* Deco column: circuit-board image — bleeds edge to edge of its col */
-  .cu-deco-col {
-    position: relative;
-    overflow: hidden;
-    min-height: 440px;
-  }
-  .cu-deco-img {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: left center;
-    max-width: none;
-    opacity: 0.85;
   }
 
   /* ── Gradient spacer between form section and offices ── */
@@ -258,7 +240,7 @@ const lang = 'en';
     background: #160040;
   }
   .cu-office-title {
-    font-size: clamp(1.4rem, 2.2vw, 1.9rem);
+    font-size: clamp(1.4rem, 3.3vw, 2.85rem);
     color: var(--lf-magenta);
     font-weight: 700;
     margin-bottom: 0.5rem;
@@ -270,7 +252,7 @@ const lang = 'en';
     margin-bottom: 1rem;
   }
   .cu-office-addr {
-    font-size: 1.05rem;
+    font-size: 1.575rem;
     color: #fff;
     line-height: 1.7;
   }
@@ -280,14 +262,8 @@ const lang = 'en';
     .cu-hero { min-height: 500px; }
     .cu-hero-content { padding: 80px 20px 48px; }
 
-    .cu-form-layout {
-      grid-template-columns: 1fr;
-    }
     .cu-form-col {
       padding: 48px 24px;
-    }
-    .cu-deco-col {
-      display: none;
     }
 
     .cu-gradient-spacer { height: 120px; }

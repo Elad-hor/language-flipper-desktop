@@ -20,21 +20,20 @@ const { lang } = Astro.props;
           <p>( <span class="accent">{t(lang, 'how.body_cmd')}</span>{t(lang, 'how.body_p2')}<span class="accent">{t(lang, 'how.body_ctrl')}</span>{t(lang, 'how.body_p3')}</p>
         </div>
       </div>
-      <div class="how-right-col" aria-hidden="true"></div>
-    </div>
 
-    <!-- Video embed. To add your video, replace the placeholder <div> below with an
-         iframe, e.g.:
-         <iframe src="https://www.youtube.com/embed/VIDEO_ID" title="Language Flipper"
-                 allow="accelerated-download; autoplay; encrypted-media; fullscreen"
-                 allowfullscreen loading="lazy"></iframe> -->
-    <div class="how-video">
-      <div class="how-video-frame">
-        <div class="how-video-placeholder" aria-hidden="true">
-          <svg viewBox="0 0 24 24" width="72" height="72">
-            <circle cx="12" cy="12" r="11" fill="rgba(255,255,255,0.14)"></circle>
-            <path d="M10 7.5l6.5 4.5L10 16.5z" fill="#fff"></path>
-          </svg>
+      <!-- Video embed, sits side by side with the text. To add your video, replace
+           the placeholder <div> below with an iframe, e.g.:
+           <iframe src="https://www.youtube.com/embed/VIDEO_ID" title="Language Flipper"
+                   allow="accelerated-download; autoplay; encrypted-media; fullscreen"
+                   allowfullscreen loading="lazy"></iframe> -->
+      <div class="how-video">
+        <div class="how-video-frame">
+          <div class="how-video-placeholder" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="72" height="72">
+              <circle cx="12" cy="12" r="11" fill="rgba(255,255,255,0.14)"></circle>
+              <path d="M10 7.5l6.5 4.5L10 16.5z" fill="#fff"></path>
+            </svg>
+          </div>
         </div>
       </div>
     </div>
@@ -86,26 +85,30 @@ const { lang } = Astro.props;
     position: relative;
     z-index: 2;
     padding-top: 100px;
-    padding-bottom: 110px;
+    /* Bottom padding clears the 100px tilt divider so the space below the content
+       matches the ~100px space above it (symmetric). */
+    padding-bottom: 200px;
     width: 100%;
   }
   .how-grid {
     display: grid;
-    grid-template-columns: 50% 50%;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(32px, 4vw, 64px);
+    align-items: center;
   }
   .how-h2 {
-    font-size: 55px;
+    font-size: 82px;
     font-weight: 700;
-    line-height: 80px;
+    line-height: 120px;
     letter-spacing: -2px;
     color: var(--lf-white);
     margin-bottom: 0.5rem;
   }
   .how-body {
     color: var(--lf-white);
-    font-size: 1.12rem;
+    font-size: 1.68rem;
     line-height: 1.8;
-    max-width: 30rem;
+    max-width: 45rem;
   }
   .how-body p { margin: 0 0 1rem; }
   .how-body p:last-child { margin-bottom: 0; }
@@ -114,10 +117,9 @@ const { lang } = Astro.props;
     font-weight: 600;
   }
 
-  /* Video embed area (16:9), centered; the section ends after this. */
+  /* Video embed area (16:9), sits in the right grid column beside the text. */
   .how-video {
-    max-width: 880px;
-    margin: 56px auto 0;
+    width: 100%;
   }
   .how-video-frame {
     position: relative;
@@ -145,11 +147,10 @@ const { lang } = Astro.props;
 
   @media (max-width: 767px) {
     .how-bg { background-position: center left; }
-    .how-grid { grid-template-columns: 1fr; }
+    /* Stack text above video on mobile (unchanged layout). */
+    .how-grid { grid-template-columns: 1fr; gap: 40px; }
     .how-inner { padding-top: 80px; padding-bottom: 120px; }
     .how-h2 { font-size: 38px; line-height: 1.3em; letter-spacing: 0; }
     .how-body { font-size: 1rem; max-width: 100%; }
-    .how-right-col { display: none; }
-    .how-video { margin-top: 40px; }
   }
 </style>

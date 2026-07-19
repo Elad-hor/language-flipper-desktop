@@ -75,7 +75,9 @@ const lang = 'en';
     background-image: url('/assets/about-language-flipper-hero.webp');
     background-size: cover;
     background-position: center center;
-    min-height: 825px;
+    /* Match the home hero height exactly */
+    height: 64vh;
+    min-height: 500px;
     display: flex;
     align-items: flex-start;   /* content at top */
     overflow: hidden;
@@ -103,15 +105,14 @@ const lang = 'en';
   .about-hero-content {
     position: relative;
     z-index: 1;
-    max-width: var(--lf-maxw);
     margin: 0 auto;
-    padding: 80px 20px 60px;
+    padding: 80px 80px 60px;
     width: 100%;
     text-align: left;
   }
   .about-hero-h1 {
     /* bigger, with the same glow/graphic treatment as the home hero h1 */
-    font-size: clamp(2.8rem, 5.9vw, 82px);
+    font-size: clamp(2.8rem, 8.85vw, 123px);
     font-weight: 600;
     letter-spacing: -2.5px;
     color: var(--lf-white);
@@ -120,7 +121,7 @@ const lang = 'en';
     text-shadow: 0 2px 28px rgba(0,0,0,0.65);
   }
   .about-hero-h2 {
-    font-size: clamp(0.8rem, 1.4vw, 0.95rem);
+    font-size: clamp(0.8rem, 2.1vw, 1.42rem);
     font-weight: 400;
     color: var(--lf-white);
     line-height: 1.8;
@@ -131,16 +132,18 @@ const lang = 'en';
     display: inline-block;
     background: var(--lf-magenta);
     color: var(--lf-white);
-    padding: 10px 28px;
-    border-radius: 40px;
+    padding: 0.55em 1.6em;
+    border-radius: 50px;
     font-weight: 600;
-    font-size: 0.88rem;
+    font-size: 1.5rem;
     transition: opacity 0.2s;
   }
   .about-cta:hover { opacity: 0.85; }
 
   /* ─── About body (white bg, 2-col) ─── */
   .about-body-section {
+    position: relative;
+    overflow: hidden;
     background: #fff;
     padding: 100px 0 160px;
   }
@@ -155,37 +158,36 @@ const lang = 'en';
   }
   .about-text-col p {
     color: #333;
-    font-size: 1.12rem;
+    font-size: 1.68rem;
     line-height: 1.8;
     margin-bottom: 1.1rem;
   }
   .about-h2 {
-    font-size: clamp(2rem, 4vw, 2.9rem);
+    font-size: clamp(2rem, 6vw, 4.35rem);
     color: var(--lf-magenta);
     font-weight: 700;
     margin-bottom: 0.85rem;
     line-height: 1.2;
   }
 
-  /* Right deco col: fill column height, show circuit circle (on left of image) */
+  /* Right deco col: just reserves the grid width; the image itself is anchored to
+     the whole section so it fills the full height (touching the hero above). */
   .about-deco-col {
-    overflow: hidden;
-    position: relative;
     min-height: 300px;
   }
   .about-deco-col img {
-    /* Source image: 1920×1046 with tech circle on LEFT side.
-       Fill the column and show the left portion where the circle lives. */
+    /* Fill the right side of the section top-to-bottom, flipped horizontally. */
     display: block;
     position: absolute;
     top: 0;
-    left: 0;
-    width: 100%;
+    right: 0;
+    width: 45%;
     height: 100%;
     object-fit: cover;
     object-position: left center;
     max-width: none;
     opacity: 0.95;
+    transform: scaleX(-1);
   }
 
   /* ─── Talk to us ─── */
@@ -216,7 +218,7 @@ const lang = 'en';
     width: 100%;
   }
   .talk-h1 {
-    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-size: clamp(2rem, 7.5vw, 4.8rem);
     color: var(--lf-white);
     font-weight: 800;
     margin-bottom: 1.5rem;
@@ -225,10 +227,10 @@ const lang = 'en';
     display: inline-block;
     background: var(--lf-magenta);
     color: var(--lf-white);
-    padding: 12px 32px;
-    border-radius: 40px;
+    padding: 0.55em 1.6em;
+    border-radius: 50px;
     font-weight: 600;
-    font-size: 0.95rem;
+    font-size: 1.5rem;
     transition: opacity 0.2s;
   }
   .talk-cta:hover { opacity: 0.85; }
@@ -236,10 +238,12 @@ const lang = 'en';
   /* ─── Mobile ─── */
   @media (max-width: 767px) {
     .about-hero { min-height: 500px; }
+    .about-hero-content { padding-left: 20px; padding-right: 20px; }
     .about-body-grid {
       grid-template-columns: 1fr;
     }
     .about-deco-col { display: none; }
     .about-text-col { padding-right: 0; }
+    .about-text-col p { font-size: 1.12rem; }
   }
 </style>

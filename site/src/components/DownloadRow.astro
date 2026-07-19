@@ -63,7 +63,10 @@ const premiumHref = 'https://languageflipper.gumroad.com/l/languageflipper';
   .download-section {
     position: relative;
     background: var(--lf-bg-deep);
-    padding: 80px 0;
+    /* Extra bottom padding so the space below the cards visually matches the
+       larger space above the heading (the incoming tilt sits farther from the
+       content than the outgoing one). */
+    padding: 100px 0 170px;
     text-align: center;
   }
   .download-shape-top,
@@ -94,7 +97,7 @@ const premiumHref = 'https://languageflipper.gumroad.com/l/languageflipper';
   }
   .download-h2 {
     color: var(--lf-gold);
-    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-size: clamp(1.8rem, 6vw, 4.2rem);
     font-weight: 700;
     margin-bottom: 3rem;
   }
@@ -124,7 +127,7 @@ const premiumHref = 'https://languageflipper.gumroad.com/l/languageflipper';
     height: 56px;
   }
   .dl-title {
-    font-size: 1.1rem;
+    font-size: 1.65rem;
     font-weight: 700;
     color: var(--lf-white);
     margin: 0;
@@ -133,7 +136,7 @@ const premiumHref = 'https://languageflipper.gumroad.com/l/languageflipper';
     color: inherit;
   }
   .dl-sub {
-    font-size: 0.8rem;
+    font-size: 1.2rem;
     color: var(--lf-text-muted);
     margin: 0;
   }
@@ -146,5 +149,8 @@ const premiumHref = 'https://languageflipper.gumroad.com/l/languageflipper';
       grid-template-columns: 1fr;
       gap: 3.5rem;
     }
+    /* Keep mobile card text at its original size */
+    .dl-title { font-size: 1.1rem; }
+    .dl-sub { font-size: 0.8rem; }
   }
 </style>

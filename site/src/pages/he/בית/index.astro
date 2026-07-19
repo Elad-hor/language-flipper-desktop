@@ -21,8 +21,7 @@ const lang = 'he' as const;
   <Header lang={lang} />
   <main id="content">
     <Hero lang={lang} />
-    <!-- Two empty gradient spacers between hero and how-it-works -->
-    <div class="gradient-spacer"></div>
+    <!-- Small purple gap between hero and how-it-works -->
     <div class="gradient-spacer"></div>
     <HowItWorks lang={lang} />
     <!-- Empty gradient spacer between how-it-works and download -->
@@ -54,7 +53,7 @@ const lang = 'he' as const;
   /* Elementor gradient spacer sections: 180deg transparent → #1D005B */
   .gradient-spacer {
     background: linear-gradient(180deg, #21252900 0%, #1D005B 100%);
-    height: 40px;
+    height: 20px;
     display: block;
   }
   .gradient-spacer-lg {
@@ -77,9 +76,7 @@ const lang = 'he' as const;
     align-items: center;
     text-align: center;
     overflow: hidden;
-    background-image: url('/assets/how-it-works-1.webp');
-    background-size: cover;
-    background-position: center center;
+    background: var(--lf-bg-deep);
   }
   .he-solution-overlay {
     position: absolute;
@@ -96,16 +93,16 @@ const lang = 'he' as const;
     direction: rtl;
   }
   .he-sol-h2 {
-    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    font-size: clamp(1.8rem, 6vw, 3.9rem);
     color: var(--lf-white);
     font-weight: 700;
     margin-bottom: 0.4rem;
   }
   .he-sol-body {
     margin: 0 auto 1.8rem;
-    max-width: 640px;
+    max-width: 760px;
     color: var(--lf-white);
-    font-size: 0.95rem;
+    font-size: 1.42rem;
     line-height: 1.8;
     font-style: normal;
     border: none;
@@ -121,10 +118,10 @@ const lang = 'he' as const;
     display: inline-block;
     background: var(--lf-magenta);
     color: var(--lf-white);
-    padding: 8px 28px;
-    border-radius: 40px;
+    padding: 0.55em 1.6em;
+    border-radius: 50px;
     font-weight: 600;
-    font-size: 0.88rem;
+    font-size: 1.5rem;
     text-decoration: none;
     transition: opacity 0.2s;
   }
@@ -137,5 +134,6 @@ const lang = 'he' as const;
     .he-solution-content {
       padding: 115px 1rem 95px;
     }
+    .he-sol-body { font-size: 0.95rem; }
   }
 </style>

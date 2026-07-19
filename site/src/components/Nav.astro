@@ -65,7 +65,7 @@ const flipHref = lang === 'he' ? '/he/תפליפו/' : '/flip-it/';
   }
   .nav-links a {
     color: var(--lf-white);
-    font-size: 0.78rem;
+    font-size: 1.1rem;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.05em;
@@ -73,6 +73,9 @@ const flipHref = lang === 'he' ? '/he/תפליפו/' : '/flip-it/';
     transition: opacity 0.2s;
   }
   .nav-links a:hover { opacity: 1; }
+  /* Hebrew letters read smaller than uppercase Latin at the same px, so bump the
+     RTL nav up to match the visual size of the English header. */
+  :global(html[dir="rtl"]) .nav-links a { font-size: 1.35rem; }
   .burger {
     display: none;
     position: relative;
@@ -130,6 +133,6 @@ const flipHref = lang === 'he' ? '/he/תפליפו/' : '/flip-it/';
       align-items: center;
       gap: 1.4rem;
     }
-    .nav-links a { font-size: 0.95rem; }
+    .nav-links a { font-size: 1.1rem; }
   }
 </style>

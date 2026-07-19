@@ -108,7 +108,9 @@ const lang: Lang = 'he';
   /* ─── Hero ──────────────────────────────────────────────────────── */
   .fi-hero {
     position: relative;
-    min-height: 825px;
+    /* Match the home hero height exactly */
+    height: 64vh;
+    min-height: 500px;
     display: flex;
     align-items: flex-start;
     overflow: hidden;
@@ -146,7 +148,7 @@ const lang: Lang = 'he';
     padding-bottom: 140px;
   }
   .fi-h1 {
-    font-size: clamp(2.8rem, 5.9vw, 82px);
+    font-size: clamp(2.8rem, 8.85vw, 123px);
     font-weight: 600;
     color: var(--lf-white);
     line-height: 1.1;
@@ -155,7 +157,7 @@ const lang: Lang = 'he';
     text-shadow: 0 2px 28px rgba(0,0,0,0.65);
   }
   .fi-h2 {
-    font-size: clamp(0.95rem, 1.6vw, 1.15rem);
+    font-size: clamp(0.95rem, 2.4vw, 1.72rem);
     font-weight: 500;
     color: var(--lf-white);
     line-height: 1.55;
@@ -231,14 +233,14 @@ const lang: Lang = 'he';
     width: 100%;
   }
   .fi-live-h2 {
-    font-size: clamp(2rem, 4vw, 2.9rem);
+    font-size: clamp(2rem, 6vw, 4.35rem);
     font-weight: 700;
     color: var(--lf-white);
     margin-bottom: 0.85rem;
     text-shadow: 0 2px 20px rgba(0,0,0,0.5);
   }
   .fi-live-sub {
-    font-size: 1.12rem;
+    font-size: 1.68rem;
     color: var(--lf-white);
     margin-bottom: 1.5rem;
     text-shadow: 0 1px 10px rgba(0,0,0,0.6);
@@ -257,6 +259,7 @@ const lang: Lang = 'he';
     .fi-live-h2 {
       font-size: 1.8rem;
     }
+    .fi-live-sub { font-size: 1.12rem; }
   }
 
   /* ─── Widget section (white) ────────────────────────────────────── */
@@ -314,20 +317,20 @@ const lang: Lang = 'he';
     width: 100%;
   }
   .fi-corp-h3 {
-    font-size: clamp(2.2rem, 5vw, 3.5rem);
+    font-size: clamp(2.2rem, 7.5vw, 5.25rem);
     font-weight: 700;
     color: var(--lf-white);
     margin-bottom: 0.75rem;
     text-shadow: 0 2px 24px rgba(0,0,0,0.6);
   }
   .fi-corp-sub1 {
-    font-size: 1rem;
+    font-size: 1.5rem;
     color: var(--lf-white);
     margin-bottom: 0.25rem;
     letter-spacing: -0.3px;
   }
   .fi-corp-sub2 {
-    font-size: 1rem;
+    font-size: 1.5rem;
     color: var(--lf-white);
     margin-bottom: 1.5rem;
     letter-spacing: -0.3px;
@@ -337,5 +340,6 @@ const lang: Lang = 'he';
     .fi-corp-h3 {
       font-size: 2rem;
     }
+    .fi-corp-sub1, .fi-corp-sub2 { font-size: 1rem; }
   }
 </style>
