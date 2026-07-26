@@ -85,12 +85,15 @@ const flipWrong = [...flipCorrect]
 <style>
   .hero {
     position: relative;
-    /* Fixed height so the image always fully covers the section and never
-       resizes when the animated headline changes. */
+    /* Sized so the image always fully covers the section and never resizes when
+       the animated headline changes. */
     /* Taller by ~80px so the hero now reaches down to where the old purple gap
        ended, and the bottom fade (below) covers that same 80px band. */
-    height: calc(72vh + 80px);
-    min-height: 640px;
+    /* min-height (not height): the hero's contents are fixed-size, so a hard
+       height clipped the CTA out of existence via `overflow: hidden` on any
+       viewport under ~858px tall — i.e. most laptops. Growing to fit is the
+       only thing that guarantees nothing is ever hidden. */
+    min-height: max(640px, calc(72vh + 80px));
     display: flex;
     align-items: flex-start;
     overflow: hidden;
@@ -207,9 +210,34 @@ const flipWrong = [...flipCorrect]
     max-width: 560px;
   }
 
+  /* Short (laptop) viewports. The hero's contents are fixed-size and totalled
+     ~698px, which overflowed the 640px floor and put the CTA behind the next
+     section. Tighten the vertical rhythm so it all fits without the hero having
+     to grow much. Scoped to >=768px so the mobile block below is unaffected. */
+  @media (min-width: 768px) and (max-height: 860px) {
+    .hero-content {
+      padding-top: 96px;
+      padding-bottom: 40px;
+    }
+    .hero-h1 {
+      line-height: 1.08;
+    }
+    .h1-flip {
+      /* 1.15em is exactly one line box at this font-size, so clearing the
+         animated text still never reflows the hero (see base rule). */
+      min-height: 1.15em;
+    }
+    .hero-sub {
+      line-height: 1.35;
+      margin-bottom: 1.3rem;
+    }
+  }
+
   @media (max-width: 767px) {
     .hero {
-      min-height: 465px;
+      /* Mirrors the base rule's max() so mobile keeps its viewport-proportional
+         height instead of collapsing to the 465px floor. */
+      min-height: max(465px, calc(72vh + 80px));
       align-items: flex-start;
     }
     /* Mobile: cover fits to height, so bias the crop toward the character. */
