@@ -51,11 +51,20 @@ const flipWrong = [...flipCorrect]
     const correctArr = [...correct];
     const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
     const TYPE = 95, HOLD_TYPED = 500, HOLD_SELECT = 750, HOLD_CORRECT = 1600, HOLD_EMPTY = 550;
+    const REDUCED_HOLD_WRONG = 1100;
 
     async function run() {
-      // Respect reduced-motion: just show the correct text, no animation.
+      // Reduced motion: the headline IS the product demo, so still show the
+      // wrong->correct idea — but as a single in-place swap. No per-character
+      // typing, no blinking caret, and no loop, so there is no sustained
+      // motion for anyone who asked not to have any.
       if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        flipEl.textContent = wrongArr.join('');
+        await sleep(REDUCED_HOLD_WRONG);
+        flipEl.classList.add('selected');
+        await sleep(HOLD_SELECT);
         flipEl.textContent = correct;
+        flipEl.classList.remove('selected');
         return;
       }
       flipEl.textContent = '';

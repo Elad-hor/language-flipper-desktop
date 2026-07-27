@@ -64,9 +64,19 @@ const wrong = [...text]
     const correctArr = [...correct];
     const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
     const TYPE = 95, HOLD_TYPED = 500, HOLD_SELECT = 750, HOLD_CORRECT = 1600, HOLD_EMPTY = 550;
+    const REDUCED_HOLD_WRONG = 1100;
     (async function run() {
+      // Reduced motion: one in-place swap instead of the typing loop, so the
+      // wrong->correct idea still lands without any sustained motion.
+      // Mirrors Hero.astro — keep the two in sync.
       if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-        el.textContent = correct; return;
+        el.textContent = wrongArr.join('');
+        await sleep(REDUCED_HOLD_WRONG);
+        el.classList.add('selected');
+        await sleep(HOLD_SELECT);
+        el.textContent = correct;
+        el.classList.remove('selected');
+        return;
       }
       el.textContent = '';
       while (true) {
