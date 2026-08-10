@@ -229,6 +229,18 @@ and **prompt-editable**: change a component/page, push to `main`, and CI deploys
   is poor, swap to SMTP — the form/action stays the same.
 - **Try-It widget:** `site/src/components/TryItWidget.astro` — inlined char map is a copy of
   `flipper_daemon/layouts/en_he_map.json` and can drift.
+- **Install warnings (unsigned builds):** both builds are unsigned, so first-time users hit Gatekeeper
+  (Mac) or SmartScreen (Windows). `InstallHelp.astro` holds the per-OS steps (`os` prop:
+  `'mac' | 'win' | 'both'`), rendered in two places — `InstallModal.astro` (native `<dialog>` +
+  `showModal()`, opened from `[data-install-os]` on the download cards) and a `<details>` collapsible in
+  `DownloadRow.astro`. Strings are the `install.*` keys in `en.json`/`he.json`. **Two invariants:** the
+  modal must never gate the download (no `preventDefault` — the `<a href>` must still work if JS dies),
+  and the `<details>` must carry the same content JS-free. Each OS block is independent, so when a
+  certificate lands for one platform you delete that block plus its `install.<os>_*` keys and leave the
+  other. Regression test: `site/capture/scripts/verify-install-help.mjs`.
+- **Responsive audit:** `site/capture/scripts/responsive-audit.mjs` measures horizontal scroll, viewport
+  overflow, covered interactive elements, clipped text, tap-target size and JS errors across all 13 pages
+  × 3 viewports. Known remaining finding: the three download-card title links are 20px tall on phones.
 - **Mobile nav:** `site/src/components/Nav.astro` has an animated hamburger (JS toggles a full-width
   dropdown; the bars spin 405° into an X).
 - **Fidelity tooling:** `site/capture/` (`capture.mjs`, `verify.mjs`, `linkaudit.mjs`). Scripts spawn the
