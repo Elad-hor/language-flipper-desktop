@@ -40,11 +40,53 @@ jobs:
           rm -rf _deploy && mkdir _deploy
           cp -r dist/. _deploy/
           cp contact/contact.php _deploy/contact.php
-          printf '%s\n' \
-            'RedirectMatch 301 ^/attributes/?$ /' \
-            'RedirectMatch 301 ^/category/uncategorized/?$ /' \
-            'RedirectMatch 301 ^/sitemap_index\.xml$ /sitemap-index.xml' \
-            > _deploy/.htaccess
+          cat > _deploy/.htaccess <<'HTACCESS'
+          RedirectMatch 301 ^/attributes/?$ /
+          RedirectMatch 301 ^/category/uncategorized/?$ /
+          RedirectMatch 301 ^/sitemap_index\.xml$ /sitemap-index.xml
+
+          # Caching.
+          #
+          # Hostinger sends no Cache-Control for HTML, only Last-Modified. With
+          # no explicit directive browsers fall back to HEURISTIC caching —
+          # roughly 10% of the document's age — so after the site had sat
+          # unchanged for 14 days, Chrome served a stale copy for ~1.4 days
+          # without revalidating. That is why a deploy on 2026-08-10 was
+          # invisible outside incognito.
+          #
+          # HTML must always revalidate; the /_astro/ bundles are content-hashed
+          # so their filename changes whenever the bytes do, making them safe to
+          # cache permanently.
+          <IfModule mod_headers.c>
+            # no-cache means "revalidate before reuse", NOT "don't store" — the
+            # browser still gets cheap 304s when nothing changed.
+            <FilesMatch "\.(html|php)$">
+              Header set Cache-Control "no-cache, must-revalidate"
+            </FilesMatch>
+            # Extensionless directory URLs (/, /about-us/) serve index.html but
+            # don't match the pattern above, so cover them by MIME type.
+            <IfModule mod_setenvif.c>
+              Header set Cache-Control "no-cache, must-revalidate" "expr=%{CONTENT_TYPE} =~ m#^text/html#"
+            </IfModule>
+            <FilesMatch "\.(xml|txt|json)$">
+              Header set Cache-Control "public, max-age=3600"
+            </FilesMatch>
+          </IfModule>
+
+          <IfModule mod_expires.c>
+            ExpiresActive On
+            ExpiresByType text/html "access plus 0 seconds"
+          </IfModule>
+
+          # Content-hashed build output — safe to cache for a year.
+          <IfModule mod_headers.c>
+            <FilesMatch "^.*$">
+              Header set Cache-Control "public, max-age=31536000, immutable" "expr=%{REQUEST_URI} =~ m#^/_astro/#"
+            </FilesMatch>
+          </IfModule>
+          HTACCESS
+          # Strip the indentation the heredoc carried for readability above.
+          sed -i 's/^          //' _deploy/.htaccess
 
       - name: Deploy over FTPS (curl)
         working-directory: site/_deploy
