@@ -9,6 +9,12 @@ on:
     paths:
       - 'site/**'
       - '.github/workflows/deploy.yml'
+  # The download URLs are resolved from the releases API at build time
+  # (site/src/lib/releases.ts), so publishing a release has to rebuild the site
+  # — otherwise the buttons keep serving the previous version. A release only
+  # pushes a version-bump commit, which the paths filter above ignores.
+  release:
+    types: [published]
   workflow_dispatch: # allows a manual run from the Actions tab
 
 concurrency:
@@ -30,6 +36,10 @@ jobs:
 
       - name: Install & build
         working-directory: site
+        env:
+          # Raises the releases-API rate limit from 60/hour (shared runner IPs)
+          # to 1000/hour, so the download URLs don't silently fall back.
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           npm ci
           npm run build

@@ -2,14 +2,19 @@
 import { type Lang, t } from '../i18n/ui';
 import InstallHelp from './InstallHelp.astro';
 import InstallModal from './InstallModal.astro';
+import { getDownloads } from '../lib/releases';
 
 interface Props {
   lang: Lang;
 }
 const { lang } = Astro.props;
 
-const macHref = 'https://github.com/Elad-hor/language-flipper-desktop/releases/download/v0.1.67-mac/Language.Flipper.dmg';
-const winHref = 'https://github.com/Elad-hor/language-flipper-desktop/releases/download/v0.1.105-windows/Language-Flipper-Setup.exe';
+// Resolved at build time from the GitHub releases API, so publishing a release
+// is all it takes — no hardcoded URL to remember to bump. Falls back to pinned
+// URLs if the API is unreachable. See src/lib/releases.ts.
+const downloads = await getDownloads();
+const macHref = downloads.mac.url;
+const winHref = downloads.win.url;
 const premiumHref = 'https://languageflipper.gumroad.com/l/languageflipper';
 ---
 <section class="download-section" id="download">
