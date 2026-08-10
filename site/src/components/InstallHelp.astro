@@ -7,6 +7,7 @@
 // When a certificate lands for one platform, delete that platform's block here
 // and its i18n keys — the other platform is untouched.
 import { type Lang, t } from '../i18n/ui';
+import SmartScreenDemo from './SmartScreenDemo.astro';
 
 interface Props {
   lang: Lang;
@@ -51,6 +52,7 @@ const showWin = os === 'win' || os === 'both';
         <li>{t(lang, 'install.win_s3')}</li>
         <li>{t(lang, 'install.win_s4')}</li>
       </ol>
+      <SmartScreenDemo />
       <p class="ih-note">{t(lang, 'install.win_note')}</p>
     </div>
   )}

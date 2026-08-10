@@ -166,8 +166,9 @@ const premiumHref = 'https://languageflipper.gumroad.com/l/languageflipper';
 
   /* ---- "Your computer hasn't met us yet" collapsible ---- */
   .dl-help {
-    max-width: 860px;
-    margin: 4rem auto 0;
+    /* Full site width (the .container's 80px gutters), not the 860px the
+       download cards are pinned to. */
+    margin: 4rem 0 0;
     border: 1px solid rgba(255, 255, 255, 0.14);
     border-radius: var(--lf-radius);
     background: rgba(255, 255, 255, 0.04);

@@ -1,0 +1,232 @@
+---
+// Animated recreation of the Windows SmartScreen prompt, showing the two
+// clicks that get past it: "More info" → "Run anyway".
+//
+// This is a DRAWN ILLUSTRATION, not a screen capture. It is built from CSS +
+// SVG rather than a GIF on purpose: it stays crisp at any DPI, costs a couple
+// of KB instead of a megabyte, can be translated (the labels below are real
+// text), and can honour prefers-reduced-motion — which a GIF cannot do.
+//
+// The dialog wording matches what Windows actually shows so the user
+// recognises it, but the styling is deliberately our own rather than a
+// pixel-perfect copy of Microsoft's chrome.
+//
+// It is aria-hidden: the numbered steps next to it already state the same
+// thing, so exposing it again would just duplicate it for screen readers.
+---
+<div class="ss" aria-hidden="true">
+  <div class="ss-frame">
+    <p class="ss-title">Windows protected your PC</p>
+    <p class="ss-body">
+      Microsoft Defender SmartScreen prevented an unrecognised app from
+      starting. Running this app might put your PC at risk.
+    </p>
+
+    <div class="ss-details">
+      <p class="ss-meta"><span>App:</span> Language-Flipper-Setup.exe</p>
+      <p class="ss-meta"><span>Publisher:</span> Unknown publisher</p>
+    </div>
+
+    <p class="ss-more">
+      More info
+      <span class="ss-ripple ss-ripple-1"></span>
+    </p>
+
+    <div class="ss-actions">
+      <span class="ss-btn ss-run">
+        Run anyway
+        <span class="ss-ripple ss-ripple-2"></span>
+      </span>
+      <span class="ss-btn ss-dont">Don't run</span>
+    </div>
+
+    <svg class="ss-cursor" viewBox="0 0 24 24" width="20" height="20">
+      <path d="M5 2l14 11-6.5.9 3.6 6.6-2.7 1.5-3.6-6.6L5 20z"
+            fill="#fff" stroke="#111" stroke-width="1.2" stroke-linejoin="round"/>
+    </svg>
+  </div>
+  <p class="ss-cap">Illustration of the Windows prompt</p>
+</div>
+
+<style>
+  /* Container query context: the cursor path below is a fixed set of pixel
+     coordinates, so it is only correct while the frame is at its full width.
+     A container query (not a viewport one) is what's needed here because the
+     frame sits in a 2-column grid in the collapsible and a narrow modal — the
+     viewport tells us nothing about how wide this box actually is. */
+  .ss {
+    margin: 1.2rem 0 0;
+    container-type: inline-size;
+  }
+
+  .ss-frame {
+    position: relative;
+    /* Fixed width keeps the internal layout — and therefore the click
+       targets — identical everywhere this component is used. */
+    max-width: 420px;
+    /* The real dialog is a light grey sheet; keep it recognisable but plain. */
+    background: #f3f3f3;
+    color: #1b1b1b;
+    border-radius: 8px;
+    padding: 1rem 1.1rem 1.1rem;
+    font-size: 0.82rem;
+    line-height: 1.45;
+    text-align: start;
+    box-shadow: 0 10px 26px rgba(0, 0, 0, 0.4);
+    overflow: hidden;
+  }
+
+  .ss-title {
+    margin: 0 0 0.5rem;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #0b0b0b;
+  }
+  .ss-body { margin: 0; color: #3a3a3a; }
+
+  /* Hidden until the "More info" click, like the real prompt — but the space
+     stays reserved. The real dialog grows here; we keep the box a fixed size
+     so the click targets never move, which is what lets the cursor path be a
+     fixed set of coordinates. */
+  .ss-details {
+    opacity: 0;
+    margin: 0;
+    animation: ss-reveal 9s linear infinite;
+  }
+  .ss-meta { margin: 0.45rem 0 0; color: #3a3a3a; }
+  .ss-meta span { color: #6a6a6a; }
+
+  .ss-more {
+    position: relative;
+    display: inline-block;
+    margin: 0.7rem 0 0;
+    color: #0b57d0;
+    text-decoration: underline;
+    animation: ss-pulse 9s linear infinite;
+  }
+
+  .ss-actions {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-end;
+    margin-top: 0.9rem;
+  }
+  .ss-btn {
+    position: relative;
+    padding: 0.34rem 0.9rem;
+    border: 1px solid #9a9a9a;
+    border-radius: 3px;
+    background: #e6e6e6;
+    font-size: 0.8rem;
+    white-space: nowrap;
+  }
+  /* "Run anyway" only exists once the details are open. */
+  .ss-run {
+    opacity: 0;
+    animation: ss-reveal-btn 9s linear infinite, ss-pulse-run 9s linear infinite;
+  }
+
+  .ss-ripple {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 10px;
+    height: 10px;
+    margin: -5px 0 0 -5px;
+    border-radius: 50%;
+    background: rgba(11, 87, 208, 0.45);
+    opacity: 0;
+    transform: scale(0.4);
+  }
+  .ss-ripple-1 { animation: ss-click 9s linear infinite; }
+  .ss-ripple-2 { animation: ss-click 9s linear infinite; animation-delay: 3.15s; }
+
+  .ss-cursor {
+    position: absolute;
+    top: 0;
+    left: 0;
+    animation: ss-move 9s linear infinite;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.5));
+  }
+
+  .ss-cap {
+    margin: 0.5rem 0 0;
+    font-size: 0.75rem;
+    color: var(--lf-text-muted);
+    text-align: start;
+  }
+
+  /* --- timeline (9s loop) ---
+     0.0–1.4s  cursor travels to "More info"
+     1.6s      click 1 → details expand, "Run anyway" appears
+     3.0–4.5s  cursor travels to "Run anyway"
+     4.8s      click 2
+     5.5–9s    hold, then reset                                            */
+
+  /* Coordinates measured from the rendered 420px frame, not estimated:
+     "More info" centre (45,160), "Run anyway" centre (261,199). The cursor's
+     tip sits ~4px in from the SVG's top-left, hence the -4/-4 offsets. */
+  @keyframes ss-move {
+    0%   { transform: translate(20px, 214px); }
+    14%  { transform: translate(41px, 156px); }   /* on "More info" */
+    38%  { transform: translate(41px, 156px); }
+    52%  { transform: translate(257px, 195px); }  /* on "Run anyway" */
+    88%  { transform: translate(257px, 195px); }
+    100% { transform: translate(20px, 214px); }
+  }
+  @keyframes ss-reveal {
+    0%, 17%   { opacity: 0; }
+    24%, 92%  { opacity: 1; }
+    100%      { opacity: 0; }
+  }
+  @keyframes ss-reveal-btn {
+    0%, 17%   { opacity: 0; }
+    24%, 92%  { opacity: 1; }
+    100%      { opacity: 0; }
+  }
+  @keyframes ss-click {
+    0%, 16%  { opacity: 0; transform: scale(0.4); }
+    18%      { opacity: 1; transform: scale(1); }
+    23%      { opacity: 0; transform: scale(2.6); }
+    100%     { opacity: 0; transform: scale(0.4); }
+  }
+  @keyframes ss-pulse {
+    0%, 15%, 21%, 100% { background: transparent; }
+    17%, 19%           { background: rgba(11, 87, 208, 0.16); }
+  }
+  @keyframes ss-pulse-run {
+    0%, 51%, 57%, 100% { border-color: #9a9a9a; }
+    53%, 55%           { border-color: #0b57d0; }
+  }
+
+  /* Elad's laptop runs with OS reduce-motion ON, and any looping animation is
+     hostile to motion-sensitive users anyway. Show the FINAL state instead of
+     nothing: details open, "Run anyway" visible, no cursor, no looping. */
+  @media (prefers-reduced-motion: reduce) {
+    .ss-details,
+    .ss-run,
+    .ss-more,
+    .ss-ripple,
+    .ss-cursor {
+      animation: none;
+    }
+    .ss-details { opacity: 1; }
+    .ss-run { opacity: 1; border-color: #0b57d0; }
+    .ss-ripple, .ss-cursor { display: none; }
+  }
+
+  /* Below 420px the frame shrinks, the body text rewraps and the right-aligned
+     buttons move, so the measured cursor path no longer lands on anything.
+     Drop the cursor and show the end state rather than animate a lie. */
+  @container (max-width: 419px) {
+    .ss-cursor, .ss-ripple { display: none; }
+    .ss-details { animation: none; opacity: 1; }
+    .ss-run { animation: none; opacity: 1; }
+  }
+
+  @media (max-width: 767px) {
+    .ss-frame { font-size: 0.76rem; padding: 0.85rem 0.9rem 0.95rem; }
+    .ss-title { font-size: 0.95rem; }
+    .ss-btn { font-size: 0.72rem; padding: 0.3rem 0.7rem; }
+  }
+</style>
