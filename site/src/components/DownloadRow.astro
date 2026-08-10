@@ -1,5 +1,7 @@
 ---
 import { type Lang, t } from '../i18n/ui';
+import InstallHelp from './InstallHelp.astro';
+import InstallModal from './InstallModal.astro';
 
 interface Props {
   lang: Lang;
@@ -27,22 +29,22 @@ const premiumHref = 'https://languageflipper.gumroad.com/l/languageflipper';
     <div class="download-grid">
       <!-- Mac -->
       <div class="dl-card">
-        <a href={macHref} class="dl-icon-link" aria-label="Mac DMG download">
+        <a href={macHref} class="dl-icon-link" aria-label="Mac DMG download" data-install-os="mac">
           <svg class="dl-icon" aria-hidden="true" viewBox="0 0 384 512" xmlns="http://www.w3.org/2000/svg">
             <path fill="currentColor" d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/>
           </svg>
         </a>
-        <h3 class="dl-title"><a href={macHref}>{t(lang, 'download.mac_title')}</a></h3>
+        <h3 class="dl-title"><a href={macHref} data-install-os="mac">{t(lang, 'download.mac_title')}</a></h3>
         <p class="dl-sub">{t(lang, 'download.mac_sub')}</p>
       </div>
       <!-- Windows -->
       <div class="dl-card">
-        <a href={winHref} class="dl-icon-link" aria-label="Windows EXE download">
+        <a href={winHref} class="dl-icon-link" aria-label="Windows EXE download" data-install-os="win">
           <svg class="dl-icon" aria-hidden="true" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg">
             <path fill="currentColor" d="M0 93.7l183.6-25.3v177.4H0V93.7zm0 324.6l183.6 25.3V268.4H0v149.9zm203.8 28L448 480V268.4H203.8v177.9zm0-380.6v180.1H448V32L203.8 65.7z"/>
           </svg>
         </a>
-        <h3 class="dl-title"><a href={winHref}>{t(lang, 'download.win_title')}</a></h3>
+        <h3 class="dl-title"><a href={winHref} data-install-os="win">{t(lang, 'download.win_title')}</a></h3>
         <p class="dl-sub">{t(lang, 'download.win_sub')}</p>
       </div>
       <!-- Premium -->
@@ -56,7 +58,28 @@ const premiumHref = 'https://languageflipper.gumroad.com/l/languageflipper';
         <p class="dl-sub">{t(lang, 'download.premium_sub')}</p>
       </div>
     </div>
+
+    {/* Same content as the per-OS modals, but always present in the HTML and
+        JS-free — this is what keeps the guidance reachable if the script
+        never runs, and for people who want to read before downloading. */}
+    <details class="dl-help">
+      <summary class="dl-help-summary">
+        <span class="dl-help-chev" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="18" height="18">
+            <path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"
+                  stroke-linejoin="round" d="M8 5l8 7-8 7"/>
+          </svg>
+        </span>
+        <span>{t(lang, 'install.toggle')}</span>
+      </summary>
+      <div class="dl-help-body">
+        <p class="dl-help-lead">{t(lang, 'install.intro')}</p>
+        <InstallHelp lang={lang} os="both" />
+      </div>
+    </details>
   </div>
+
+  <InstallModal lang={lang} />
 </section>
 
 <style>
@@ -141,10 +164,70 @@ const premiumHref = 'https://languageflipper.gumroad.com/l/languageflipper';
     margin: 0;
   }
 
+  /* ---- "Your computer hasn't met us yet" collapsible ---- */
+  .dl-help {
+    max-width: 860px;
+    margin: 4rem auto 0;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: var(--lf-radius);
+    background: rgba(255, 255, 255, 0.04);
+    text-align: start;
+  }
+  .dl-help-summary {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1.1rem 1.4rem;
+    /* Comfortably above the 44px tap-target minimum. */
+    min-height: 44px;
+    color: var(--lf-white);
+    font-size: 1.15rem;
+    font-weight: 600;
+    cursor: pointer;
+    list-style: none;           /* hide the default disclosure triangle */
+    user-select: none;
+  }
+  .dl-help-summary::-webkit-details-marker { display: none; }
+  .dl-help-summary:hover { color: var(--lf-gold); }
+  .dl-help-summary:focus-visible {
+    outline: 2px solid var(--lf-gold);
+    outline-offset: -2px;
+    border-radius: var(--lf-radius);
+  }
+  .dl-help-chev {
+    display: flex;
+    flex: none;
+    color: var(--lf-magenta);
+    transition: transform 0.2s ease;
+  }
+  /* Point the chevron the correct way before it rotates, on RTL pages. */
+  :global([dir='rtl']) .dl-help-chev { transform: rotate(180deg); }
+  .dl-help[open] .dl-help-chev { transform: rotate(90deg); }
+  :global([dir='rtl']) .dl-help[open] .dl-help-chev { transform: rotate(90deg); }
+
+  .dl-help-body {
+    padding: 0 1.4rem 1.6rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  .dl-help-lead {
+    margin: 1.2rem 0 1.8rem;
+    font-size: 1.05rem;
+    line-height: 1.55;
+    color: var(--lf-text-muted);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .dl-help-chev { transition: none; }
+  }
+
   @media (max-width: 767px) {
     .download-section {
       padding: 80px 0 120px;
     }
+    .dl-help { margin-top: 3rem; }
+    .dl-help-summary { font-size: 1rem; padding: 1rem 1.1rem; }
+    .dl-help-body { padding: 0 1.1rem 1.3rem; }
+    .dl-help-lead { font-size: 0.95rem; margin: 1rem 0 1.5rem; }
     .download-grid {
       grid-template-columns: 1fr;
       gap: 3.5rem;

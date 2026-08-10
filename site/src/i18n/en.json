@@ -69,5 +69,22 @@
   "footer.accessibility": "Accessibility Statement",
   "footer.terms": "Terms Of Service",
   "footer.privacy": "Privacy Policy",
-  "hero.subtitle_intro": ""
+  "hero.subtitle_intro": "",
+  "install.toggle": "Your computer hasn't met us yet (it'll get over it)",
+  "install.intro": "Language Flipper isn't signed with a certificate yet, so macOS and Windows will ask you to confirm the first time you open it. Nothing is wrong — here is exactly what you'll see.",
+  "install.mac_h": "On macOS",
+  "install.mac_s1": "Open the DMG and drag Language Flipper into your Applications folder.",
+  "install.mac_s2": "On first launch, macOS says it can't verify the developer.",
+  "install.mac_s3": "Open System Settings → Privacy & Security.",
+  "install.mac_s4": "Scroll down and click “Open Anyway” next to Language Flipper.",
+  "install.mac_note": "On macOS 14 and earlier you can instead right-click the app and choose Open.",
+  "install.mac_perm": "Language Flipper then walks you through granting Accessibility and Input Monitoring permission — that's how it reads and replaces your text.",
+  "install.win_h": "On Windows",
+  "install.win_s1": "Run Language-Flipper-Setup.exe.",
+  "install.win_s2": "SmartScreen shows a blue “Windows protected your PC” screen.",
+  "install.win_s3": "Click “More info”.",
+  "install.win_s4": "Click “Run anyway”.",
+  "install.win_note": "Windows shows this for any new publisher it hasn't seen many times yet. A signing certificate is on the way.",
+  "install.got_it": "Got it",
+  "install.close": "Close"
 }

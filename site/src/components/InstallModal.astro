@@ -1,0 +1,142 @@
+---
+// Per-OS install-warning modals, opened when a download card is clicked.
+// Native <dialog> + showModal() so focus trapping, Escape-to-close and the
+// backdrop are handled by the browser instead of hand-rolled JS.
+//
+// The modal is purely informational and NEVER gates the download: the click
+// handler does not preventDefault, so the <a href> downloads as normal even if
+// this script fails to load. The collapsible in DownloadRow carries the same
+// content for anyone without JS.
+import { type Lang, t } from '../i18n/ui';
+import InstallHelp from './InstallHelp.astro';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const platforms = [
+  { os: 'mac' as const, label: t(lang, 'install.mac_h') },
+  { os: 'win' as const, label: t(lang, 'install.win_h') },
+];
+---
+{platforms.map(({ os, label }) => (
+  <dialog class="im" id={`install-dlg-${os}`} aria-label={label}>
+    <div class="im-inner">
+      <button type="button" class="im-x" data-im-close aria-label={t(lang, 'install.close')}>
+        <svg viewBox="0 0 24 24" aria-hidden="true" width="20" height="20">
+          <path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"
+                d="M5 5l14 14M19 5L5 19"/>
+        </svg>
+      </button>
+      <p class="im-lead">{t(lang, 'install.intro')}</p>
+      <InstallHelp lang={lang} os={os} />
+      <button type="button" class="im-ok" data-im-close>{t(lang, 'install.got_it')}</button>
+    </div>
+  </dialog>
+))}
+
+<style>
+  .im {
+    /* <dialog> defaults to the top of the viewport; centre it. */
+    margin: auto;
+    width: min(560px, calc(100vw - 2.5rem));
+    max-height: calc(100vh - 3rem);
+    padding: 0;
+    border: 1px solid rgba(255, 206, 0, 0.35);
+    border-radius: var(--lf-radius);
+    background: var(--lf-bg-deep);
+    color: var(--lf-white);
+    overflow: visible;
+  }
+  .im::backdrop {
+    background: rgba(2, 1, 1, 0.72);
+  }
+  .im-inner {
+    position: relative;
+    padding: 2.2rem 2rem 1.8rem;
+    max-height: calc(100vh - 3rem);
+    overflow-y: auto;
+  }
+  .im-x {
+    position: absolute;
+    top: 0.7rem;
+    /* Logical inset so the X moves to the left edge on RTL pages. */
+    inset-inline-end: 0.7rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    color: var(--lf-text-muted);
+    cursor: pointer;
+    transition: color 0.15s, background 0.15s;
+  }
+  .im-x:hover {
+    color: var(--lf-white);
+    background: rgba(255, 255, 255, 0.08);
+  }
+  .im-lead {
+    margin: 0 0 1.6rem;
+    /* Keep clear of the close button. */
+    padding-inline-end: 2.2rem;
+    font-size: 1.05rem;
+    line-height: 1.55;
+    color: var(--lf-text-muted);
+    text-align: start;
+  }
+  .im-ok {
+    display: block;
+    margin-top: 1.8rem;
+    margin-inline-start: auto;
+    padding: 0.7rem 2rem;
+    border: 0;
+    border-radius: 999px;
+    background: var(--lf-magenta);
+    color: var(--lf-white);
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: filter 0.15s;
+  }
+  .im-ok:hover { filter: brightness(1.12); }
+
+  @media (max-width: 767px) {
+    .im-inner { padding: 2rem 1.3rem 1.4rem; }
+    .im-lead { font-size: 0.95rem; margin-bottom: 1.3rem; }
+    .im-ok { width: 100%; margin-inline-start: 0; }
+  }
+</style>
+
+<script>
+  // Open the matching dialog when a download card is clicked. The download
+  // itself is left completely alone — no preventDefault anywhere in here.
+  document.querySelectorAll<HTMLElement>('[data-install-os]').forEach((el) => {
+    el.addEventListener('click', (e) => {
+      const ev = e as MouseEvent;
+      // Let "open in new tab/window" clicks through without a modal.
+      if (ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.altKey || ev.button !== 0) return;
+
+      const os = el.dataset.installOs;
+      const dlg = document.getElementById(`install-dlg-${os}`) as HTMLDialogElement | null;
+      if (!dlg || typeof dlg.showModal !== 'function' || dlg.open) return;
+      dlg.showModal();
+    });
+  });
+
+  document.querySelectorAll<HTMLDialogElement>('dialog.im').forEach((dlg) => {
+    // Close buttons (the X and "Got it").
+    dlg.querySelectorAll('[data-im-close]').forEach((btn) => {
+      btn.addEventListener('click', () => dlg.close());
+    });
+    // Click on the backdrop — the dialog itself is the event target only when
+    // the click landed outside .im-inner.
+    dlg.addEventListener('click', (e) => {
+      if (e.target === dlg) dlg.close();
+    });
+  });
+</script>

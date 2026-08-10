@@ -91,5 +91,22 @@
   "footer.accessibility": "הצהרת נגישות",
   "footer.terms": "תנאי שימוש",
   "footer.privacy": "פרטיות",
-  "hero.subtitle_intro": "את.ה באנגלית... "
+  "hero.subtitle_intro": "את.ה באנגלית... ",
+  "install.toggle": "המחשב שלך עוד לא מכיר אותנו (זה יעבור לו)",
+  "install.intro": "Language Flipper עדיין לא חתומה בתעודה דיגיטלית, ולכן macOS ו‑Windows יבקשו מכם לאשר בפעם הראשונה שתפתחו אותה. הכול בסדר גמור — הנה בדיוק מה שתראו.",
+  "install.mac_h": "ב‑macOS",
+  "install.mac_s1": "פתחו את קובץ ה‑DMG וגררו את Language Flipper לתיקיית Applications.",
+  "install.mac_s2": "בהפעלה הראשונה macOS יודיע שהוא לא מצליח לאמת את המפתח.",
+  "install.mac_s3": "היכנסו להגדרות המערכת ← פרטיות ואבטחה.",
+  "install.mac_s4": "גללו למטה ולחצו על “Open Anyway” ליד Language Flipper.",
+  "install.mac_note": "ב‑macOS 14 ומטה אפשר במקום זאת ללחוץ קליק ימני על האפליקציה ולבחור Open.",
+  "install.mac_perm": "לאחר מכן האפליקציה תדריך אתכם במתן הרשאות נגישות וניטור קלט — כך היא קוראת ומחליפה את הטקסט.",
+  "install.win_h": "ב‑Windows",
+  "install.win_s1": "הריצו את הקובץ Language-Flipper-Setup.exe.",
+  "install.win_s2": "SmartScreen יציג מסך כחול עם ההודעה “Windows protected your PC”.",
+  "install.win_s3": "לחצו על “More info”.",
+  "install.win_s4": "לחצו על “Run anyway”.",
+  "install.win_note": "Windows מציג את זה לכל מפתח חדש שהוא עדיין לא מכיר מספיק. תעודת חתימה בדרך.",
+  "install.got_it": "הבנתי",
+  "install.close": "סגירה"
 }
