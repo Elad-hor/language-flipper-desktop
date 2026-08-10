@@ -235,5 +235,20 @@ const premiumHref = 'https://languageflipper.gumroad.com/l/languageflipper';
     /* Keep mobile card text at its original size */
     .dl-title { font-size: 1.1rem; }
     .dl-sub { font-size: 0.8rem; }
+
+    /* Tap targets. The title link is the primary download CTA on mobile but
+       its box was only as tall as the text (~20px), well under the 44px
+       minimum. Give it a real 44px box rather than faking the hit area with a
+       pseudo-element, so it measures as compliant too. */
+    .dl-title a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding-inline: 1rem;
+    }
+    /* The link now supplies its own vertical breathing room, so drop the
+       card gap to keep icon → title → subtitle spacing as it was. */
+    .dl-card { gap: 0; }
   }
 </style>
