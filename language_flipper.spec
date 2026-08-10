@@ -62,7 +62,9 @@ app = BUNDLE(
     icon=None,          # set to "assets/icon.icns" once you convert the PNG
     bundle_identifier="com.languageflipper.desktop",
     info_plist={
-        "CFBundleShortVersionString": "0.1.0",
+        # Kept in step with flipper_daemon/version.py — release_mac.sh rewrites
+        # this line via sed at release time.
+        "CFBundleShortVersionString": "0.1.105",
         "CFBundleVersion":            "1",
         "NSHighResolutionCapable":    True,
         # Accessibility permission description shown in System Settings
