@@ -86,5 +86,7 @@
   "install.win_s4": "Click “Run anyway”.",
   "install.win_note": "Windows shows this for any new publisher it hasn't seen many times yet. A signing certificate is on the way.",
   "install.got_it": "Got it",
-  "install.close": "Close"
+  "install.close": "Close",
+  "install.mobile_note": "Language Flipper is a desktop app — open this page on your Mac or PC to install it.",
+  "install.download_anyway": "Download anyway"
 }

@@ -12,14 +12,17 @@ import InstallHelp from './InstallHelp.astro';
 
 interface Props {
   lang: Lang;
+  /** Release URLs, so the modal can offer a deliberate "download anyway". */
+  macHref: string;
+  winHref: string;
 }
-const { lang } = Astro.props;
+const { lang, macHref, winHref } = Astro.props;
 const platforms = [
-  { os: 'mac' as const, label: t(lang, 'install.mac_h') },
-  { os: 'win' as const, label: t(lang, 'install.win_h') },
+  { os: 'mac' as const, label: t(lang, 'install.mac_h'), href: macHref },
+  { os: 'win' as const, label: t(lang, 'install.win_h'), href: winHref },
 ];
 ---
-{platforms.map(({ os, label }) => (
+{platforms.map(({ os, label, href }) => (
   <dialog class="im" id={`install-dlg-${os}`} aria-label={label}>
     <div class="im-inner">
       <button type="button" class="im-x" data-im-close aria-label={t(lang, 'install.close')}>
@@ -28,9 +31,17 @@ const platforms = [
                 d="M5 5l14 14M19 5L5 19"/>
         </svg>
       </button>
+      {/* Phones can't run a .dmg/.exe, and on iOS following the link spawns a
+          stray tab before the download manager takes over. On mobile the card
+          opens this modal instead of navigating; this note explains why, and
+          the link below is the deliberate opt-out. Both are mobile-only. */}
+      <p class="im-mobile-note">{t(lang, 'install.mobile_note')}</p>
       <p class="im-lead">{t(lang, 'install.intro')}</p>
       <InstallHelp lang={lang} os={os} />
-      <button type="button" class="im-ok" data-im-close>{t(lang, 'install.got_it')}</button>
+      <div class="im-foot">
+        <a class="im-anyway" href={href}>{t(lang, 'install.download_anyway')}</a>
+        <button type="button" class="im-ok" data-im-close>{t(lang, 'install.got_it')}</button>
+      </div>
     </div>
   </dialog>
 ))}
@@ -88,10 +99,19 @@ const platforms = [
     color: var(--lf-text-muted);
     text-align: start;
   }
+  /* Mobile-only affordances. */
+  .im-mobile-note,
+  .im-anyway { display: none; }
+
+  .im-foot {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 1.8rem;
+  }
   .im-ok {
     display: block;
-    margin-top: 1.8rem;
-    margin-inline-start: auto;
     padding: 0.7rem 2rem;
     border: 0;
     border-radius: 999px;
@@ -108,13 +128,47 @@ const platforms = [
   @media (max-width: 767px) {
     .im-inner { padding: 2rem 1.3rem 1.4rem; }
     .im-lead { font-size: 0.95rem; margin-bottom: 1.3rem; }
-    .im-ok { width: 100%; margin-inline-start: 0; }
+
+    .im-mobile-note {
+      display: block;
+      margin: 0 0 1rem;
+      padding-inline-end: 2.2rem;
+      font-size: 1rem;
+      font-weight: 600;
+      line-height: 1.5;
+      color: var(--lf-gold);
+    }
+    .im-anyway {
+      display: inline-block;
+      font-size: 0.9rem;
+      color: var(--lf-text-muted);
+      text-decoration: underline;
+    }
+    .im-foot {
+      flex-direction: column-reverse;
+      align-items: stretch;
+      gap: 0.9rem;
+    }
+    .im-ok { width: 100%; }
+    .im-anyway { text-align: center; }
   }
 </style>
 
 <script>
-  // Open the matching dialog when a download card is clicked. The download
-  // itself is left completely alone — no preventDefault anywhere in here.
+  // Matches the CSS mobile breakpoint. Evaluated per click, not once at load,
+  // so a rotation or resize is picked up.
+  const isPhone = () => window.matchMedia('(max-width: 767px)').matches;
+
+  // Open the matching dialog when a download card is clicked.
+  //
+  // On desktop the download is left completely alone — no preventDefault — so
+  // it still works if this script dies.
+  //
+  // On phones we DO cancel the navigation: a .dmg/.exe can't run there, and on
+  // iOS following a cross-origin attachment link spawns a stray blank tab
+  // before Safari's download manager takes over. The modal carries an explicit
+  // "download anyway" link for anyone who really wants the file. (The
+  // `download` attribute is no help here — it's ignored cross-origin.)
   document.querySelectorAll<HTMLElement>('[data-install-os]').forEach((el) => {
     el.addEventListener('click', (e) => {
       const ev = e as MouseEvent;
@@ -124,6 +178,8 @@ const platforms = [
       const os = el.dataset.installOs;
       const dlg = document.getElementById(`install-dlg-${os}`) as HTMLDialogElement | null;
       if (!dlg || typeof dlg.showModal !== 'function' || dlg.open) return;
+
+      if (isPhone()) ev.preventDefault();
       dlg.showModal();
     });
   });

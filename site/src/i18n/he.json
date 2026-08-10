@@ -108,5 +108,7 @@
   "install.win_s4": "לחצו על “Run anyway”.",
   "install.win_note": "Windows מציג את זה לכל מפתח חדש שהוא עדיין לא מכיר מספיק. תעודת חתימה בדרך.",
   "install.got_it": "הבנתי",
-  "install.close": "סגירה"
+  "install.close": "סגירה",
+  "install.mobile_note": "Language Flipper היא אפליקציית מחשב — פתחו את הדף הזה במק או ב‑PC כדי להתקין אותה.",
+  "install.download_anyway": "הורידו בכל זאת"
 }

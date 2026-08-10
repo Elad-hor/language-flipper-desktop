@@ -143,6 +143,40 @@ try {
 
     check(`${target.lang} no JS errors`, errs.length === 0, errs.slice(0, 3).join(' | '));
     await ctx.close();
+
+    // --- phone: the card must NOT navigate (no stray iOS tab), must show the
+    //     desktop-app note, and must still offer an explicit way out ---
+    const mctx = await browser.newContext({ viewport: { width: 390, height: 844 }, acceptDownloads: true });
+    const mp = await mctx.newPage();
+    await mp.route('**/releases/download/**', (route) =>
+      route.fulfill({ status: 200, headers: { 'content-disposition': 'attachment; filename="stub.bin"' }, body: 'stub' }));
+    await mp.goto(target.url, { waitUntil: 'load', timeout: 30000 });
+    await mp.waitForTimeout(400);
+
+    const mDl = mp.waitForEvent('download', { timeout: 4000 }).catch(() => null);
+    await mp.locator('.dl-title a[data-install-os="win"]').click();
+    await mp.waitForTimeout(500);
+    check(`${target.lang} phone: modal opens`, await mp.locator('#install-dlg-win').evaluate((d) => d.open));
+    check(`${target.lang} phone: NO navigation/download (no stray tab)`, (await mDl) === null);
+    check(`${target.lang} phone: still on the page`, mp.url().includes('languageflipper') || mp.url().includes('localhost'));
+    check(`${target.lang} phone: desktop-app note visible`,
+      await mp.locator('#install-dlg-win .im-mobile-note').isVisible());
+    const anyway = mp.locator('#install-dlg-win .im-anyway');
+    check(`${target.lang} phone: "download anyway" offered`, await anyway.isVisible());
+    check(`${target.lang} phone: "download anyway" points at the release`,
+      ((await anyway.getAttribute('href')) || '').includes('releases/download'));
+    await mctx.close();
+
+    // --- desktop must be unaffected: the note stays hidden ---
+    const dctx = await browser.newContext({ viewport: { width: 1366, height: 800 } });
+    const dp = await dctx.newPage();
+    await dp.goto(target.url, { waitUntil: 'load', timeout: 30000 });
+    await dp.waitForTimeout(300);
+    check(`${target.lang} desktop: mobile note hidden`,
+      !(await dp.locator('#install-dlg-win .im-mobile-note').isVisible()));
+    check(`${target.lang} desktop: "download anyway" hidden`,
+      !(await dp.locator('#install-dlg-win .im-anyway').isVisible()));
+    await dctx.close();
   }
   await browser.close();
 } catch (e) {

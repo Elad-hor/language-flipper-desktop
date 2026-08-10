@@ -61,6 +61,11 @@
 
   .ss-frame {
     position: relative;
+    /* This depicts the English Windows dialog, so it stays LTR even on the
+       Hebrew pages — otherwise the buttons mirror and the picture stops
+       matching what the user will actually see. The cursor coordinates below
+       assume LTR too. */
+    direction: ltr;
     /* Fixed width keeps the internal layout — and therefore the click
        targets — identical everywhere this component is used. */
     max-width: 420px;

@@ -60,33 +60,32 @@ jobs:
           <IfModule mod_headers.c>
             # no-cache means "revalidate before reuse", NOT "don't store" — the
             # browser still gets cheap 304s when nothing changed.
+            # FilesMatch tests the on-disk filename, so this also covers the
+            # extensionless directory URLs (/, /about-us/) that serve index.html.
             <FilesMatch "\.(html|php)$">
               Header set Cache-Control "no-cache, must-revalidate"
             </FilesMatch>
-            # Extensionless directory URLs (/, /about-us/) serve index.html but
-            # don't match the pattern above, so cover them by MIME type.
-            <IfModule mod_setenvif.c>
-              Header set Cache-Control "no-cache, must-revalidate" "expr=%{CONTENT_TYPE} =~ m#^text/html#"
-            </IfModule>
             <FilesMatch "\.(xml|txt|json)$">
               Header set Cache-Control "public, max-age=3600"
-            </FilesMatch>
-          </IfModule>
-
-          <IfModule mod_expires.c>
-            ExpiresActive On
-            ExpiresByType text/html "access plus 0 seconds"
-          </IfModule>
-
-          # Content-hashed build output — safe to cache for a year.
-          <IfModule mod_headers.c>
-            <FilesMatch "^.*$">
-              Header set Cache-Control "public, max-age=31536000, immutable" "expr=%{REQUEST_URI} =~ m#^/_astro/#"
             </FilesMatch>
           </IfModule>
           HTACCESS
           # Strip the indentation the heredoc carried for readability above.
           sed -i 's/^          //' _deploy/.htaccess
+
+          # Content-hashed build output — safe to cache for a year.
+          #
+          # This lives in its own directory-scoped .htaccess rather than an
+          # expr= condition in the root one: Hostinger runs LiteSpeed, which
+          # reads .htaccess but ignored `Header set ... "expr=%{REQUEST_URI}..."`
+          # silently, leaving these on Hostinger's default max-age=604800.
+          # A plain per-directory rule is honoured by both Apache and LiteSpeed.
+          cat > _deploy/_astro/.htaccess <<'ASTROHT'
+          <IfModule mod_headers.c>
+            Header set Cache-Control "public, max-age=31536000, immutable"
+          </IfModule>
+          ASTROHT
+          sed -i 's/^          //' _deploy/_astro/.htaccess
 
       - name: Deploy over FTPS (curl)
         working-directory: site/_deploy
