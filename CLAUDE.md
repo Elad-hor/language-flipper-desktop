@@ -292,7 +292,15 @@ and **prompt-editable**: change a component/page, push to `main`, and CI deploys
 ## Key Past Bugs (Don't Repeat)
 
 1. **`launchctl load/unload` is deprecated on modern macOS** — always use `bootstrap`/`bootout` with `gui/<uid>` (see `login_item.py`)
-2. **certifi path in frozen builds** — `certifi.where()` returns wrong path in PyInstaller. Must locate the bundled PEM manually via the platform-specific path (see `gumroad.py:_make_ssl_context`)
+2. **certifi path in frozen builds** — `certifi.where()` returns wrong path in PyInstaller. Must locate
+   the bundled PEM manually via the platform-specific path. Now lives in **`flipper_daemon/certs.py`**
+   (`SSL_CONTEXT`); `gumroad.py` and `updater.py` both import it. **Any new code doing HTTPS must use it.**
+   `updater.py` originally used plain `urllib` with no context, so inside the Mac app bundle it had no CA
+   certificates and *every* update check failed with `CERTIFICATE_VERIFY_FAILED` — silently, behind a bare
+   `except Exception: pass`. The macOS updater therefore never worked at all from the day it was written
+   until 2026-08-12. Note `urllib.request.urlretrieve()` **cannot** take an SSL context — use `urlopen` +
+   `shutil.copyfileobj`. The updater now logs every check/download outcome to `$TMPDIR/lf-update.log`;
+   don't reintroduce silent exception swallowing there.
 3. **en_he_map.json path in frozen builds** — same issue as certifi. Platform-specific branches required (see `flipper.py`)
 4. **Windows `.bat` version bump** — PowerShell regex escaping in CMD is unreliable. Use `echo VERSION = "x.x.x" > flipper_daemon\version.py` instead
 5. **Updater used `/releases/latest`** — breaks when Mac and Windows have separate release tags. Now uses `/releases` list and scans for platform asset
@@ -304,3 +312,16 @@ and **prompt-editable**: change a component/page, push to `main`, and CI deploys
 11. **Windows auto-update relaunch — never use `start`/`explorer` from cmd chain** — These inherit a broken DLL search path. Use VBScript `Shell.Run` (see updater.py) — confirmed working in v0.1.105. `RestartApplications=yes` in Inno Setup also causes a premature double-launch — keep it removed from setup.iss. Do NOT switch to Task Scheduler or ShellExecute — VBScript is the proven solution.
 12. **`<` and `>` in en_he_map.json caused wrong he→en flips** — Both `<`/`,` and `>`/`.` shared the same Hebrew target (ת and ץ). Last-write-wins in `_HE2EN` meant ץ→`>` and ת→`<` instead of `.` and `,`. Fixed in v0.1.99 by removing the `<` and `>` entries entirely. They are layout-invariant (Shift+key produces the same char in both layouts) so they should never be flipped.
 13. **Don't add layout switch logic that reads text content when Caps Lock is on** — Text content alone cannot distinguish "user was in English layout" from "user was in Hebrew layout with Caps Lock on" (both produce English capitals). When Caps Lock is on at hotkey time, skip the layout switch entirely and just turn off Caps Lock. See "Caps Lock special case" in the Flip Logic section above.
+14. **macOS tray menu must be refreshed on the main thread** — `_refresh_tray_menu()` assigns
+    `_tray_icon.menu`; pystray's setter calls `update_menu()`, and its macOS backend implements that as
+    AppKit's `setMenu_`. AppKit is main-thread-only, but that function is called from background threads
+    (the update checker, the hotkey handler), so on macOS the refresh silently did nothing — no update
+    item, and a frozen flip counter. Dispatch via `NSOperationQueue.mainQueue()`, same as #7.
+15. **macOS hotkey must be suppressed or every flip beeps** — pynput's listener only observes, so
+    `Cmd+Shift+Y` reached the focused app, which has no such shortcut, and macOS played its
+    unhandled-Command-key alert. Fixed with `darwin_intercept` in `hotkey.py`. It must keep failing
+    *open* (pass the event through on any error) — over-suppressing silently eats real keystrokes.
+16. **Don't relaunch the app from `build_mac.sh` during a release** — the build finishes before
+    `gh release create`, so the app's startup update check runs while the new version doesn't exist yet
+    and then sleeps for the full interval. `release_mac.sh` sets `LF_SKIP_RELAUNCH=1` and relaunches after
+    publishing instead.
