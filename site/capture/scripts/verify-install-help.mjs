@@ -158,7 +158,11 @@ try {
     await mp.waitForTimeout(500);
     check(`${target.lang} phone: modal opens`, await mp.locator('#install-dlg-win').evaluate((d) => d.open));
     check(`${target.lang} phone: NO navigation/download (no stray tab)`, (await mDl) === null);
-    check(`${target.lang} phone: still on the page`, mp.url().includes('languageflipper') || mp.url().includes('localhost'));
+    // Compare against the target's own origin rather than a hardcoded host —
+    // this suite gets pointed at localhost, workers.dev and the live domain.
+    check(`${target.lang} phone: still on the page`,
+      new URL(mp.url()).origin === new URL(target.url).origin,
+      mp.url());
     check(`${target.lang} phone: desktop-app note visible`,
       await mp.locator('#install-dlg-win .im-mobile-note').isVisible());
     const anyway = mp.locator('#install-dlg-win .im-anyway');
