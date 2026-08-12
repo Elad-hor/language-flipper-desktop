@@ -15,26 +15,10 @@ import urllib.request
 import sys as _sys
 from pathlib import Path as _Path
 
-def _make_ssl_context():
-    # In a frozen PyInstaller bundle certifi.where() returns a wrong path
-    # (inside the non-existent site-packages), so locate the PEM manually.
-    if getattr(_sys, "frozen", False):
-        import platform as _plat
-        if _plat.system() == "Darwin":
-            # Mac app bundle: exe is Contents/MacOS/, datas land in Contents/Resources/
-            pem = _Path(_sys.executable).parent.parent / "Resources" / "certifi" / "cacert.pem"
-        else:
-            # Windows single-file exe: PyInstaller extracts datas to sys._MEIPASS
-            pem = _Path(getattr(_sys, "_MEIPASS", _Path(_sys.executable).parent)) / "certifi" / "cacert.pem"
-        if pem.exists():
-            return ssl.create_default_context(cafile=str(pem))
-    try:
-        import certifi
-        return ssl.create_default_context(cafile=certifi.where())
-    except Exception:
-        return None
-
-_SSL_CONTEXT = _make_ssl_context()
+# Moved to certs.py so the updater shares one implementation — it shipped
+# without any SSL context and every update check failed silently. Behaviour
+# here is unchanged.
+from .certs import SSL_CONTEXT as _SSL_CONTEXT
 
 from . import storage
 

@@ -8,6 +8,7 @@ import json
 import os
 import platform
 import shlex
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -16,6 +17,7 @@ import time
 import urllib.request
 from pathlib import Path
 
+from .certs import SSL_CONTEXT
 from .version import VERSION
 
 _GITHUB_API = "https://api.github.com/repos/Elad-hor/language-flipper-desktop/releases"
@@ -159,11 +161,29 @@ echo "relaunched"
     )
 
 
+def _download(url: str, dest: str) -> None:
+    """
+    urllib.request.urlretrieve() cannot be given an SSL context, so it hits the
+    same CERTIFICATE_VERIFY_FAILED as the check did inside a frozen build.
+    Stream it through urlopen with the bundled CA list instead.
+    """
+    req = urllib.request.Request(url, headers={"User-Agent": "language-flipper-updater"})
+    with urllib.request.urlopen(req, timeout=120, context=SSL_CONTEXT) as r:
+        with open(dest, "wb") as f:
+            shutil.copyfileobj(r, f)
+
+
 def download_and_run(url: str) -> None:
     system = platform.system()
     suffix = ".exe" if system == "Windows" else ".dmg"
     tmp = tempfile.mktemp(suffix=suffix, prefix="lf-setup-")
-    urllib.request.urlretrieve(url, tmp)
+    _log(f"downloading {url}")
+    try:
+        _download(url, tmp)
+    except Exception as exc:
+        _log(f"download FAILED: {type(exc).__name__}: {exc}")
+        raise
+    _log(f"downloaded to {tmp} ({os.path.getsize(tmp)} bytes)")
     if system == "Windows":
         install_exe = os.path.join(
             os.environ.get("LOCALAPPDATA", ""),
@@ -223,7 +243,9 @@ def _find_update(asset_name: str):
             _GITHUB_API,
             headers={"User-Agent": "language-flipper-updater"}
         )
-        with urllib.request.urlopen(req, timeout=10) as r:
+        # context= is load-bearing in a frozen build: without it there are no
+        # CA certs in the bundle and this raises CERTIFICATE_VERIFY_FAILED.
+        with urllib.request.urlopen(req, timeout=10, context=SSL_CONTEXT) as r:
             releases = json.loads(r.read())
 
         best_ver = _parse_version(VERSION)
