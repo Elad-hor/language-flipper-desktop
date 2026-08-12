@@ -1,0 +1,13 @@
+# Cloudflare Pages redirects — the replacement for the RedirectMatch rules the
+# deploy workflow wrote into Hostinger's .htaccess. Apache config does not
+# travel with the site, so without this file these 301s disappear silently on
+# the move and the old WordPress URLs start 404ing.
+#
+# Both the bare and trailing-slash forms are listed: Pages matches literal
+# paths, where Apache's regexes handled `/?$` for us.
+
+/attributes                 /                     301
+/attributes/                /                     301
+/category/uncategorized     /                     301
+/category/uncategorized/    /                     301
+/sitemap_index.xml          /sitemap-index.xml    301

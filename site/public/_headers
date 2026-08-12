@@ -1,0 +1,19 @@
+# Cloudflare Pages headers — the replacement for the Cache-Control rules the
+# deploy workflow wrote into Hostinger's .htaccess (and the separate
+# _astro/.htaccess). Apache config does not travel with the site.
+#
+# Getting this wrong is not theoretical: before those rules existed, Hostinger
+# served HTML with no Cache-Control at all, browsers fell back to heuristic
+# caching, and a deploy stayed invisible for over a day. See CLAUDE.md.
+
+# Everything revalidates by default. max-age=0 + must-revalidate still allows
+# caching — the browser just has to ask first, and gets a cheap 304 when
+# nothing changed. This deliberately covers HTML, images and the PDFs: none of
+# them are content-hashed, so a stale copy is a real bug.
+/*
+  Cache-Control: public, max-age=0, must-revalidate
+
+# Astro's build output is content-hashed — the filename changes whenever the
+# bytes do — so these can be cached permanently.
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable
