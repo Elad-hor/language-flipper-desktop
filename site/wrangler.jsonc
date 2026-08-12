@@ -7,13 +7,14 @@
   // assets directory are honoured here too, so the rules ported from
   // Hostinger's .htaccess still apply.
   //
-  // Dashboard build settings that must match this file. The Workers Builds UI
-  // has no "root directory" field, so both commands cd in themselves — this
-  // config stays in site/ and all its paths remain relative to site/:
-  //   Build command   : cd site && npm ci && npm run build
-  //   Deploy command  : cd site && npx wrangler deploy
+  // Dashboard build settings that must match this file:
+  //   Path (under Advanced settings) : /site   <- the root-directory equivalent
+  //   Build command                  : npm run build
+  //   Deploy command                 : npx wrangler deploy
+  //
+  // "name" must match the Workers project name in the dashboard.
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "language-flipper",
+  "name": "language-flipper-desktop",
   "main": "worker/index.ts",
   // Must not be ahead of the workerd binary in the installed wrangler, or the
   // local runtime refuses to start ("newest date supported by this server

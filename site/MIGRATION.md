@@ -27,14 +27,15 @@ Build settings:
 
 | Field | Value |
 |---|---|
-| Build command | `cd site && npm ci && npm run build` |
-| Deploy command | `cd site && npx wrangler deploy` |
-| Production branch | `main` |
+| Project name | `language-flipper-desktop` (must match `name` in `wrangler.jsonc`) |
+| Build command | `npm run build` |
+| Deploy command | `npx wrangler deploy` |
+| **Path** (under **Advanced settings**) | **`/site`** |
 
-**The Workers Builds UI has no "root directory" field** (Pages did). That's why both
-commands `cd site` themselves — don't go looking for the setting. Keeping the
-config in `site/` also means every path inside `wrangler.jsonc` stays relative to
-`site/`, so nothing has to be rewritten.
+**"Path" is the root-directory field.** Workers Builds doesn't call it "root
+directory" the way Pages did, and it's hidden behind *Advanced settings*, defaulting
+to `/`. Left at `/`, the build fails: `package.json`, `wrangler.jsonc` and the Astro
+project all live in `site/`.
 
 Everything else (`name`, entry point, the assets binding) is already in
 `site/wrangler.jsonc` — leave the defaults alone and it will read that file.
