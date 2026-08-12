@@ -91,10 +91,15 @@ fi
 
 echo "Done — $DMG is ready ($(du -h "$DMG" | cut -f1))"
 
-# Put back what we killed in step 1. This relaunches the version currently
-# INSTALLED in /Applications, not the one just built — which is what you want:
-# it can then see the new release and offer to update itself.
-if [ "$WAS_RUNNING" = "1" ] && [ -d "/Applications/Language Flipper.app" ]; then
+# Put back what we killed in step 1.
+#
+# Skipped when release_mac.sh is driving: the build finishes BEFORE the
+# release is published, so relaunching here means the app runs its update
+# check while the new version does not exist yet, finds nothing, and then
+# sleeps for 6 hours. release_mac.sh relaunches at the very end instead.
+if [ "${LF_SKIP_RELAUNCH:-0}" != "1" ] \
+   && [ "$WAS_RUNNING" = "1" ] \
+   && [ -d "/Applications/Language Flipper.app" ]; then
   echo "→ relaunching the installed app (it was running before the build)"
   open "/Applications/Language Flipper.app"
 fi

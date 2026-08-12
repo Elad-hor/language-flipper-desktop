@@ -20,7 +20,13 @@ sed -i '' "s/\"CFBundleShortVersionString\": \".*\"/\"CFBundleShortVersionString
 echo "→ Version set to $VERSION"
 
 # 3. Build
-./build_mac.sh
+#    Suppress build_mac.sh's own relaunch: it would start the app before the
+#    release exists, so its startup update check would find nothing and then
+#    not look again for 6 hours. We relaunch at the end instead, once the
+#    release is actually published.
+WAS_RUNNING=0
+pgrep -x "Language Flipper" >/dev/null 2>&1 && WAS_RUNNING=1
+LF_SKIP_RELAUNCH=1 ./build_mac.sh
 
 # 4. Commit the version bump — same ordering as release_windows.bat: only after
 #    the build succeeds, and before the release is cut. Without this the bumped
@@ -79,6 +85,15 @@ gh release create "v${VERSION}-mac" "dist/Language.Flipper.dmg" \
 echo ""
 echo "Released v${VERSION}-mac"
 echo ""
+
+# Relaunch now that the release exists, so the app's startup check actually
+# finds it and offers the update instead of sleeping for 6 hours.
+if [ "$WAS_RUNNING" = "1" ] && [ -d "/Applications/Language Flipper.app" ]; then
+  echo "→ relaunching the installed app so it can see v${VERSION}"
+  open "/Applications/Language Flipper.app"
+  echo ""
+fi
+
 echo "The website updates itself: publishing this release fires the"
 echo "'release: published' trigger in .github/workflows/deploy.yml, and the site"
 echo "resolves its download URLs from the releases API at build time"
