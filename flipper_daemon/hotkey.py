@@ -66,6 +66,53 @@ def _start_windows_hotkey(callback: Callable):
 # pynput backend (macOS + X11/Linux)
 # ---------------------------------------------------------------------------
 
+_MAC_VK_Y = 0x10  # kVK_ANSI_Y
+
+
+def _make_darwin_intercept():
+    """
+    Swallow Cmd+Shift+Y so it never reaches the frontmost app.
+
+    pynput's listener only *observes* by default, so the combo passed straight
+    through to whatever app was focused. Nothing has a Cmd+Shift+Y shortcut, so
+    macOS played its unhandled-Command-key alert — an audible click on every
+    single flip. Windows never had this because RegisterHotKey consumes the key
+    (see this module's docstring).
+
+    Safe with respect to the hotkey itself: pynput calls _handle_message()
+    BEFORE the intercept (pynput/_util/darwin.py::_handler, verified against
+    1.8.2), so the callback still fires. Returning None only stops the event
+    propagating onwards; returning the event passes it through untouched.
+
+    Returns None if Quartz is unavailable, in which case the listener is built
+    without an intercept and behaves exactly as before.
+    """
+    try:
+        import Quartz
+    except Exception:
+        return None
+
+    def intercept(event_type, event):
+        try:
+            if event_type in (Quartz.kCGEventKeyDown, Quartz.kCGEventKeyUp):
+                keycode = Quartz.CGEventGetIntegerValueField(
+                    event, Quartz.kCGKeyboardEventKeycode
+                )
+                if keycode == _MAC_VK_Y:
+                    flags = Quartz.CGEventGetFlags(event)
+                    if (flags & Quartz.kCGEventFlagMaskCommand) and (
+                        flags & Quartz.kCGEventFlagMaskShift
+                    ):
+                        # Suppress key-up as well as key-down, so the focused
+                        # app never sees half a keystroke.
+                        return None
+        except Exception:
+            pass
+        return event
+
+    return intercept
+
+
 def _start_pynput(callback: Callable):
     from pynput import keyboard
 
@@ -83,7 +130,15 @@ def _start_pynput(callback: Callable):
         except Exception:
             pass
 
-    listener = keyboard.Listener(on_press=on_press, on_release=on_release)
+    kwargs = {"on_press": on_press, "on_release": on_release}
+    if _PLATFORM == "Darwin":
+        intercept = _make_darwin_intercept()
+        if intercept is not None:
+            # Providing an intercept also switches pynput's event tap out of
+            # listen-only mode, which is what makes suppression possible.
+            kwargs["darwin_intercept"] = intercept
+
+    listener = keyboard.Listener(**kwargs)
     listener.daemon = True
     listener.start()
     print(f"[hotkey] pynput ({_PLATFORM})")
