@@ -104,6 +104,19 @@ Does: git pull → clears `build\` + `dist\` cache → bumps `version.py` + `set
 **CRITICAL — Windows Build Python:**
 The build machine uses `uv` for development but PyInstaller MUST be run with the official python.org Python 3.13. Reason: `uv` installs a "portable" Python (`python-build-standalone`) that keeps `vcruntime140.dll` isolated in its own folder. Windows `LoadLibrary` will not find it in PyInstaller's temp `_MEI` extraction folder, causing a fatal crash on every launch. The official python.org installer registers vcruntime globally in System32, which fixes this permanently. The `release_windows.bat` hardcodes the path: `C:\Users\user\AppData\Local\Programs\Python\Python313\python.exe`.
 
+**The website updates itself on release — do NOT hand-edit download URLs.** `DownloadRow.astro`
+gets its hrefs from `site/src/lib/releases.ts`, which resolves them from the releases API at
+build time, and `deploy.yml` triggers on `release: published`. Verified 2026-08-12: publishing
+`v0.1.105-mac` had the live button updated ~20s later with no manual step. Do not reintroduce a
+hardcoded `macHref`/`winHref`, and do not use GitHub's `/releases/latest/download/<asset>`
+shortcut — `latest` is one pointer across all releases and the `-mac`/`-windows` tags interleave,
+so it 404s (same trap as Key Past Bug #5).
+
+`build_mac.sh` retries `create-dmg` up to 3× with a force-detach between attempts: its final
+unmount fails with "resource busy" when Finder/Spotlight holds the volume, and **no DMG is
+produced** when that happens. It also runs PyInstaller with `--clean --noconfirm`, matching
+Windows.
+
 ### Release tag format
 - Mac: `v0.1.70-mac` (asset: `Language.Flipper.dmg`)
 - Windows: `v0.1.70-windows` (asset: `Language-Flipper-Setup.exe`)
@@ -113,6 +126,21 @@ The updater searches ALL releases (not just latest) so Mac and Windows tags coex
 ---
 
 ## Auto-Updater Flow
+
+**Check cadence:** `updater.start()` runs a background loop that checks immediately and then
+every `_CHECK_INTERVAL_SECONDS` (6h) — not once at startup, which left users who never reboot
+stranded on old versions. It only fires `on_available` when the answer *changes*, so the tray
+isn't rebuilt every interval for an update the user already declined. `updater.stop()` (called
+after `icon.run()` returns) wakes the sleeping thread so it exits cleanly.
+
+**macOS install is now in-place** (`updater._install_macos`), matching Windows. It writes a
+detached shell script that waits for the app to quit, mounts the DMG on a private mountpoint
+(`-nobrowse` + explicit `-mountpoint`, so it can't collide with a leftover volume), replaces the
+bundle, strips `com.apple.quarantine` (required — the DMG is an internet download and the app is
+unsigned, so Gatekeeper would block the copy), and relaunches. **Invariant: the old bundle is
+moved aside, not deleted, and restored if the copy fails; every failure path falls back to
+opening the DMG.** A failed update must never leave the user with no app. Log:
+`$TMPDIR/lf-update.log`.
 
 1. On startup, `updater.start()` spawns a background thread
 2. Hits `https://api.github.com/repos/Elad-hor/language-flipper-desktop/releases`
