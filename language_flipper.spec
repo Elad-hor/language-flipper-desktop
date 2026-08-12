@@ -64,7 +64,7 @@ app = BUNDLE(
     info_plist={
         # Kept in step with flipper_daemon/version.py — release_mac.sh rewrites
         # this line via sed at release time.
-        "CFBundleShortVersionString": "0.1.106",
+        "CFBundleShortVersionString": "0.1.107",
         "CFBundleVersion":            "1",
         "NSHighResolutionCapable":    True,
         # Accessibility permission description shown in System Settings
