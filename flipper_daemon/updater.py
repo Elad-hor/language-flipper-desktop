@@ -185,42 +185,80 @@ def download_and_run(url: str) -> None:
         _install_macos(tmp)
 
 
+# The app auto-starts at login and then runs for weeks, so a single check at
+# startup meant a user who never reboots could sit on an old version
+# indefinitely. Re-check periodically instead.
+_CHECK_INTERVAL_SECONDS = 6 * 60 * 60
+
+# Set on shutdown so the sleeping checker thread wakes and exits promptly
+# instead of being killed mid-request.
+_stop_checking = threading.Event()
+
+
+def _find_update(asset_name: str):
+    """
+    Newest release carrying asset_name and newer than the running VERSION,
+    as (version_str, download_url) — or None. Never raises.
+    """
+    try:
+        req = urllib.request.Request(
+            _GITHUB_API,
+            headers={"User-Agent": "language-flipper-updater"}
+        )
+        with urllib.request.urlopen(req, timeout=10) as r:
+            releases = json.loads(r.read())
+
+        best_ver = _parse_version(VERSION)
+        best_url = None
+        best_tag = None
+
+        for release in releases:
+            if release.get("draft") or release.get("prerelease"):
+                continue
+            tag = release.get("tag_name", "")
+            ver = _parse_version(tag)
+            if ver <= best_ver:
+                continue
+            for asset in release.get("assets", []):
+                if asset["name"] == asset_name:
+                    best_ver = ver
+                    best_url = asset["browser_download_url"]
+                    best_tag = tag
+                    break
+
+        if best_url:
+            return best_tag.lstrip("v").split("-")[0], best_url
+    except Exception:
+        pass
+    return None
+
+
+def stop() -> None:
+    """Wake the checker thread so it exits instead of sleeping on."""
+    _stop_checking.set()
+
+
 def start(on_available) -> None:
     asset_name = _PLATFORM_ASSET.get(platform.system())
     if not asset_name:
         return
 
-    def _check():
-        try:
-            req = urllib.request.Request(
-                _GITHUB_API,
-                headers={"User-Agent": "language-flipper-updater"}
-            )
-            with urllib.request.urlopen(req, timeout=10) as r:
-                releases = json.loads(r.read())
+    def _loop():
+        # Only notify when the answer changes. Without this the tray menu would
+        # be rebuilt every interval for an update the user has already been
+        # told about and chosen to ignore.
+        last_reported = None
+        while True:
+            found = _find_update(asset_name)
+            if found and found[0] != last_reported:
+                last_reported = found[0]
+                try:
+                    on_available(*found)
+                except Exception:
+                    pass
+            # Event.wait doubles as the sleep and the shutdown signal; it
+            # returns True when stop() was called.
+            if _stop_checking.wait(_CHECK_INTERVAL_SECONDS):
+                return
 
-            best_ver = _parse_version(VERSION)
-            best_url = None
-            best_tag = None
-
-            for release in releases:
-                if release.get("draft") or release.get("prerelease"):
-                    continue
-                tag = release.get("tag_name", "")
-                ver = _parse_version(tag)
-                if ver <= best_ver:
-                    continue
-                for asset in release.get("assets", []):
-                    if asset["name"] == asset_name:
-                        best_ver = ver
-                        best_url = asset["browser_download_url"]
-                        best_tag = tag
-                        break
-
-            if best_url:
-                version_str = best_tag.lstrip("v").split("-")[0]
-                on_available(version_str, best_url)
-        except Exception:
-            pass
-
-    threading.Thread(target=_check, daemon=True).start()
+    threading.Thread(target=_loop, daemon=True).start()

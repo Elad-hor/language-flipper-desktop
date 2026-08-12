@@ -203,6 +203,10 @@ def run():
     print(f"[language-flipper] running. Press {hotkey} to flip.")
     icon.run()
 
+    # icon.run() blocks until Quit (or _do_update stopping the tray). Wake the
+    # update checker so it exits its sleep instead of being killed mid-request.
+    updater.stop()
+
 
 if __name__ == "__main__":
     run()
