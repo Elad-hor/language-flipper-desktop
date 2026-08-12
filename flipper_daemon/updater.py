@@ -12,6 +12,7 @@ import subprocess
 import sys
 import tempfile
 import threading
+import time
 import urllib.request
 from pathlib import Path
 
@@ -195,6 +196,23 @@ _CHECK_INTERVAL_SECONDS = 6 * 60 * 60
 _stop_checking = threading.Event()
 
 
+def _log(msg: str) -> None:
+    """
+    Append a line to $TMPDIR/lf-update.log — the same file the macOS installer
+    script writes to, so the whole update story lands in one place.
+
+    Every failure in here used to be swallowed by `except Exception: pass`,
+    which made a silently broken updater indistinguishable from "no update
+    available". Never raises; logging must not break the app.
+    """
+    try:
+        path = os.path.join(tempfile.gettempdir(), "lf-update.log")
+        with open(path, "a") as f:
+            f.write(f"[{time.strftime('%Y-%m-%d %H:%M:%S')}] {msg}\n")
+    except Exception:
+        pass
+
+
 def _find_update(asset_name: str):
     """
     Newest release carrying asset_name and newer than the running VERSION,
@@ -227,9 +245,12 @@ def _find_update(asset_name: str):
                     break
 
         if best_url:
-            return best_tag.lstrip("v").split("-")[0], best_url
-    except Exception:
-        pass
+            found = best_tag.lstrip("v").split("-")[0]
+            _log(f"check: running {VERSION}, found {found} ({asset_name})")
+            return found, best_url
+        _log(f"check: running {VERSION}, no newer release with {asset_name}")
+    except Exception as exc:
+        _log(f"check FAILED: {type(exc).__name__}: {exc}")
     return None
 
 
@@ -254,8 +275,9 @@ def start(on_available) -> None:
                 last_reported = found[0]
                 try:
                     on_available(*found)
-                except Exception:
-                    pass
+                    _log(f"notified UI of {found[0]}")
+                except Exception as exc:
+                    _log(f"on_available FAILED: {type(exc).__name__}: {exc}")
             # Event.wait doubles as the sleep and the shutdown signal; it
             # returns True when stop() was called.
             if _stop_checking.wait(_CHECK_INTERVAL_SECONDS):

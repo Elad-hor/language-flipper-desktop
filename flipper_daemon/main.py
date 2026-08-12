@@ -130,8 +130,32 @@ def _build_menu() -> pystray.Menu:
 
 
 def _refresh_tray_menu():
-    if _tray_icon:
-        _tray_icon.menu = _build_menu()
+    if not _tray_icon:
+        return
+
+    def _do():
+        try:
+            _tray_icon.menu = _build_menu()
+        except Exception:
+            pass
+
+    # Assigning .menu makes pystray call update_menu(), and its macOS backend
+    # implements that as AppKit's setMenu_ (pystray/_darwin.py::_update_menu).
+    # AppKit must only be touched from the main thread, but this function is
+    # called from background threads — the update checker and the hotkey
+    # handler — where the update silently did nothing. That is why the
+    # "Update available" item never appeared on macOS, and why the free-flip
+    # count never moved. Same trap as the TIS layout switch; see
+    # layout_switch._switch_mac and Key Past Bug #7.
+    if _platform_mod.system() == "Darwin":
+        try:
+            from Foundation import NSOperationQueue
+            NSOperationQueue.mainQueue().addOperationWithBlock_(_do)
+            return
+        except Exception:
+            pass  # fall through to a direct call rather than skipping the update
+
+    _do()
 
 
 def _deactivate(_icon=None, _item=None):
