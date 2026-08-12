@@ -2,7 +2,7 @@
  * Contact form handler — the replacement for contact.php.
  *
  * Hostinger ran the form through PHP mail(); a static host has no PHP, so this
- * runs in a Cloudflare Worker and hands the message to Resend instead.
+ * runs in a Cloudflare Worker and hands the message to Mailgun instead.
  *
  * Behaviour is deliberately identical to the PHP version, because the form
  * markup and the success banner both depend on it:
@@ -22,15 +22,25 @@
  */
 
 export interface ContactEnv {
-  RESEND_API_KEY: string;
+  /** Mailgun private API key. A secret — never in wrangler.jsonc. */
+  MAILGUN_API_KEY: string;
+  /** The sending domain as configured in Mailgun, e.g. mg.languageflipper.com. */
+  MAILGUN_DOMAIN: string;
+  /**
+   * Mailgun region endpoint. EU accounts MUST set this to
+   * https://api.eu.mailgun.net — the US default returns 401 for EU domains,
+   * which looks exactly like a bad API key.
+   */
+  MAILGUN_API_BASE?: string;
   /** Optional overrides; the defaults match the PHP version. */
   CONTACT_TO?: string;
   CONTACT_FROM?: string;
 }
 
 const DEFAULT_TO = 'falafeltikunim@gmail.com';
-// Must be on a domain verified in Resend, or delivery is rejected.
+// Must be on the Mailgun sending domain, or delivery is rejected.
 const DEFAULT_FROM = 'Language Flipper <no-reply@languageflipper.com>';
+const DEFAULT_API_BASE = 'https://api.mailgun.net';
 
 function textResponse(status: number, body: string): Response {
   return new Response(body, {
@@ -84,9 +94,9 @@ export async function handleContact(request: Request, env: ContactEnv): Promise<
     if (/[\r\n]/.test(v)) return textResponse(422, 'Invalid input');
   }
 
-  if (!env.RESEND_API_KEY) {
+  if (!env.MAILGUN_API_KEY || !env.MAILGUN_DOMAIN) {
     // Loud, because a silently unconfigured form loses real enquiries.
-    console.error('RESEND_API_KEY is not set — cannot send contact email');
+    console.error('MAILGUN_API_KEY / MAILGUN_DOMAIN not set — cannot send contact email');
     return textResponse(500, 'Send failed');
   }
 
@@ -97,29 +107,38 @@ export async function handleContact(request: Request, env: ContactEnv): Promise<
     `Company: ${company}\n\n` +
     `Message:\n${message}\n`;
 
+  // Mailgun's messages endpoint takes form-encoded fields and HTTP Basic auth
+  // with the literal username "api".
+  const params = new URLSearchParams({
+    from: env.CONTACT_FROM || DEFAULT_FROM,
+    to: env.CONTACT_TO || DEFAULT_TO,
+    subject,
+    text: body,
+    // So hitting reply in Gmail answers the visitor, not the robot.
+    'h:Reply-To': email,
+  });
+
+  const base = (env.MAILGUN_API_BASE || DEFAULT_API_BASE).replace(/\/+$/, '');
+  const url = `${base}/v3/${encodeURIComponent(env.MAILGUN_DOMAIN)}/messages`;
+
   try {
-    const res = await fetch('https://api.resend.com/emails', {
+    const res = await fetch(url, {
       method: 'POST',
       headers: {
-        Authorization: `Bearer ${env.RESEND_API_KEY}`,
-        'Content-Type': 'application/json',
+        Authorization: `Basic ${btoa(`api:${env.MAILGUN_API_KEY}`)}`,
+        'Content-Type': 'application/x-www-form-urlencoded',
       },
-      body: JSON.stringify({
-        from: env.CONTACT_FROM || DEFAULT_FROM,
-        to: [env.CONTACT_TO || DEFAULT_TO],
-        // So hitting reply in Gmail answers the visitor, not the robot.
-        reply_to: email,
-        subject,
-        text: body,
-      }),
+      body: params.toString(),
     });
 
     if (!res.ok) {
-      console.error(`Resend rejected the message: ${res.status} ${await res.text()}`);
+      // 401 here usually means the region is wrong (an EU domain hit the US
+      // endpoint) rather than a bad key — see MAILGUN_API_BASE.
+      console.error(`Mailgun rejected the message: ${res.status} ${await res.text()}`);
       return textResponse(500, 'Send failed');
     }
   } catch (err) {
-    console.error(`Resend request failed: ${err}`);
+    console.error(`Mailgun request failed: ${err}`);
     return textResponse(500, 'Send failed');
   }
 

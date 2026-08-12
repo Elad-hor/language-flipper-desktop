@@ -42,31 +42,37 @@ Everything else (`name`, entry point, the assets binding) is already in
 
 Non-production branch builds need no changes.
 
-## 2. Set up Resend (the contact form's mail sender)
+## 2. Point the contact form at Mailgun
 
 The form ran on PHP `mail()` at Hostinger. There is no PHP here, so it now posts to
-the Worker, which hands the message to Resend.
+the Worker, which hands the message to Mailgun (already in use for other projects).
 
-1. Sign up at resend.com (free tier: 3,000 emails/month).
-2. **Domains → Add Domain → `languageflipper.com`.** It returns DKIM/SPF records —
-   add them in Cloudflare DNS, then click Verify. Without this, mail sent as
-   `no-reply@languageflipper.com` is rejected.
-3. **API Keys → Create**, *Sending access* only. Copy the key.
-4. Give it to the Worker as a **secret** (not a plain variable):
+In the Worker → **Settings → Variables and Secrets**, add:
 
-   Dashboard → your Worker → **Settings → Variables and Secrets → Add** →
-   type **Secret**, name `RESEND_API_KEY`, paste the value.
+| Name | Type | Value |
+|---|---|---|
+| `MAILGUN_API_KEY` | **Secret** | the private API key from Mailgun → API Keys |
+| `MAILGUN_DOMAIN` | Variable | the sending domain, e.g. `mg.languageflipper.com` |
+| `MAILGUN_API_BASE` | Variable | **EU accounts only:** `https://api.eu.mailgun.net` |
 
-   Or from the terminal:
-   ```bash
-   cd site && npx wrangler secret put RESEND_API_KEY
-   ```
+`MAILGUN_API_KEY` must be a **Secret**, not a plain variable, or it is readable in
+the dashboard and in build logs.
 
-   Optional overrides, only to change the defaults: `CONTACT_TO`
-   (default `falafeltikunim@gmail.com`), `CONTACT_FROM`
-   (default `Language Flipper <no-reply@languageflipper.com>`).
+**If the Mailgun account is in the EU region, `MAILGUN_API_BASE` is not optional.**
+An EU domain hitting the default US endpoint returns **401**, which looks exactly
+like a wrong API key and wastes an afternoon.
 
-5. Redeploy so the secret is picked up.
+Optional, only to change the defaults: `CONTACT_TO`
+(default `falafeltikunim@gmail.com`), `CONTACT_FROM`
+(default `Language Flipper <no-reply@languageflipper.com>` — must be on the Mailgun
+sending domain).
+
+From the terminal instead:
+```bash
+cd site && npx wrangler secret put MAILGUN_API_KEY
+```
+
+Redeploy afterwards so the values are picked up.
 
 ## 3. Verify on the workers.dev URL — before touching DNS
 

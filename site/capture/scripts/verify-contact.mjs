@@ -8,10 +8,15 @@ const check = (name, ok, detail = '') => {
 };
 
 let sent = [];
-const env = { RESEND_API_KEY: 'test-key' };
+const env = { MAILGUN_API_KEY: 'test-key', MAILGUN_DOMAIN: 'mg.languageflipper.com' };
 
 globalThis.fetch = async (url, init) => {
-  sent.push({ url, body: JSON.parse(init.body), auth: init.headers.Authorization });
+  // Mailgun takes form-encoded fields, not JSON.
+  sent.push({
+    url,
+    body: Object.fromEntries(new URLSearchParams(init.body)),
+    auth: init.headers.Authorization,
+  });
   return new Response('{"id":"x"}', { status: 200 });
 };
 
@@ -33,10 +38,12 @@ check('valid submission redirects', r.status === 302, `status=${r.status}`);
 check('redirects to ?sent=1 so the banner shows',
   (r.headers.get('location') || '').endsWith('/contact-us/?sent=1'), r.headers.get('location'));
 check('one email sent', sent.length === 1);
-check('sent to the right inbox', sent[0]?.body.to?.[0] === 'falafeltikunim@gmail.com', sent[0]?.body.to?.[0]);
-check('reply_to is the visitor', sent[0]?.body.reply_to === 'a@b.com');
+check('sent to the right inbox', sent[0]?.body.to === 'falafeltikunim@gmail.com', sent[0]?.body.to);
+check('Reply-To is the visitor', sent[0]?.body['h:Reply-To'] === 'a@b.com');
 check('body carries the message', (sent[0]?.body.text || '').includes('hello'));
-check('api key sent as bearer', sent[0]?.auth === 'Bearer test-key');
+check('api key sent as basic auth', sent[0]?.auth === `Basic ${btoa('api:test-key')}`, sent[0]?.auth);
+check('posts to the Mailgun messages endpoint for the domain',
+  sent[0]?.url === 'https://api.mailgun.net/v3/mg.languageflipper.com/messages', sent[0]?.url);
 
 // --- Hebrew redirect --------------------------------------------------------
 sent = [];
@@ -87,10 +94,24 @@ sent = [];
 r = await handleContact(post(valid), {});
 check('missing API key fails loudly, sends nothing', r.status === 500 && sent.length === 0);
 
+sent = [];
+r = await handleContact(post(valid), { MAILGUN_API_KEY: 'k' });
+check('missing domain fails loudly, sends nothing', r.status === 500 && sent.length === 0);
+
+// EU accounts must be able to override the region, or every send 401s.
+sent = [];
+globalThis.fetch = async (url, init) => {
+  sent.push({ url, body: Object.fromEntries(new URLSearchParams(init.body)) });
+  return new Response('{}', { status: 200 });
+};
+await handleContact(post(valid), { ...env, MAILGUN_API_BASE: 'https://api.eu.mailgun.net' });
+check('EU region endpoint honoured',
+  sent[0]?.url === 'https://api.eu.mailgun.net/v3/mg.languageflipper.com/messages', sent[0]?.url);
+
 // --- upstream failure -------------------------------------------------------
 globalThis.fetch = async () => new Response('bad key', { status: 401 });
 r = await handleContact(post(valid), env);
-check('Resend error surfaces as 500, not a fake success', r.status === 500);
+check('Mailgun error surfaces as 500, not a fake success', r.status === 500);
 
 globalThis.fetch = async () => { throw new Error('network down'); };
 r = await handleContact(post(valid), env);
