@@ -5,7 +5,12 @@ APP="dist/Language Flipper.app"
 DMG="dist/Language.Flipper.dmg"
 VOLNAME="Language Flipper"
 
-# 1. Kill any running instance
+# 1. Kill any running instance.
+#    Remember whether it was actually running, so it can be put back at the
+#    end — otherwise every release leaves you sitting there with no app,
+#    wondering why it didn't come back.
+WAS_RUNNING=0
+pgrep -x "Language Flipper" >/dev/null 2>&1 && WAS_RUNNING=1
 pkill -x "Language Flipper" 2>/dev/null || true
 
 # 2. Build .app with PyInstaller
@@ -85,3 +90,11 @@ if [ ! -f "$DMG" ]; then
 fi
 
 echo "Done — $DMG is ready ($(du -h "$DMG" | cut -f1))"
+
+# Put back what we killed in step 1. This relaunches the version currently
+# INSTALLED in /Applications, not the one just built — which is what you want:
+# it can then see the new release and offer to update itself.
+if [ "$WAS_RUNNING" = "1" ] && [ -d "/Applications/Language Flipper.app" ]; then
+  echo "→ relaunching the installed app (it was running before the build)"
+  open "/Applications/Language Flipper.app"
+fi
