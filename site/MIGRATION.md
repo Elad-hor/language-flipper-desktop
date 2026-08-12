@@ -23,14 +23,18 @@ just as Pages did — confirmed locally (`✨ Parsed 5 valid redirect rules. ✨
 Cloudflare dashboard → **Compute (Workers & Pages)** → **Create application** →
 **Import a repository** → connect GitHub → pick `language-flipper-desktop`.
 
-Build settings — the first one is the one that breaks things if missed:
+Build settings:
 
 | Field | Value |
 |---|---|
-| **Root directory** | **`site`** |
-| Build command | `npm run build` |
-| Deploy command | `npx wrangler deploy` |
+| Build command | `cd site && npm ci && npm run build` |
+| Deploy command | `cd site && npx wrangler deploy` |
 | Production branch | `main` |
+
+**The Workers Builds UI has no "root directory" field** (Pages did). That's why both
+commands `cd site` themselves — don't go looking for the setting. Keeping the
+config in `site/` also means every path inside `wrangler.jsonc` stays relative to
+`site/`, so nothing has to be rewritten.
 
 Everything else (`name`, entry point, the assets binding) is already in
 `site/wrangler.jsonc` — leave the defaults alone and it will read that file.
