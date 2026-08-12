@@ -1,5 +1,5 @@
 // Verify the Pages contact function behaves exactly like contact.php did.
-import { handleContact } from '../../functions/_contact-handler.ts';
+import { handleContact } from '../../worker/contact-handler.ts';
 
 const results = [];
 const check = (name, ok, detail = '') => {

@@ -4,3 +4,6 @@ capture/ref/
 capture/build/
 capture/diff/
 .astro/
+
+# wrangler local dev state (miniflare caches, temp bundles)
+.wrangler/

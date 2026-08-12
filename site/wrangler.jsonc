@@ -1,0 +1,38 @@
+{
+  // Cloudflare Worker serving the static Astro build, plus the contact form.
+  //
+  // Workers Static Assets rather than Pages: Cloudflare has put Pages into
+  // maintenance and routes new Git-connected projects through Workers, which
+  // is what the dashboard offered. `_headers` and `_redirects` inside the
+  // assets directory are honoured here too, so the rules ported from
+  // Hostinger's .htaccess still apply.
+  //
+  // Dashboard build settings that must match this file:
+  //   Root directory  : site
+  //   Build command   : npm run build
+  //   Deploy command  : npx wrangler deploy
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "language-flipper",
+  "main": "worker/index.ts",
+  // Must not be ahead of the workerd binary in the installed wrangler, or the
+  // local runtime refuses to start ("newest date supported by this server
+  // binary is …"). Bump it only alongside a wrangler upgrade.
+  "compatibility_date": "2026-08-11",
+
+  "assets": {
+    // Astro's output. Static files are served from here before the Worker is
+    // invoked, so in practice only /contact and /contact.php reach the code.
+    "directory": "./dist",
+    "binding": "ASSETS"
+  },
+
+  // Logs for the contact form. Without these, a failing form is silent — the
+  // exact trap that hid a broken updater for months (see CLAUDE.md #2).
+  "observability": {
+    "enabled": true
+  }
+
+  // RESEND_API_KEY is NOT here on purpose — it is a secret. Set it in the
+  // dashboard under Settings → Variables and Secrets, or with:
+  //   npx wrangler secret put RESEND_API_KEY
+}

@@ -1,19 +1,25 @@
-# Cloudflare Pages headers — the replacement for the Cache-Control rules the
-# deploy workflow wrote into Hostinger's .htaccess (and the separate
-# _astro/.htaccess). Apache config does not travel with the site.
+# Cache-Control for Cloudflare Workers Static Assets — the replacement for the
+# rules the old deploy wrote into Hostinger's .htaccess. Apache config does not
+# travel with the site.
 #
-# Getting this wrong is not theoretical: before those rules existed, Hostinger
-# served HTML with no Cache-Control at all, browsers fell back to heuristic
-# caching, and a deploy stayed invisible for over a day. See CLAUDE.md.
-
-# Everything revalidates by default. max-age=0 + must-revalidate still allows
-# caching — the browser just has to ask first, and gets a cheap 304 when
-# nothing changed. This deliberately covers HTML, images and the PDFs: none of
-# them are content-hashed, so a stale copy is a real bug.
-/*
-  Cache-Control: public, max-age=0, must-revalidate
+# Only ONE rule here, deliberately.
+#
+# Cloudflare already serves everything as `public, max-age=0, must-revalidate`
+# by default (verified against wrangler dev with this file emptied), which is
+# exactly what HTML, images and PDFs need — none of them are content-hashed, so
+# a stale copy is a real bug. That default is what protects us from repeating
+# the Hostinger incident where HTML went out with no Cache-Control at all and a
+# deploy stayed invisible for over a day. See CLAUDE.md.
+#
+# So a catch-all `/*` rule would be redundant — and worse than redundant:
+# Cloudflare COMBINES every matching rule rather than letting the most specific
+# one win, so `/*` plus `/_astro/*` produced
+#     public, max-age=0, must-revalidate, public, max-age=31536000, immutable
+# on hashed assets. Browsers honour the first max-age, so the assets would
+# never have been cached at all. Do not add a `/*` rule back.
 
 # Astro's build output is content-hashed — the filename changes whenever the
-# bytes do — so these can be cached permanently.
+# bytes do — so it is safe to cache forever. This is the one case where the
+# default is wrong.
 /_astro/*
   Cache-Control: public, max-age=31536000, immutable

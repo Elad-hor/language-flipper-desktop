@@ -1,8 +1,8 @@
 /**
  * Contact form handler — the replacement for contact.php.
  *
- * Hostinger ran the form through PHP mail(); Cloudflare Pages has no PHP, so
- * this is a Pages Function that hands the message to Resend instead.
+ * Hostinger ran the form through PHP mail(); a static host has no PHP, so this
+ * runs in a Cloudflare Worker and hands the message to Resend instead.
  *
  * Behaviour is deliberately identical to the PHP version, because the form
  * markup and the success banner both depend on it:
@@ -16,12 +16,12 @@
  *   - only same-site absolute paths are accepted as a redirect target, so this
  *     can't be turned into an open redirect
  *
- * Shared by /contact and /contact.php (see contact.ts and contact.php.ts):
- * the old .php route is kept alive so no cached page or bookmark breaks
- * during the move off Hostinger.
+ * Routed from worker/index.ts for both /contact and /contact.php: the old
+ * .php route is kept alive so no cached page or bookmark breaks during the
+ * move off Hostinger.
  */
 
-export interface Env {
+export interface ContactEnv {
   RESEND_API_KEY: string;
   /** Optional overrides; the defaults match the PHP version. */
   CONTACT_TO?: string;
@@ -54,7 +54,7 @@ function isEmail(value: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 }
 
-export async function handleContact(request: Request, env: Env): Promise<Response> {
+export async function handleContact(request: Request, env: ContactEnv): Promise<Response> {
   if (request.method !== 'POST') return textResponse(405, 'Method not allowed');
 
   let form: FormData;

@@ -1,136 +1,145 @@
-# Moving languageflipper.com off Hostinger → Cloudflare Pages
+# Moving languageflipper.com off Hostinger → Cloudflare Workers
 
 **Goal:** stop serving the site from Hostinger, without changing anything users see.
 
 **Scope:** remove **only** the Language Flipper files. The Hostinger account also
-holds other projects and old sites, which are being migrated separately — do not
-cancel the plan, and do not delete anything not listed in section 5.
+holds other projects and old sites, being migrated separately — do not cancel the
+plan, and do not delete anything not listed in section 6.
 
 **Why it's low-risk:** DNS is already fully on Cloudflare (`alexandra`/`isaac.ns.cloudflare.com`)
 and the site is proxied, so visitors never touch Hostinger's IP. There are **no MX
 records** on the domain, so no email depends on this host.
 
-**The only real work** is the contact form: it runs on PHP `mail()`, and no static
-host runs PHP. That's already ported (section 2).
+**Why Workers and not Pages:** Cloudflare has put Pages into maintenance and routes
+new Git-connected projects through Workers, which is what the dashboard offers.
+Workers Static Assets serves the built site and honours `_headers` and `_redirects`
+just as Pages did — confirmed locally (`✨ Parsed 5 valid redirect rules. ✨ Parsed
+2 valid header rules.`).
 
 ---
 
-## 1. Create the Cloudflare Pages project
+## 1. Create the Worker
 
-Cloudflare dashboard → **Workers & Pages** → **Create** → **Pages** → **Connect to Git**
-→ pick `Elad-hor/language-flipper-desktop`.
+Cloudflare dashboard → **Compute (Workers & Pages)** → **Create application** →
+**Import a repository** → connect GitHub → pick `language-flipper-desktop`.
 
-Build settings:
+Build settings — the first one is the one that breaks things if missed:
 
 | Field | Value |
 |---|---|
-| Production branch | `main` |
-| Framework preset | Astro |
+| **Root directory** | **`site`** |
 | Build command | `npm run build` |
-| Build output directory | `dist` |
-| Root directory | `site` |
+| Deploy command | `npx wrangler deploy` |
+| Production branch | `main` |
 
-The **root directory must be `site`** — that's what makes Pages find both
-`site/dist` and `site/functions/`.
+Everything else (`name`, entry point, the assets binding) is already in
+`site/wrangler.jsonc` — leave the defaults alone and it will read that file.
+
+Non-production branch builds need no changes.
 
 ## 2. Set up Resend (the contact form's mail sender)
 
+The form ran on PHP `mail()` at Hostinger. There is no PHP here, so it now posts to
+the Worker, which hands the message to Resend.
+
 1. Sign up at resend.com (free tier: 3,000 emails/month).
-2. **Domains → Add Domain → `languageflipper.com`.** It gives you DKIM/SPF records
-   to add in Cloudflare DNS. Add them, then click Verify.
-   Without this, mail sent as `no-reply@languageflipper.com` is rejected.
-3. **API Keys → Create**, with *Sending access* only. Copy the key.
-4. In the Pages project → **Settings → Environment variables → Production**, add:
+2. **Domains → Add Domain → `languageflipper.com`.** It returns DKIM/SPF records —
+   add them in Cloudflare DNS, then click Verify. Without this, mail sent as
+   `no-reply@languageflipper.com` is rejected.
+3. **API Keys → Create**, *Sending access* only. Copy the key.
+4. Give it to the Worker as a **secret** (not a plain variable):
 
-   | Name | Value |
-   |---|---|
-   | `RESEND_API_KEY` | the key from step 3 |
+   Dashboard → your Worker → **Settings → Variables and Secrets → Add** →
+   type **Secret**, name `RESEND_API_KEY`, paste the value.
 
-   Optional overrides, only if you want to change the defaults:
-   `CONTACT_TO` (default `falafeltikunim@gmail.com`),
-   `CONTACT_FROM` (default `Language Flipper <no-reply@languageflipper.com>`).
+   Or from the terminal:
+   ```bash
+   cd site && npx wrangler secret put RESEND_API_KEY
+   ```
 
-5. Redeploy so the variable is picked up.
+   Optional overrides, only to change the defaults: `CONTACT_TO`
+   (default `falafeltikunim@gmail.com`), `CONTACT_FROM`
+   (default `Language Flipper <no-reply@languageflipper.com>`).
 
-## 3. Verify on the pages.dev URL — before touching DNS
+5. Redeploy so the secret is picked up.
 
-Pages gives you `<project>.pages.dev`. Check there first; the real domain is
-still on Hostinger and unaffected.
+## 3. Verify on the workers.dev URL — before touching DNS
 
-- [ ] All 13 pages load (7 EN + 6 Hebrew under `/he/…`)
-- [ ] Hebrew pages are RTL and the fonts are right
-- [ ] `/solutions/` (the FAQ) loads
-- [ ] `/sitemap-index.xml` and `/robots.txt` load
-- [ ] Redirects: `/attributes` and `/category/uncategorized` → home,
-      `/sitemap_index.xml` → `/sitemap-index.xml` (all 301)
-- [ ] **Submit the contact form** and confirm the email arrives, that the page
-      returns with the green success banner, and that a Hebrew submission comes
-      back to the Hebrew page
-- [ ] Cache headers: HTML should be `no-cache`/`must-revalidate`,
-      `/_astro/*` should be `immutable`
+The Worker gets a URL like `language-flipper.elad-05d.workers.dev`. Test there; the
+real domain is still on Hostinger and unaffected.
+
+Most of this is already automated — run it against the deployed URL:
 
 ```bash
-curl -sI https://<project>.pages.dev/ | grep -i cache-control
-curl -sI https://<project>.pages.dev/_astro/<any>.js | grep -i cache-control
+cd site && node capture/scripts/verify-worker.mjs      # runs against a local worker
 ```
 
-## 4. Cut DNS over
+By hand on the live workers.dev URL:
 
-Pages project → **Custom domains** → add `languageflipper.com` and
-`www.languageflipper.com`. Cloudflare rewrites the DNS records itself, since it
-already manages the zone.
+- [ ] All 13 pages load (7 EN + 6 Hebrew under `/he/…`), Hebrew is RTL
+- [ ] `/attributes`, `/category/uncategorized` → `/` (301); `/sitemap_index.xml` →
+      `/sitemap-index.xml` (301)
+- [ ] `curl -sI <url>/ | grep -i cache-control` → `public, max-age=0, must-revalidate`
+- [ ] `curl -sI <url>/_astro/<any>.js | grep -i cache-control` →
+      `public, max-age=31536000, immutable` **and nothing else on the line**
+- [ ] **Submit the contact form**: the email arrives, the page returns with the green
+      success banner, and a Hebrew submission comes back to the Hebrew page
 
-Then verify on the **real domain**: repeat the section 3 checklist, and submit the
-contact form once more.
+## 4. Point the domain at the Worker
 
-Watch it for a day or two. **Do not delete anything from Hostinger until you have.**
-Rolling back is trivial until the files are gone: point the DNS records back.
+Worker → **Settings → Domains & Routes → Add → Custom domain** →
+`languageflipper.com`, then again for `www.languageflipper.com`. Cloudflare rewrites
+the DNS records itself, since it already manages the zone.
 
-## 5. Remove the Language Flipper files from Hostinger
+Repeat the section 3 checks on the real domain, and submit the form once more.
 
-Only after section 4 is confirmed good. In hPanel → File Manager, in the web root
-that Language Flipper was deployed to, delete **exactly these** — the full list of
-what the deploy ever wrote:
+## 5. Stop the FTP deploy
+
+`.github/workflows/deploy.yml` still uploads to Hostinger on every push — leave it
+running and it will recreate the files you are about to delete. Delete the workflow
+(the Worker deploys on push by itself) and remove the now-unused repo secrets
+`FTP_SERVER`, `FTP_USERNAME`, `FTP_PASSWORD`.
+
+## 6. Remove the Language Flipper files from Hostinger
+
+**Only after sections 4 and 5.** Give it a day or two first: until these files are
+gone, rolling back is just a DNS change.
+
+In hPanel → File Manager, in the web root Language Flipper was deployed to, delete
+**exactly these** — the complete list of what the deploy ever wrote:
 
 ```
-_astro/                     about-us/
-assets/                     contact-us/
-he/                         flip-it/
-                            privacy-policy/
-index.html                  solutions/
-favicon.svg                 terms-of-service/
+_astro/                          about-us/
+assets/                          contact-us/
+he/                              flip-it/
+                                 privacy-policy/
+index.html                       solutions/
+favicon.svg                      terms-of-service/
 llms.txt
 robots.txt
 sitemap-0.xml
 sitemap-index.xml
 accessibility-statement-EN.pdf
 accessibility-statement-HE.pdf
-_headers                    (inert on Apache; only ever ignored)
-_redirects                  (same)
+_headers        (inert on Apache; only ever ignored)
+_redirects      (same)
 contact.php
 .htaccess
 ```
 
 **Check `.htaccess` before deleting it.** The deploy overwrote it with Language
-Flipper's rules only, so it *should* contain nothing but the three redirects and
-the cache blocks documented in `.github/workflows/deploy.yml`. If it contains
-anything else, something outside this project depends on it — keep it and remove
-only our sections.
+Flipper's rules only, so it should contain nothing but the redirects and cache
+blocks from `.github/workflows/deploy.yml`. If it holds anything else, something
+outside this project depends on it — keep the file and remove only our sections.
 
-**If any other site shares this web root**, stop and check with whoever is
-migrating it before deleting root-level files.
-
-## 6. Turn off the FTP deploy
-
-Once Pages is live, `.github/workflows/deploy.yml` should stop uploading to
-Hostinger — otherwise every push rewrites the files you just deleted. Remove the
-workflow (Pages deploys on push by itself) and delete the now-unused repo secrets
-`FTP_SERVER`, `FTP_USERNAME`, `FTP_PASSWORD`.
+**If another site shares this web root**, stop and check with whoever is migrating
+it before deleting root-level files.
 
 ## 7. Afterwards
 
 - `site/contact/contact.php` can be deleted from the repo — kept for now as the
   rollback path while Hostinger still serves the site.
-- `site/functions/contact.php.ts` (the old-URL alias) can go once no cached copy
-  of the old HTML is plausibly still in use.
-- `site/DEPLOY.md` describes the Hostinger/FTP process and will be obsolete.
+- The `/contact.php` route in `worker/index.ts` can go once no cached copy of the
+  old HTML is plausibly still in use. Until then it prevents a mid-flight
+  submission hitting a 404.
+- `site/DEPLOY.md` documents the Hostinger/FTP process and becomes obsolete.
