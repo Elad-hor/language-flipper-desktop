@@ -407,7 +407,17 @@ All injected by `BaseLayout` via `site/src/components/Seo.astro`: per-page title
     `kCGEventTapDisabledByTimeout`/`ByUserInput` — which needs `_tap_keeping_listener`, since
     pynput keeps the tap only in a local. **Don't call the flip synchronously from the hotkey
     callback on macOS, and don't add blocking work to `_on_flip` assuming a thread is free.**
-18. **Don't relaunch the app from `build_mac.sh` during a release** — the build finishes before
+18. **Partial clicking on macOS flips is the *injected* keys, not the hotkey — known, and
+    deliberately not fixed.** The intercept can only suppress what passes through the session
+    tap. `text_bridge` injects `Cmd+C`, `Cmd+V` and (on the no-selection path) `Cmd+Left` /
+    `Cmd+Shift+Right` with `CGEventPostToPid`, which delivers straight to the target process
+    and bypasses the tap. When the app can't handle one — `Cmd+C` with nothing selected,
+    `Cmd+V` somewhere unpastable — macOS plays its unhandled-Command-key alert. That is why
+    the click happens on *some* flips: only the clipboard-path apps
+    (`_CLIPBOARD_ONLY_APPS`), never the AX path. Elad's call on 2026-08-13: not worth fixing.
+    **Don't "fix" this by touching the hotkey intercept — that's the wrong layer** and it
+    would risk re-breaking Key Past Bug #15.
+19. **Don't relaunch the app from `build_mac.sh` during a release** — the build finishes before
     `gh release create`, so the app's startup update check runs while the new version doesn't exist yet
     and then sleeps for the full interval. `release_mac.sh` sets `LF_SKIP_RELAUNCH=1` and relaunches after
     publishing instead.
