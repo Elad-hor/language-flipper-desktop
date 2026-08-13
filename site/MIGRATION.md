@@ -141,10 +141,21 @@ running and it will recreate the files you are about to delete. Delete the workf
 (the Worker deploys on push by itself) and remove the now-unused repo secrets
 `FTP_SERVER`, `FTP_USERNAME`, `FTP_PASSWORD`.
 
-## 6. Remove the Language Flipper files from Hostinger
+## 6. Hostinger cleanup — OPTIONAL, and probably not worth doing
 
-**Only after sections 4 and 5.** Give it a day or two first: until these files are
-gone, rolling back is just a DNS change.
+**Status: cut over 2026-08-13.** The routes intercept every request before it
+reaches Hostinger, so nothing there is being served.
+
+**Deleting these files is not required.** The account still hosts other projects
+being migrated separately, so the plan has to stay regardless — and cancelling the
+plan later removes everything in one go. Meanwhile the files cost nothing and act
+as a **free rollback**: delete the two Worker routes and Hostinger serves a working
+site again instantly. Delete the files and that safety net is gone.
+
+So the recommendation is: **leave them, and cancel the plan once every project has
+moved off.**
+
+If you do want to clean up early, the exact list follows.
 
 In hPanel → File Manager, in the web root Language Flipper was deployed to, delete
 **exactly these** — the complete list of what the deploy ever wrote:
@@ -176,11 +187,32 @@ outside this project depends on it — keep the file and remove only our section
 **If another site shares this web root**, stop and check with whoever is migrating
 it before deleting root-level files.
 
-## 7. Afterwards
+## 7. Rolling back
 
-- `site/contact/contact.php` can be deleted from the repo — kept for now as the
-  rollback path while Hostinger still serves the site.
+Delete the two routes: **Workers → language-flipper-desktop → Settings → Domains
+& Routes**. The `languageflipper.com` A record was never touched — it still points
+at Hostinger (`185.224.137.92`, proxied) — so Hostinger resumes serving
+**immediately, with no DNS propagation**. That is the whole reason routes were used
+instead of a Workers Custom Domain.
+
+DNS snapshot taken before the cutover:
+
+```
+A      languageflipper.com        -> 185.224.137.92        proxied
+CNAME  www.languageflipper.com    -> languageflipper.com   proxied
+MX     mg.languageflipper.com     -> mxa/mxb.mailgun.org   dns-only
+TXT    mg.languageflipper.com     -> v=spf1 include:mailgun.org ~all
+TXT    k1._domainkey.mg…          -> (DKIM)
+TXT    languageflipper.com        -> google-site-verification=…
+```
+
+## 8. Loose ends
+
+- `site/contact/contact.php` and `site/DEPLOY.md` are kept **on purpose** — they are
+  what a full return to Hostinger would need. Delete them only when the Hostinger
+  files go.
 - The `/contact.php` route in `worker/index.ts` can go once no cached copy of the
-  old HTML is plausibly still in use. Until then it prevents a mid-flight
-  submission hitting a 404.
-- `site/DEPLOY.md` documents the Hostinger/FTP process and becomes obsolete.
+  old HTML is plausibly still in use. Until then it stops a mid-flight submission
+  hitting a 404.
+- GitHub secrets `FTP_SERVER` / `FTP_USERNAME` / `FTP_PASSWORD` are unused now.
+- Rotate the Mailgun API key; it was pasted into a chat during setup.
