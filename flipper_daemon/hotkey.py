@@ -72,15 +72,54 @@ def _start_windows_hotkey(callback: Callable):
 _MAC_VK_Y = 0x10  # kVK_ANSI_Y
 
 
-def _make_darwin_intercept():
+def _dispatch_off_thread(callback: Callable) -> Callable:
     """
-    Swallow Cmd+Shift+Y so it never reaches the frontmost app.
+    Hand the flip to a worker thread so the caller returns immediately.
+
+    pynput invokes the hotkey callback from inside the event-tap callback
+    (_util/darwin.py::_handler calls _handle_message before the intercept), and
+    that tap is an active one, so macOS holds every keystroke in the system
+    until we return. A flip is not quick: ~0.7s of sleeps, several pbcopy /
+    pbpaste spawns, and a blocking HTTPS licence check whenever the 24h cache
+    has expired. That froze the keyboard for the duration of every flip, and
+    once the callback overran the tap timeout macOS switched the tap off for
+    good (see _make_darwin_intercept).
+
+    main._on_flip has its own _in_flight guard, so repeated presses collapse
+    rather than pile up.
+    """
+    def run():
+        try:
+            callback()
+        except Exception as e:
+            # Must not propagate into the tap callback: pynput's _emitter
+            # treats an escaping exception as a reason to stop the listener.
+            print(f"[hotkey] flip failed: {e}")
+
+    def dispatch():
+        threading.Thread(target=run, daemon=True).start()
+
+    return dispatch
+
+
+def _make_darwin_intercept(tap_ref: dict):
+    """
+    Swallow Cmd+Shift+Y so it never reaches the frontmost app, and revive the
+    tap if macOS switches it off.
 
     pynput's listener only *observes* by default, so the combo passed straight
     through to whatever app was focused. Nothing has a Cmd+Shift+Y shortcut, so
     macOS played its unhandled-Command-key alert — an audible click on every
     single flip. Windows never had this because RegisterHotKey consumes the key
     (see this module's docstring).
+
+    Supplying an intercept has a second, unadvertised effect: pynput then builds
+    the tap with kCGEventTapOptionDefault instead of kCGEventTapOptionListenOnly
+    (_util/darwin.py::_create_event_tap). An active tap can be disabled by the
+    system — on callback timeout, or on kCGEventTapDisabledByUserInput — and
+    pynput never re-enables it. Its only CGEventTapEnable call runs once at
+    setup, so a single slow flip left the hotkey dead until the app restarted.
+    tap_ref carries the tap across from _start_pynput so we can turn it back on.
 
     Safe with respect to the hotkey itself: pynput calls _handle_message()
     BEFORE the intercept (pynput/_util/darwin.py::_handler, verified against
@@ -95,8 +134,23 @@ def _make_darwin_intercept():
     except Exception:
         return None
 
+    # The disable notifications are unsigned CGEventTypes; match the raw values
+    # too in case PyObjC hands them over signed.
+    _disabled_events = {
+        getattr(Quartz, "kCGEventTapDisabledByTimeout", 0xFFFFFFFE),
+        getattr(Quartz, "kCGEventTapDisabledByUserInput", 0xFFFFFFFF),
+        0xFFFFFFFE, 0xFFFFFFFF, -2, -1,
+    }
+
     def intercept(event_type, event):
         try:
+            if event_type in _disabled_events:
+                tap = tap_ref.get("tap")
+                if tap is not None:
+                    Quartz.CGEventTapEnable(tap, True)
+                    print("[hotkey] tap was disabled by macOS — re-enabled")
+                return event
+
             if event_type in (Quartz.kCGEventKeyDown, Quartz.kCGEventKeyUp):
                 keycode = Quartz.CGEventGetIntegerValueField(
                     event, Quartz.kCGKeyboardEventKeycode
@@ -114,6 +168,23 @@ def _make_darwin_intercept():
         return event
 
     return intercept
+
+
+def _tap_keeping_listener(base, tap_ref: dict):
+    """
+    Subclass that remembers the event tap it created.
+
+    pynput drops the tap into a local in ListenerMixin._run and keeps no
+    reference, so there is no supported way to reach it — and without it the
+    intercept cannot re-enable a tap the system has switched off.
+    """
+    class _TapKeepingListener(base):
+        def _create_event_tap(self):
+            tap = super()._create_event_tap()
+            tap_ref["tap"] = tap
+            return tap
+
+    return _TapKeepingListener
 
 
 def _start_pynput(callback: Callable):
@@ -134,14 +205,18 @@ def _start_pynput(callback: Callable):
             pass
 
     kwargs = {"on_press": on_press, "on_release": on_release}
+    listener_cls = keyboard.Listener
+    tap_ref = {"tap": None}
+
     if _PLATFORM == "Darwin":
-        intercept = _make_darwin_intercept()
+        intercept = _make_darwin_intercept(tap_ref)
         if intercept is not None:
             # Providing an intercept also switches pynput's event tap out of
             # listen-only mode, which is what makes suppression possible.
             kwargs["darwin_intercept"] = intercept
+            listener_cls = _tap_keeping_listener(keyboard.Listener, tap_ref)
 
-    listener = keyboard.Listener(**kwargs)
+    listener = listener_cls(**kwargs)
     listener.daemon = True
     listener.start()
     # Give a listener that cannot create its tap the moment it needs to exit,
@@ -291,7 +366,9 @@ def register(callback: Callable):
             return handle
         return _start_pynput(callback)
 
-    # macOS only: the tap depends on a permission the OS drops under us on
-    # every update, so the listener needs supervising rather than a single
-    # fire-and-forget start.
-    return _SupervisedHotkey(callback)
+    # macOS only. Two things the other platforms don't need: the tap depends on
+    # a permission the OS drops under us on every update, so the listener needs
+    # supervising rather than a single fire-and-forget start; and the flip must
+    # run off the tap callback, which is holding the whole keyboard hostage
+    # while it waits for us.
+    return _SupervisedHotkey(_dispatch_off_thread(callback))

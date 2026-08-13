@@ -394,7 +394,20 @@ All injected by `BaseLayout` via `site/src/components/Seo.astro`: per-page title
     claiming success. Fixed with the supervisor + `tccutil reset` + honest `_finish()` above.
     Symptom to recognise: hotkey does nothing at all, and the security wizard re-runs on every
     launch (that re-run *is* `AXIsProcessTrusted()` reporting False at startup).
-17. **Don't relaunch the app from `build_mac.sh` during a release** — the build finishes before
+17. **The flip must never run inside the macOS event-tap callback** — pynput calls the
+    hotkey callback from `_handle_message`, i.e. *inside* the tap callback, and since the
+    `darwin_intercept` was added that tap is **active** (`kCGEventTapOptionDefault`). macOS
+    therefore holds every keystroke in the system until the callback returns, and a flip takes
+    ~0.7s of sleeps plus `pbcopy`/`pbpaste` spawns — plus a blocking HTTPS licence check when
+    `gumroad.get_premium_status()`'s 24h cache expires. Two consequences: the keyboard froze
+    during every flip, and once the callback overran the tap timeout macOS switched the tap
+    off. pynput has exactly one `CGEventTapEnable`, at setup, so it never came back. Fixed by
+    `hotkey._dispatch_off_thread` (flip runs on a worker; `main._on_flip`'s `_in_flight` guard
+    collapses repeats) plus re-enabling the tap from the intercept on
+    `kCGEventTapDisabledByTimeout`/`ByUserInput` — which needs `_tap_keeping_listener`, since
+    pynput keeps the tap only in a local. **Don't call the flip synchronously from the hotkey
+    callback on macOS, and don't add blocking work to `_on_flip` assuming a thread is free.**
+18. **Don't relaunch the app from `build_mac.sh` during a release** — the build finishes before
     `gh release create`, so the app's startup update check runs while the new version doesn't exist yet
     and then sleeps for the full interval. `release_mac.sh` sets `LF_SKIP_RELAUNCH=1` and relaunches after
     publishing instead.
