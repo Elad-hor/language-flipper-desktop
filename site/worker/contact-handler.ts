@@ -157,10 +157,15 @@ export async function handleContact(request: Request, env: ContactEnv): Promise<
     // made a missing environment variable indistinguishable from a bad API key
     // without reading the Worker logs. It names no values, only which case it
     // is, so it leaks nothing useful to anyone else.
-    console.error(
-      'No mail provider configured — set MAILGUN_API_KEY + MAILGUN_DOMAIN, or RESEND_API_KEY',
-    );
-    return textResponse(500, 'Send failed: no mail provider configured');
+    // Report WHICH piece is missing, as booleans. Values are never included,
+    // so this reveals nothing sensitive — but it turns "it doesn't work" into
+    // a one-line answer instead of a guessing game.
+    const present =
+      `mailgun_key=${Boolean(env.MAILGUN_API_KEY)} ` +
+      `mailgun_domain=${Boolean(env.MAILGUN_DOMAIN)} ` +
+      `resend_key=${Boolean(env.RESEND_API_KEY)}`;
+    console.error(`No mail provider configured — ${present}`);
+    return textResponse(500, `Send failed: no mail provider configured (${present})`);
   }
 
   const subject = `Language Flipper contact from ${first !== '' ? first : 'website'}`;
