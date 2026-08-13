@@ -8,6 +8,10 @@ import subprocess
 import time
 from . import storage
 
+# Must match bundle_identifier in language_flipper.spec — tccutil addresses
+# the app's privacy grants by this id.
+_BUNDLE_ID = "com.languageflipper.desktop"
+
 
 def _osascript(script: str) -> str:
     try:
@@ -20,20 +24,56 @@ def _osascript(script: str) -> str:
         return ""
 
 
+def _run_command(argv: list):
+    subprocess.run(argv, capture_output=True, check=False)
+
+
 def _open_privacy_pane(pane: str):
     """Open a specific Privacy & Security pane in System Settings."""
-    subprocess.run([
+    _run_command([
         "open",
         f"x-apple.systempreferences:com.apple.preference.security?Privacy_{pane}"
-    ], check=False)
+    ])
 
 
-def _ax_trusted() -> bool:
+def _ax_trusted(prompt: bool = False) -> bool:
+    """
+    Whether the app holds Accessibility rights.
+
+    With prompt=True macOS puts up its own "would like to control this
+    computer" sheet, which is the only way to get the app added to the list
+    without the user hunting for the "+" button themselves.
+    """
     try:
         import ApplicationServices as AS
+        if prompt:
+            try:
+                return bool(AS.AXIsProcessTrustedWithOptions(
+                    {AS.kAXTrustedCheckOptionPrompt: True}
+                ))
+            except Exception:
+                pass  # older PyObjC — fall back to the silent check
         return bool(AS.AXIsProcessTrusted())
     except Exception:
         return False
+
+
+def _clear_stale_tcc_entry():
+    """
+    Drop the dead privacy grants left behind by an in-place update.
+
+    TCC ties an unsigned app's approval to the binary itself, so when the
+    updater swaps the bundle the old row survives with the app's name and its
+    tick intact while no longer matching. The user then "re-grants" permission
+    by ticking a box that is already ticked, nothing changes, and the hotkey
+    stays dead. Resetting removes the row so the prompt below can add the new
+    binary for real.
+
+    Only reached once _ax_trusted() has already returned False, so there is no
+    working grant here to lose.
+    """
+    for service in ("Accessibility", "ListenEvent"):
+        _run_command(["tccutil", "reset", service, _BUNDLE_ID])
 
 
 def run_if_needed():
@@ -85,6 +125,11 @@ def _check_accessibility():
         _check_input_monitoring()
         return
 
+    # A stale row must go before the prompt, or macOS sees an existing entry
+    # and never asks.
+    _clear_stale_tcc_entry()
+    _ax_trusted(prompt=True)
+
     _osascript('''
         display dialog ¬
             "Step 1 of 2 — Accessibility\\n\\n" & ¬
@@ -121,28 +166,39 @@ def _check_input_monitoring():
 
 
 def _finish():
-    import os as _os
-    data = storage._load()
-    first_time = not data.get("onboarding_done")
-    data["onboarding_done"] = True
-    storage._save(data)
+    """
+    Report what actually happened.
 
-    if first_time:
+    This used to mark onboarding complete and announce "Permissions granted!"
+    unconditionally — _check_accessibility() gives up waiting after 60s and
+    calls through either way, so the app cheerfully declared itself ready while
+    holding no permissions at all and doing nothing on every hotkey press.
+    """
+    if not _ax_trusted():
         _osascript('''
             display dialog \
-                "You're all set!" & return & return & \
-                "Please quit and reopen Language Flipper from the menu bar " & \
-                "so the hotkey becomes active." \
-                buttons {"Quit Now"} default button "Quit Now" \
-                with title "Language Flipper"
-        ''')
-        _os._exit(0)
-    else:
-        _osascript('''
-            display dialog \
-                "Permissions granted!" & return & return & \
-                "Language Flipper is ready to use." \
+                "Accessibility is still off" & return & return & \
+                "Language Flipper cannot see the hotkey without it." & return & \
+                "Open System Settings > Privacy & Security > Accessibility " & \
+                "and switch Language Flipper on — the hotkey starts working " & \
+                "a few seconds later, with no restart needed." \
                 buttons {"OK"} default button "OK" \
                 with title "Language Flipper"
         ''')
-        # No exit — app is already running normally
+        return
+
+    data = storage._load()
+    data["onboarding_done"] = True
+    storage._save(data)
+
+    # No quit-and-reopen instruction any more, and no self-exit: the hotkey
+    # supervisor (hotkey._supervise) builds the event tap within seconds of the
+    # grant landing. The old first-run path killed the app here, which is also
+    # why a user who granted permission late was left with a dead hotkey.
+    _osascript('''
+        display dialog \
+            "Permissions granted!" & return & return & \
+            "Language Flipper is ready — press Cmd+Shift+Y to flip." \
+            buttons {"OK"} default button "OK" \
+            with title "Language Flipper"
+    ''')

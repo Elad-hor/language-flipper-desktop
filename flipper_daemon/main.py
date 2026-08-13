@@ -221,7 +221,7 @@ def run():
 
     updater.start(_on_update_available)
 
-    _hotkey_handle = hotkey_mod.register(_on_flip)  # noqa: F841
+    hotkey_handle = hotkey_mod.register(_on_flip)
 
     hotkey = "Cmd+Shift+Y" if _platform_mod.system() == "Darwin" else "Ctrl+Shift+Y"
     print(f"[language-flipper] running. Press {hotkey} to flip.")
@@ -230,6 +230,14 @@ def run():
     # icon.run() blocks until Quit (or _do_update stopping the tray). Wake the
     # update checker so it exits its sleep instead of being killed mid-request.
     updater.stop()
+
+    # Stop the macOS hotkey supervisor too, so it cannot rebuild a listener
+    # while the app is on its way out.
+    if hasattr(hotkey_handle, "stop"):
+        try:
+            hotkey_handle.stop()
+        except Exception:
+            pass
 
 
 if __name__ == "__main__":

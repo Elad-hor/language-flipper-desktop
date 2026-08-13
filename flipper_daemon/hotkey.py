@@ -17,6 +17,9 @@ _PLATFORM = platform.system()
 # Hotkey in pynput format (macOS + Linux)
 _PYNPUT_HOTKEY = "<cmd>+<shift>+y" if _PLATFORM == "Darwin" else "<ctrl>+<shift>+y"
 
+# How often the macOS supervisor re-checks that the listener is still there.
+_SUPERVISOR_POLL_SECONDS = 5
+
 
 # ---------------------------------------------------------------------------
 # Windows — RegisterHotKey (ctypes, no extra deps)
@@ -141,8 +144,87 @@ def _start_pynput(callback: Callable):
     listener = keyboard.Listener(**kwargs)
     listener.daemon = True
     listener.start()
-    print(f"[hotkey] pynput ({_PLATFORM})")
+    # Give a listener that cannot create its tap the moment it needs to exit,
+    # so is_alive() below is a truthful answer rather than a race with thread
+    # teardown. Deliberately join() and not pynput's wait(): wait() blocks
+    # until _mark_ready(), which never happens if _run raises on the way there
+    # (_util/darwin.py) — that would hang this thread for good.
+    listener.join(0.25)
+    print(f"[hotkey] pynput ({_PLATFORM}) — {'live' if listener.is_alive() else 'FAILED to start'}")
     return listener
+
+
+# ---------------------------------------------------------------------------
+# macOS supervisor — keeps the listener alive across permission changes
+# ---------------------------------------------------------------------------
+
+def _ax_trusted() -> bool:
+    """
+    Whether this process holds Accessibility rights.
+
+    Required, not optional: passing a darwin_intercept makes pynput build an
+    *active* tap (kCGEventTapOptionDefault, see _util/darwin.py::
+    _create_event_tap), and macOS only hands those to trusted processes.
+    Returns True when the check itself is unavailable, so a missing PyObjC
+    never stops us from at least trying.
+    """
+    try:
+        import ApplicationServices as AS
+        return bool(AS.AXIsProcessTrusted())
+    except Exception:
+        return True
+
+
+def _supervise(start_listener, is_trusted, stop, poll_seconds, log=print):
+    """
+    Keep a live listener, rebuilding it whenever it is gone.
+
+    A pynput listener is a one-shot: CGEventTapCreate returns NULL when the
+    process is untrusted, pynput returns straight out of its run-loop thread
+    (_util/darwin.py::ListenerMixin._run) and start() reports no error at all.
+    macOS revokes Accessibility every time the binary hash changes — which is
+    every auto-update — so the app relaunched deaf, the user granted permission
+    in the onboarding dialog, and nothing ever created the tap. The hotkey was
+    then dead for the whole run, with the app cheerfully claiming to be ready.
+
+    Granting permission mid-run is therefore the normal case, not an edge case,
+    and it must be picked up without the user restarting anything.
+    """
+    listener = None
+    while not stop.is_set():
+        if listener is None or not listener.is_alive():
+            if is_trusted():
+                try:
+                    listener = start_listener()
+                except Exception as e:
+                    # Never let the supervisor thread die — that would restore
+                    # the silent-deafness this exists to prevent.
+                    log(f"[hotkey] listener start failed: {e}")
+            elif listener is not None:
+                log("[hotkey] listener down — waiting for Accessibility")
+        stop.wait(poll_seconds)
+    return listener
+
+
+class _SupervisedHotkey:
+    """Handle returned by register() on macOS. Holds the supervisor thread."""
+
+    def __init__(self, callback):
+        self._stop = threading.Event()
+        self._thread = threading.Thread(
+            target=_supervise,
+            kwargs={
+                "start_listener": lambda: _start_pynput(callback),
+                "is_trusted": _ax_trusted,
+                "stop": self._stop,
+                "poll_seconds": _SUPERVISOR_POLL_SECONDS,
+            },
+            daemon=True,
+        )
+        self._thread.start()
+
+    def stop(self):
+        self._stop.set()
 
 
 # ---------------------------------------------------------------------------
@@ -207,5 +289,9 @@ def register(callback: Callable):
         handle = _start_xdg_portal(callback)
         if handle:
             return handle
+        return _start_pynput(callback)
 
-    return _start_pynput(callback)
+    # macOS only: the tap depends on a permission the OS drops under us on
+    # every update, so the listener needs supervising rather than a single
+    # fire-and-forget start.
+    return _SupervisedHotkey(callback)

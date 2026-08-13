@@ -213,6 +213,29 @@ Cache TTL: 24h. Fails open if offline and cache says premium.
 
 macOS revokes Accessibility permission when the binary hash changes (i.e. on every new install). This is expected and handled.
 
+**Granting permission mid-run is the normal case, and three things make it work:**
+
+1. `hotkey._supervise` (macOS only) rebuilds the pynput listener whenever it is
+   not alive. A listener is a one-shot — `CGEventTapCreate` returns NULL when
+   untrusted and pynput returns straight out of its run-loop thread with
+   `start()` reporting no error — so without supervision the app runs deaf for
+   its whole lifetime. **Never go back to a single fire-and-forget
+   `register()` on macOS.**
+2. `onboarding._clear_stale_tcc_entry()` runs `tccutil reset` for
+   `Accessibility` and `ListenEvent` before re-prompting. TCC ties an unsigned
+   app's grant to the binary, so after an in-place update the old row keeps the
+   app's name and its tick while no longer matching — the user re-ticks a box
+   that is already ticked and nothing changes. It is only ever called after
+   `AXIsProcessTrusted()` returned False, so no working grant is at risk.
+3. `onboarding._finish()` checks `AXIsProcessTrusted()` before claiming
+   success, and does **not** set `onboarding_done` without it.
+
+`_finish()` no longer exits the app or asks the user to quit and reopen — the
+supervisor picks up the grant within `_SUPERVISOR_POLL_SECONDS` (5s).
+
+Tests: `python3 tests/test_hotkey_supervisor.py`, `python3 tests/test_onboarding_recheck.py`
+(stdlib `unittest`, no deps, runs anywhere).
+
 ---
 
 ## Memory System
@@ -360,7 +383,18 @@ All injected by `BaseLayout` via `site/src/components/Seo.astro`: per-page title
     `Cmd+Shift+Y` reached the focused app, which has no such shortcut, and macOS played its
     unhandled-Command-key alert. Fixed with `darwin_intercept` in `hotkey.py`. It must keep failing
     *open* (pass the event through on any error) — over-suppressing silently eats real keystrokes.
-16. **Don't relaunch the app from `build_mac.sh` during a release** — the build finishes before
+16. **macOS hotkey was dead after every auto-update, silently** — the update swaps the
+    binary → macOS revokes Accessibility → `CGEventTapCreate` returns NULL → pynput returns
+    out of its listener thread immediately (`_util/darwin.py::ListenerMixin._run`) while
+    `Listener.start()` still looks successful. `main.run()` registers the hotkey *in parallel*
+    with onboarding, so the tap was already gone by the time the user granted permission, and
+    nothing ever rebuilt it. Onboarding then announced "Permissions granted! Ready to use" —
+    which `_finish()` printed unconditionally, since `_check_accessibility()` gives up waiting
+    after 60s and calls through either way. Two compounding lies: a dead hotkey and a wizard
+    claiming success. Fixed with the supervisor + `tccutil reset` + honest `_finish()` above.
+    Symptom to recognise: hotkey does nothing at all, and the security wizard re-runs on every
+    launch (that re-run *is* `AXIsProcessTrusted()` reporting False at startup).
+17. **Don't relaunch the app from `build_mac.sh` during a release** — the build finishes before
     `gh release create`, so the app's startup update check runs while the new version doesn't exist yet
     and then sleeps for the full interval. `release_mac.sh` sets `LF_SKIP_RELAUNCH=1` and relaunches after
     publishing instead.
