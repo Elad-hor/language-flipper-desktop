@@ -226,57 +226,96 @@ Index: `MEMORY.md` (read this first in new sessions)
 
 ## Marketing Site (languageflipper.com)
 
-The marketing site was rebuilt as a **static [Astro](https://astro.build) site in `site/`**, replacing
-WordPress + Elementor. It is **live** (PR #1 merged to `main`, deployed to Hostinger — WordPress is gone)
-and **prompt-editable**: change a component/page, push to `main`, and CI deploys it automatically.
+The marketing site is a **static [Astro](https://astro.build) site in `site/`**, replacing the original
+WordPress + Elementor build. It is **live and prompt-editable**: change a component/page, push to `main`,
+and it deploys automatically.
+
+**Hosting moved off Hostinger to a Cloudflare Worker on 2026-08-13.** Migration notes and the rollback
+path are in `site/MIGRATION.md`.
 
 - **Stack:** Astro (static output), CSS tokens (`site/src/styles/tokens.css` — brand palette + Poppins),
   i18n via `site/src/i18n/` (`en.json`/`he.json` + `ui.ts`'s `t(lang,key)`/`dir(lang)`).
 - **Pages (13):** 7 English + a 6-page Hebrew RTL mirror under `/he/…` (literal Hebrew dir names, e.g.
-  `site/src/pages/he/בית/index.astro`). `/solutions/` is **EN-only** and is now the **FAQ page** (real
-  Q&A content + FAQPage schema — no longer the styled 404 it was during the replica phase).
-- **Standing rule:** every content/design change must be applied to **both** the EN and HE versions.
-- **Deploy = automatic (CI):** `.github/workflows/deploy.yml` builds the site and uploads it to Hostinger
-  over **FTPS via `curl`** (per-file) on every push to `main`. The Hostinger FTP account is rooted at the
-  **web root**, so the upload target is `/` (NOT `/public_html/`). Requires repo secrets `FTP_SERVER`,
-  `FTP_USERNAME`, `FTP_PASSWORD` (host/user/password — not stored in the repo). Manual fallback + backup
-  runbook in `site/DEPLOY.md`. Hosting (Hostinger) + DNS (Cloudflare) unchanged. Cloudflare cache is not
-  auto-purged (no MCP purge tool), but HTML isn't cached by default so it's usually unnecessary.
-- **SEO/analytics** — all injected by `BaseLayout` via `site/src/components/Seo.astro`: per-page
-  title/description, canonical, **hreflang** (en/he/x-default; EN↔HE pairs in `site/src/i18n/routes.ts`),
-  Open Graph + Twitter, **GA4** (`GT-5D9377V7` → GA4 `G-2CP4BEC4B8`) + **Microsoft Clarity** (`wrfoldcd1d`)
-  (IDs in `site/src/seo-config.ts`), and **JSON-LD** (Organization+WebSite site-wide + per-page
-  SoftwareApplication / FAQPage / BreadcrumbList built by `site/src/schema.ts`). Also: `@astrojs/sitemap`
-  → `/sitemap-index.xml` (with `lastmod`), `site/public/robots.txt` (welcomes AI crawlers +
-  sitemap), `site/public/llms.txt`, `site/public/favicon.svg`. Search Console: domain already verified —
-  just submit `sitemap-index.xml`. GA4/Clarity only fire on the live domain, not on `npm run preview`.
-- **Contact form:** `site/contact/contact.php` (deploys to web root as `/contact.php`; lives outside
-  `dist/`) emails **falafeltikunim@gmail.com**. `ContactForm.astro` reveals the success banner
-  **client-side** on `?sent=1` (a static build can't read query params at build time) and posts a hidden
-  `redirect` field so Hebrew submissions return to the Hebrew page. If Hostinger `mail()` deliverability
-  is poor, swap to SMTP — the form/action stays the same.
+  `site/src/pages/he/בית/index.astro`). `/solutions/` is **EN-only** and is the **FAQ page** (real Q&A +
+  FAQPage schema). **Standing rule: every content/design change goes into BOTH the EN and HE versions.**
+
+### Hosting: Cloudflare Worker (not Pages, not Hostinger)
+
+Cloudflare has put Pages into maintenance and routes new Git-connected projects through **Workers**, so
+the site is a Worker serving **Static Assets**, configured by `site/wrangler.jsonc`.
+
+- `site/worker/index.ts` — serves `/contact` and `/contact.php`, delegates everything else to `ASSETS`.
+- **Deploy = Workers Builds on push to `main`.** Dashboard settings that must match the config:
+  **Path `/site`** (the root-directory field — it is called "Path" and hides under *Advanced settings*),
+  build `npm run build`, deploy `npx wrangler deploy`.
+- **`compatibility_date` must not exceed the workerd build in the installed wrangler**, or `wrangler dev`
+  refuses to start.
+- The domain is attached by **zone routes** (`languageflipper.com/*`, `www.languageflipper.com/*`), NOT a
+  Custom Domain. That is deliberate: the A record still points at Hostinger (`185.224.137.92`, proxied),
+  so **rollback is deleting the two routes** — instant, no DNS propagation.
+
+### Two Cloudflare traps that cost hours
+
+1. **Plain-text vars belong in `wrangler.jsonc`, not the dashboard.** `wrangler deploy` treats the config
+   as the source of truth and **replaces all plain vars**, so dashboard-set values vanish on the next
+   push. Secrets survive. `MAILGUN_DOMAIN` and `CONTACT_FROM` live in the config for this reason.
+2. **There are TWO "Variables and Secrets" screens** — one for the *build* job, one for the *Worker
+   runtime*. The one reachable from Settings is the **build** one, which the Worker cannot read. Setting
+   `MAILGUN_API_KEY` there looks right and does nothing. Use
+   `npx wrangler secret put MAILGUN_API_KEY --name language-flipper-desktop` (no folder needed) or the
+   API. This wasted two rounds of "the key must be wrong".
+
+### Contact form (no PHP any more)
+
+`site/worker/contact-handler.ts` replaces `contact.php`. Same behaviour: POST-only, honeypot, required
+email/company, CR/LF header-injection guard, and a same-site-path-only redirect that returns Hebrew
+submissions to the Hebrew page where `ContactForm.astro` reveals the banner on `?sent=1`.
+
+- Sends via **Mailgun** (`mg.languageflipper.com`, US region, SPF+DKIM verified) or **Resend** — whichever
+  is configured, Mailgun first. `MAILGUN_API_KEY` is a **runtime secret**.
+- **Do not use a Mailgun sandbox domain in production.** Gmail accepts sandbox mail then flags
+  `DMARC:Quarantine` — it lands in spam. Verifying `mg.languageflipper.com` fixed it (`2.0.0 OK`).
+- Answers on **both** `/contact` and `/contact.php`; the old route stops cached pages 404ing.
+- Failures are self-describing (`no mail provider configured (mailgun_key=… )`, `provider rejected
+  (Mailgun 401)`). **Don't collapse those back into a generic "Send failed".**
+- Tests: `site/capture/scripts/verify-contact.mjs` (30 assertions, `node --experimental-strip-types`).
+
+### Redirects, headers, download links
+
+- `site/public/_redirects` and `site/public/_headers` replace the Apache `.htaccess` (Workers Static
+  Assets honours both). **Do not add a `/*` rule to `_headers`:** Cloudflare *combines* matching rules
+  rather than letting the specific one win, so `/*` plus `/_astro/*` emitted two `max-age` values and
+  browsers took the first — assets were never cached. Cloudflare already defaults to
+  `public, max-age=0, must-revalidate`, so only the `/_astro/*` immutable rule is needed.
+- **Download URLs are resolved from the GitHub releases API at build time** (`site/src/lib/releases.ts`).
+  Never hardcode them again, and never use `/releases/latest/download/<asset>` — `latest` is one pointer
+  across all releases and the `-mac`/`-windows` tags interleave, so it 404s (Key Past Bug #5).
+  `.github/workflows/rebuild-site-on-release.yml` pushes an empty commit when a release is published,
+  because Workers Builds only builds on push and the release scripts push *before* creating the release.
+
+### SEO / analytics
+
+All injected by `BaseLayout` via `site/src/components/Seo.astro`: per-page title/description, canonical,
+**hreflang** (EN↔HE pairs in `site/src/i18n/routes.ts`), Open Graph + Twitter, **GA4** (`GT-5D9377V7` →
+`G-2CP4BEC4B8`) and **Microsoft Clarity** (`wrfoldcd1d`) (IDs in `site/src/seo-config.ts`), plus
+**JSON-LD** built by `site/src/schema.ts`. Also `@astrojs/sitemap` → `/sitemap-index.xml`,
+`site/public/robots.txt`, `llms.txt`, `favicon.svg`.
+
+### Components worth knowing
+
 - **Try-It widget:** `site/src/components/TryItWidget.astro` — inlined char map is a copy of
   `flipper_daemon/layouts/en_he_map.json` and can drift.
-- **Install warnings (unsigned builds):** both builds are unsigned, so first-time users hit Gatekeeper
-  (Mac) or SmartScreen (Windows). `InstallHelp.astro` holds the per-OS steps (`os` prop:
-  `'mac' | 'win' | 'both'`), rendered in two places — `InstallModal.astro` (native `<dialog>` +
-  `showModal()`, opened from `[data-install-os]` on the download cards) and a `<details>` collapsible in
-  `DownloadRow.astro`. Strings are the `install.*` keys in `en.json`/`he.json`. **Two invariants:** the
-  modal must never gate the download (no `preventDefault` — the `<a href>` must still work if JS dies),
-  and the `<details>` must carry the same content JS-free. Each OS block is independent, so when a
-  certificate lands for one platform you delete that block plus its `install.<os>_*` keys and leave the
-  other. Regression test: `site/capture/scripts/verify-install-help.mjs`.
-- **Responsive audit:** `site/capture/scripts/responsive-audit.mjs` measures horizontal scroll, viewport
-  overflow, covered interactive elements, clipped text, tap-target size and JS errors across all 13 pages
-  × 3 viewports. Known remaining finding: the three download-card title links are 20px tall on phones.
-- **Mobile nav:** `site/src/components/Nav.astro` has an animated hamburger (JS toggles a full-width
-  dropdown; the bars spin 405° into an X).
-- **Fidelity tooling:** `site/capture/` (`capture.mjs`, `verify.mjs`, `linkaudit.mjs`). Scripts spawn the
-  preview server as a foreground child — the sandbox reaps backgrounded servers, so never background
-  `npm run preview`. The diff harness reports high pixel-mismatch % even on faithful pages (Elementor
-  parallax offsets) — **judge fidelity visually, not by the %.**
+- **Mobile nav:** `site/src/components/Nav.astro` — animated hamburger.
+- See also the install-warning components and responsive audit described above.
 
----
+### Verification tooling (`site/capture/scripts/`)
+
+- `verify-worker.mjs` — builds, runs the Worker locally, checks pages, the ported 301s, exact cache
+  headers and the contact routes (28 assertions).
+- `verify-install-help.mjs` — 57 assertions; point it at localhost, workers.dev or the live domain.
+- `verify-contact.mjs`, `responsive-audit.mjs`, `verify-reduced-motion.mjs`.
+- Scripts spawn servers as **foreground children** — the sandbox reaps backgrounded ones, so never
+  background `npm run preview` or `wrangler dev`.
 
 ## MCP Servers Available
 

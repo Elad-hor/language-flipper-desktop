@@ -1,0 +1,43 @@
+name: Rebuild site after a release
+
+# The site resolves its download URLs from the GitHub releases API at BUILD
+# time (site/src/lib/releases.ts), so a new release only reaches the download
+# buttons once the site is rebuilt.
+#
+# Cloudflare Workers Builds only builds on push. The release scripts do push a
+# version-bump commit, but they push it BEFORE `gh release create` runs — so
+# that build resolves the *previous* release — and when version.py is already
+# at the target version there is no commit to push at all.
+#
+# Left alone, the buttons would drift out of date. That is not hypothetical:
+# a hardcoded URL left the site serving v0.1.67 for four months.
+#
+# An empty commit is the trigger because it needs no secrets and no deploy-hook
+# URL to keep in sync. The push is what Workers Builds reacts to.
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Push an empty commit to trigger the Workers build
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git commit --allow-empty -m "chore: rebuild site for ${{ github.event.release.tag_name || 'manual trigger' }}
+
+          Refreshes the download links, which resolve from the releases API at
+          build time. Triggered by the release being published."
+          git push origin main
