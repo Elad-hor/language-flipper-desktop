@@ -28,6 +28,22 @@
     "binding": "ASSETS"
   },
 
+  // Non-secret contact-form settings MUST live here, not in the dashboard.
+  //
+  // `wrangler deploy` treats this file as the source of truth, so plain-text
+  // variables added through the dashboard are WIPED by the next deploy —
+  // secrets survive, plain vars do not. Setting MAILGUN_DOMAIN in the
+  // dashboard therefore worked until the next push, at which point the form
+  // started answering "no mail provider configured" (2026-08-13).
+  //
+  // Neither value is sensitive: the sending domain is public in DNS and the
+  // From address appears in every email. Only MAILGUN_API_KEY is a secret, and
+  // it stays out of this file.
+  "vars": {
+    "MAILGUN_DOMAIN": "mg.languageflipper.com",
+    "CONTACT_FROM": "Language Flipper <no-reply@mg.languageflipper.com>"
+  },
+
   // Logs for the contact form. Without these, a failing form is silent — the
   // exact trap that hid a broken updater for months (see CLAUDE.md #2).
   "observability": {
