@@ -74,10 +74,26 @@ Free tier is 3,000/month with no card. Add `languageflipper.com` under
 **Domains**, put the DKIM/SPF records it gives you into Cloudflare DNS, and verify —
 otherwise mail from `no-reply@languageflipper.com` is rejected.
 
-### Either way
+### Either way — two traps that cost an hour on 2026-08-13
 
-The key must be a **Secret**, not a Text variable, or it is readable in the
-dashboard and can surface in build logs.
+**1. Non-secret values belong in `wrangler.jsonc`, not the dashboard.**
+`wrangler deploy` treats that file as the source of truth and **replaces all
+plain-text variables** with whatever it declares. A `MAILGUN_DOMAIN` set in the
+dashboard therefore works right up until the next push, then silently vanishes.
+Secrets are stored separately and survive. `MAILGUN_DOMAIN` and `CONTACT_FROM`
+now live in `wrangler.jsonc` for exactly this reason.
+
+**2. A secret added in the dashboard is not live until something deploys.**
+Cloudflare uses versioned deployments, so saving a secret creates a new version;
+the running version keeps the old configuration. Trigger a build (push anything)
+or deploy from the Deployments tab. Until then the form keeps reporting the
+secret as missing, and it looks like the key was entered wrong.
+
+The key must be a **Secret**, not a Text variable — otherwise it is readable in
+the dashboard, can surface in build logs, and gets wiped by the next deploy.
+
+If the form returns `Send failed: no mail provider configured (...)`, the
+booleans in that message say exactly which piece the *running* Worker can see.
 
 Optional overrides: `CONTACT_TO` (default `falafeltikunim@gmail.com`) and
 `CONTACT_FROM` (default `Language Flipper <no-reply@languageflipper.com>` — must be
