@@ -151,10 +151,16 @@ export async function handleContact(request: Request, env: ContactEnv): Promise<
 
   if (!useMailgun && !useResend) {
     // Loud, because a silently unconfigured form loses real enquiries.
+    //
+    // The response body distinguishes "nobody configured this" from "the
+    // provider rejected it". Both used to return a bare "Send failed", which
+    // made a missing environment variable indistinguishable from a bad API key
+    // without reading the Worker logs. It names no values, only which case it
+    // is, so it leaks nothing useful to anyone else.
     console.error(
       'No mail provider configured — set MAILGUN_API_KEY + MAILGUN_DOMAIN, or RESEND_API_KEY',
     );
-    return textResponse(500, 'Send failed');
+    return textResponse(500, 'Send failed: no mail provider configured');
   }
 
   const subject = `Language Flipper contact from ${first !== '' ? first : 'website'}`;
@@ -176,11 +182,14 @@ export async function handleContact(request: Request, env: ContactEnv): Promise<
 
     if (!result.ok) {
       console.error(`Mail provider rejected the message: ${result.detail}`);
-      return textResponse(500, 'Send failed');
+      // Include the provider and status code, but never its response body —
+      // that can echo back configuration details.
+      const status = result.detail.split(' ').slice(0, 2).join(' ');
+      return textResponse(500, `Send failed: provider rejected (${status})`);
     }
   } catch (err) {
     console.error(`Mail provider request failed: ${err}`);
-    return textResponse(500, 'Send failed');
+    return textResponse(500, 'Send failed: provider unreachable');
   }
 
   return Response.redirect(new URL(success, request.url).toString(), 302);
