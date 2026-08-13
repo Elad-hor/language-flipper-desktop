@@ -42,37 +42,51 @@ Everything else (`name`, entry point, the assets binding) is already in
 
 Non-production branch builds need no changes.
 
-## 2. Point the contact form at Mailgun
+## 2. Give the contact form a mail provider
 
-The form ran on PHP `mail()` at Hostinger. There is no PHP here, so it now posts to
-the Worker, which hands the message to Mailgun (already in use for other projects).
+The form ran on PHP `mail()` at Hostinger. There is no PHP here, so it posts to the
+Worker, which hands the message to **either Mailgun or Resend** — whichever is
+configured. Mailgun wins if both are.
 
-In the Worker → **Settings → Variables and Secrets**, add:
+Set these in the Worker → **Settings → Variables and Secrets**, then redeploy.
+
+### Option A — Mailgun
 
 | Name | Type | Value |
 |---|---|---|
-| `MAILGUN_API_KEY` | **Secret** | the private API key from Mailgun → API Keys |
-| `MAILGUN_DOMAIN` | Variable | the sending domain, e.g. `mg.languageflipper.com` |
-| `MAILGUN_API_BASE` | Variable | **EU accounts only:** `https://api.eu.mailgun.net` |
+| `MAILGUN_API_KEY` | **Secret** | private API key |
+| `MAILGUN_DOMAIN` | Text | sending domain, e.g. `mg.languageflipper.com` |
+| `MAILGUN_API_BASE` | Text | **EU accounts only:** `https://api.eu.mailgun.net` |
 
-`MAILGUN_API_KEY` must be a **Secret**, not a plain variable, or it is readable in
-the dashboard and in build logs.
+**If the account is in the EU region, `MAILGUN_API_BASE` is not optional.** An EU
+domain hitting the default US endpoint returns **401**, which looks exactly like a
+wrong API key.
 
-**If the Mailgun account is in the EU region, `MAILGUN_API_BASE` is not optional.**
-An EU domain hitting the default US endpoint returns **401**, which looks exactly
-like a wrong API key and wastes an afternoon.
+Note the free plan caps API keys (2) and asks for a card.
 
-Optional, only to change the defaults: `CONTACT_TO`
-(default `falafeltikunim@gmail.com`), `CONTACT_FROM`
-(default `Language Flipper <no-reply@languageflipper.com>` — must be on the Mailgun
-sending domain).
+### Option B — Resend
+
+| Name | Type | Value |
+|---|---|---|
+| `RESEND_API_KEY` | **Secret** | API key with *Sending access* |
+
+Free tier is 3,000/month with no card. Add `languageflipper.com` under
+**Domains**, put the DKIM/SPF records it gives you into Cloudflare DNS, and verify —
+otherwise mail from `no-reply@languageflipper.com` is rejected.
+
+### Either way
+
+The key must be a **Secret**, not a Text variable, or it is readable in the
+dashboard and can surface in build logs.
+
+Optional overrides: `CONTACT_TO` (default `falafeltikunim@gmail.com`) and
+`CONTACT_FROM` (default `Language Flipper <no-reply@languageflipper.com>` — must be
+on the verified sending domain).
 
 From the terminal instead:
 ```bash
-cd site && npx wrangler secret put MAILGUN_API_KEY
+cd site && npx wrangler secret put MAILGUN_API_KEY    # or RESEND_API_KEY
 ```
-
-Redeploy afterwards so the values are picked up.
 
 ## 3. Verify on the workers.dev URL — before touching DNS
 

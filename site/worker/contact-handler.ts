@@ -2,7 +2,7 @@
  * Contact form handler — the replacement for contact.php.
  *
  * Hostinger ran the form through PHP mail(); a static host has no PHP, so this
- * runs in a Cloudflare Worker and hands the message to Mailgun instead.
+ * runs in a Cloudflare Worker and hands the message to Mailgun or Resend.
  *
  * Behaviour is deliberately identical to the PHP version, because the form
  * markup and the success banner both depend on it:
@@ -21,26 +21,78 @@
  * move off Hostinger.
  */
 
+/**
+ * Either provider works — whichever is configured wins, Mailgun first.
+ * Two are supported because Mailgun's free plan caps API keys (and wants a
+ * card), while Resend's does not; there is no reason to be blocked on whichever
+ * signup happens to be more awkward on the day.
+ */
 export interface ContactEnv {
   /** Mailgun private API key. A secret — never in wrangler.jsonc. */
-  MAILGUN_API_KEY: string;
+  MAILGUN_API_KEY?: string;
   /** The sending domain as configured in Mailgun, e.g. mg.languageflipper.com. */
-  MAILGUN_DOMAIN: string;
+  MAILGUN_DOMAIN?: string;
   /**
    * Mailgun region endpoint. EU accounts MUST set this to
    * https://api.eu.mailgun.net — the US default returns 401 for EU domains,
    * which looks exactly like a bad API key.
    */
   MAILGUN_API_BASE?: string;
+
+  /** Resend API key. A secret. Used when Mailgun is not configured. */
+  RESEND_API_KEY?: string;
+
   /** Optional overrides; the defaults match the PHP version. */
   CONTACT_TO?: string;
   CONTACT_FROM?: string;
 }
 
+interface SendResult {
+  ok: boolean;
+  detail: string;
+}
+
+async function sendViaMailgun(
+  env: ContactEnv, to: string, from: string, replyTo: string,
+  subject: string, text: string,
+): Promise<SendResult> {
+  // Mailgun takes form-encoded fields and HTTP Basic auth with the literal
+  // username "api".
+  const params = new URLSearchParams({ from, to, subject, text, 'h:Reply-To': replyTo });
+  const base = (env.MAILGUN_API_BASE || 'https://api.mailgun.net').replace(/\/+$/, '');
+  const url = `${base}/v3/${encodeURIComponent(env.MAILGUN_DOMAIN!)}/messages`;
+
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: {
+      Authorization: `Basic ${btoa(`api:${env.MAILGUN_API_KEY}`)}`,
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: params.toString(),
+  });
+  // A 401 here usually means the region is wrong (an EU domain hitting the US
+  // endpoint) rather than a bad key — see MAILGUN_API_BASE.
+  return { ok: res.ok, detail: `Mailgun ${res.status} ${res.ok ? '' : await res.text()}` };
+}
+
+async function sendViaResend(
+  env: ContactEnv, to: string, from: string, replyTo: string,
+  subject: string, text: string,
+): Promise<SendResult> {
+  const res = await fetch('https://api.resend.com/emails', {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${env.RESEND_API_KEY}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ from, to: [to], reply_to: replyTo, subject, text }),
+  });
+  return { ok: res.ok, detail: `Resend ${res.status} ${res.ok ? '' : await res.text()}` };
+}
+
 const DEFAULT_TO = 'falafeltikunim@gmail.com';
 // Must be on the Mailgun sending domain, or delivery is rejected.
 const DEFAULT_FROM = 'Language Flipper <no-reply@languageflipper.com>';
-const DEFAULT_API_BASE = 'https://api.mailgun.net';
 
 function textResponse(status: number, body: string): Response {
   return new Response(body, {
@@ -94,9 +146,14 @@ export async function handleContact(request: Request, env: ContactEnv): Promise<
     if (/[\r\n]/.test(v)) return textResponse(422, 'Invalid input');
   }
 
-  if (!env.MAILGUN_API_KEY || !env.MAILGUN_DOMAIN) {
+  const useMailgun = Boolean(env.MAILGUN_API_KEY && env.MAILGUN_DOMAIN);
+  const useResend = Boolean(env.RESEND_API_KEY);
+
+  if (!useMailgun && !useResend) {
     // Loud, because a silently unconfigured form loses real enquiries.
-    console.error('MAILGUN_API_KEY / MAILGUN_DOMAIN not set — cannot send contact email');
+    console.error(
+      'No mail provider configured — set MAILGUN_API_KEY + MAILGUN_DOMAIN, or RESEND_API_KEY',
+    );
     return textResponse(500, 'Send failed');
   }
 
@@ -107,38 +164,22 @@ export async function handleContact(request: Request, env: ContactEnv): Promise<
     `Company: ${company}\n\n` +
     `Message:\n${message}\n`;
 
-  // Mailgun's messages endpoint takes form-encoded fields and HTTP Basic auth
-  // with the literal username "api".
-  const params = new URLSearchParams({
-    from: env.CONTACT_FROM || DEFAULT_FROM,
-    to: env.CONTACT_TO || DEFAULT_TO,
-    subject,
-    text: body,
-    // So hitting reply in Gmail answers the visitor, not the robot.
-    'h:Reply-To': email,
-  });
-
-  const base = (env.MAILGUN_API_BASE || DEFAULT_API_BASE).replace(/\/+$/, '');
-  const url = `${base}/v3/${encodeURIComponent(env.MAILGUN_DOMAIN)}/messages`;
+  const to = env.CONTACT_TO || DEFAULT_TO;
+  const from = env.CONTACT_FROM || DEFAULT_FROM;
 
   try {
-    const res = await fetch(url, {
-      method: 'POST',
-      headers: {
-        Authorization: `Basic ${btoa(`api:${env.MAILGUN_API_KEY}`)}`,
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      body: params.toString(),
-    });
+    // `email` becomes Reply-To so hitting reply in Gmail answers the visitor,
+    // not the robot.
+    const result = useMailgun
+      ? await sendViaMailgun(env, to, from, email, subject, body)
+      : await sendViaResend(env, to, from, email, subject, body);
 
-    if (!res.ok) {
-      // 401 here usually means the region is wrong (an EU domain hit the US
-      // endpoint) rather than a bad key — see MAILGUN_API_BASE.
-      console.error(`Mailgun rejected the message: ${res.status} ${await res.text()}`);
+    if (!result.ok) {
+      console.error(`Mail provider rejected the message: ${result.detail}`);
       return textResponse(500, 'Send failed');
     }
   } catch (err) {
-    console.error(`Mailgun request failed: ${err}`);
+    console.error(`Mail provider request failed: ${err}`);
     return textResponse(500, 'Send failed');
   }
 

@@ -92,11 +92,42 @@ check('GET rejected', r.status === 405);
 
 sent = [];
 r = await handleContact(post(valid), {});
-check('missing API key fails loudly, sends nothing', r.status === 500 && sent.length === 0);
+check('no provider configured fails loudly, sends nothing', r.status === 500 && sent.length === 0);
 
 sent = [];
 r = await handleContact(post(valid), { MAILGUN_API_KEY: 'k' });
-check('missing domain fails loudly, sends nothing', r.status === 500 && sent.length === 0);
+check('Mailgun key without domain fails loudly, sends nothing',
+  r.status === 500 && sent.length === 0);
+
+// --- Resend path (the fallback when Mailgun is not configured) -------------
+sent = [];
+globalThis.fetch = async (url, init) => {
+  sent.push({ url, body: JSON.parse(init.body), auth: init.headers.Authorization });
+  return new Response('{"id":"x"}', { status: 200 });
+};
+r = await handleContact(post(valid), { RESEND_API_KEY: 'r-key' });
+check('Resend used when only RESEND_API_KEY is set', r.status === 302 && sent.length === 1);
+check('Resend endpoint', sent[0]?.url === 'https://api.resend.com/emails', sent[0]?.url);
+check('Resend bearer auth', sent[0]?.auth === 'Bearer r-key', sent[0]?.auth);
+check('Resend to/reply_to correct',
+  sent[0]?.body.to?.[0] === 'falafeltikunim@gmail.com' && sent[0]?.body.reply_to === 'a@b.com');
+
+// Mailgun wins when both are configured, so adding Resend later can't silently
+// change which provider is in use.
+sent = [];
+globalThis.fetch = async (url, init) => {
+  sent.push({ url });
+  return new Response('{}', { status: 200 });
+};
+await handleContact(post(valid), { ...env, RESEND_API_KEY: 'r-key' });
+check('Mailgun takes precedence when both are set',
+  (sent[0]?.url || '').includes('mailgun'), sent[0]?.url);
+
+// restore the Mailgun-shaped stub for the remaining cases
+globalThis.fetch = async (url, init) => {
+  sent.push({ url, body: Object.fromEntries(new URLSearchParams(init.body)) });
+  return new Response('{}', { status: 200 });
+};
 
 // EU accounts must be able to override the region, or every send 401s.
 sent = [];

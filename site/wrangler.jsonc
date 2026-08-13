@@ -34,7 +34,7 @@
     "enabled": true
   }
 
-  // MAILGUN_API_KEY is NOT here on purpose — it is a secret. Set it in the
-  // dashboard under Settings → Variables and Secrets, or with:
+  // MAILGUN_API_KEY / RESEND_API_KEY are NOT here on purpose — they are secrets.
+  // Set one in the dashboard under Settings → Variables and Secrets, or with:
   //   npx wrangler secret put MAILGUN_API_KEY
 }
