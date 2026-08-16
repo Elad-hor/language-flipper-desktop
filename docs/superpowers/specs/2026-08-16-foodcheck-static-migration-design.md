@@ -75,6 +75,59 @@ correct, contact-form failure modes self-describing. Same pattern as
 2. Mailgun sending-domain setup for `mg.foodcheck.co.il`
 3. The destination address for form submissions
 
+## The DNS zone as it stands (dumped from ns1.dns-parking.com, 2026-08-16)
+
+Recreate **all of these in Cloudflare first**, verify, and only then change the nameservers at
+InterSpace. Done in that order there is no gap and mail never stops.
+
+| Name | Type | Value | Proxy | Keep |
+|---|---|---|---|---|
+| `foodcheck.co.il` | MX | `50 mailserver.purelymail.com` | DNS only | **critical** |
+| `foodcheck.co.il` | TXT | `v=spf1 include:_spf.purelymail.com ~all` | DNS only | **critical** |
+| `foodcheck.co.il` | TXT | `purelymail_ownership_proof=6f2ac4a66f1df0be72833d209d5e4259b57f4f05ba3b772a921601472b5c851149dc15a9cb4ea436b039dbfb5f0e7e82e0f912b5a0191f56114317deb99ba4f3` | DNS only | **critical** |
+| `_dmarc` | CNAME | `dmarcroot.purelymail.com` | **DNS only** | **critical** |
+| `purelymail1._domainkey` | CNAME | `key1.dkimroot.purelymail.com` | **DNS only** | **critical** |
+| `purelymail2._domainkey` | CNAME | `key2.dkimroot.purelymail.com` | **DNS only** | **critical** |
+| `purelymail3._domainkey` | CNAME | `key3.dkimroot.purelymail.com` | **DNS only** | **critical** |
+| `foodcheck.co.il` | TXT | `google-site-verification=1VUQtDMMl10lEy9mWxheevf1-vM9-4J4paXfiD5ZWd0` | DNS only | keep |
+| `foodcheck.co.il` | A | `185.224.137.92` | Proxied | temporary — dies with Hostinger |
+| `foodcheck.co.il` | AAAA | `2a02:4780:8:1224:0:1ede:76e8:5` | Proxied | temporary — same |
+| `www` | CNAME | `foodcheck.co.il` | Proxied | keep |
+| `ftp` | A | `185.224.137.92` | — | drop, Hostinger only |
+| `autodiscover` | CNAME | `autodiscover.mail.hostinger.com` | — | drop, stale (mail is Purelymail) |
+| `autoconfig` | CNAME | `autoconfig.mail.hostinger.com` | — | drop, stale |
+
+No CAA, no wildcard, nothing else in the zone.
+
+**The DKIM and DMARC records are CNAMEs and Cloudflare defaults CNAMEs to proxied.** A proxied
+`_domainkey` breaks DKIM lookups, and the symptom appears a week later as mail landing in spam.
+Grey cloud on all four.
+
+**Check the delegation actually took, on BOTH nameservers.** Reported by the session handling
+whattoeat.co.il: the InterSpace form applied only one of the two, leaving one Cloudflare
+nameserver alongside one `dns-parking.com` one. A half-delegation keeps working, so nothing looks
+wrong. Verify in whois after the change, not just by loading the site:
+
+```
+dig NS foodcheck.co.il +short            # expect BOTH Cloudflare nameservers, no dns-parking
+dig MX foodcheck.co.il +short
+dig CNAME purelymail1._domainkey.foodcheck.co.il +short
+```
+
+## Security check before mirroring
+
+whattoeat.co.il — same server (185.224.137.92), same Elementor stack, and linked from
+whattoeat's footer — **was compromised**: roughly 1,425 injected `/NNNNNNN.htm` doorway pages
+serving 200 through 2025, advertised by five phantom `sitemapNNN.xml` entries still listed in its
+robots.txt.
+
+foodcheck.co.il was checked for the same signature on 2026-08-16 and looks **clean**: guessed
+`/NNNNNNN.htm` paths all 404, `robots.txt` lists one legitimate sitemap, `sitemap1-5.xml` all 404.
+
+That is a surface check from outside, not proof. **Re-verify at mirror time**: the mirror must
+follow only the 5 known pages and the sitemap, and any URL that appears in the crawl but not in the
+inventory above is to be treated as suspect and excluded rather than carried into the new site.
+
 ## Known traps, inherited from the last migration
 
 - Plain-text vars belong in `wrangler.jsonc`, not the dashboard — `wrangler deploy` replaces all
