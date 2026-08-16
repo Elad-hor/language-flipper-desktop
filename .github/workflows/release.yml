@@ -68,8 +68,10 @@ jobs:
           if [ "${{ github.event_name }}" = "push" ]; then
             rest="${GITHUB_REF_NAME#release-}"          # [platform-]x.y.z[-rc]
             prerelease=false
+            # -rc, -rc2, -rc3 ... so a failed attempt can be retried without
+            # burning a version number.
             case "$rest" in
-              *-rc) prerelease=true; rest="${rest%-rc}" ;;
+              *-rc|*-rc[0-9]*) prerelease=true; rest="${rest%-rc*}" ;;
             esac
             case "$rest" in
               windows-*) platforms=windows; version="${rest#windows-}" ;;
@@ -162,18 +164,60 @@ jobs:
         # frozen exe then dies on every launch. The official installer
         # registers vcruntime system-wide, which is what release_windows.bat
         # pins locally.
-        run: choco install python313 -y --no-progress
+        #
+        # InstallDir is pinned so the interpreter path is not left to the
+        # package's defaults.
+        run: choco install python313 -y --no-progress --params "/InstallDir:C:\Py313"
         shell: cmd
+
+      - name: Locate and verify the interpreter
+        # Findings go out as ::notice:: / ::error:: because those become check
+        # annotations, which are readable from the public API — job logs are
+        # not, so a failure here would otherwise be a bare "exit code 1".
+        shell: pwsh
+        run: |
+          $candidates = @(
+            "C:\Py313\python.exe",
+            "C:\Py313\tools\python.exe",
+            "C:\Python313\python.exe",
+            "C:\Python313\tools\python.exe"
+          )
+          $exe = $candidates | Where-Object { Test-Path $_ } | Select-Object -First 1
+          if (-not $exe) {
+            $listing = (Get-ChildItem C:\ -Directory -ErrorAction SilentlyContinue |
+                        Select-Object -ExpandProperty Name) -join ', '
+            Write-Output "::error::no interpreter at any of: $($candidates -join ' ; ') -- C:\ contains: $listing"
+            exit 1
+          }
+          $version = & $exe -c "import sys; print(sys.version.split()[0])"
+          $base = & $exe -c "import sys; print(sys.base_prefix)"
+          Write-Output "::notice::using $exe (Python $version, base_prefix $base)"
+          "PYTHON=$exe" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
 
       - name: Install dependencies
+        shell: pwsh
         run: |
-          C:\Python313\python.exe -m pip install --upgrade pip
-          C:\Python313\python.exe -m pip install -r requirements.txt pyinstaller
-        shell: cmd
+          $log = "pip-install.log"
+          & $env:PYTHON -m pip install --upgrade pip *>&1 | Tee-Object -FilePath $log
+          & $env:PYTHON -m pip install -r requirements.txt pyinstaller *>&1 |
+            Tee-Object -FilePath $log -Append
+          if ($LASTEXITCODE -ne 0) {
+            $tail = ((Get-Content $log -Tail 20) -join '%0A')
+            Write-Output "::error::pip failed (exit $LASTEXITCODE): $tail"
+            exit 1
+          }
 
       - name: Build the exe
-        run: C:\Python313\python.exe -m PyInstaller --clean --noconfirm language_flipper_windows.spec
-        shell: cmd
+        shell: pwsh
+        run: |
+          $log = "pyinstaller.log"
+          & $env:PYTHON -m PyInstaller --clean --noconfirm language_flipper_windows.spec *>&1 |
+            Tee-Object -FilePath $log
+          if ($LASTEXITCODE -ne 0) {
+            $tail = ((Get-Content $log -Tail 20) -join '%0A')
+            Write-Output "::error::PyInstaller failed (exit $LASTEXITCODE): $tail"
+            exit 1
+          }
 
       - name: Install Inno Setup
         run: choco install innosetup -y --no-progress
