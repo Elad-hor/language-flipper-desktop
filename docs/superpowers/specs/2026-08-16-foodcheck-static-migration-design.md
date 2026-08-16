@@ -121,12 +121,29 @@ whattoeat's footer — **was compromised**: roughly 1,425 injected `/NNNNNNN.htm
 serving 200 through 2025, advertised by five phantom `sitemapNNN.xml` entries still listed in its
 robots.txt.
 
-foodcheck.co.il was checked for the same signature on 2026-08-16 and looks **clean**: guessed
-`/NNNNNNN.htm` paths all 404, `robots.txt` lists one legitimate sitemap, `sitemap1-5.xml` all 404.
+foodcheck.co.il is **clean**, established 2026-08-16 by a Wayback CDX sweep of everything crawlers
+ever saw — **4,243 archived URLs, zero numeric `.htm` doorway pages, zero numbered
+`sitemapNNN.xml`**. Run independently in both this session and the whattoeat one, same numbers.
+For contrast, whattoeat's sweep returned 5,004 URLs of which 1,425 (28%) were doorway pages.
 
-That is a surface check from outside, not proof. **Re-verify at mirror time**: the mirror must
-follow only the 5 known pages and the sitemap, and any URL that appears in the crawl but not in the
-inventory above is to be treated as suspect and excluded rather than carried into the new site.
+```
+curl -s "http://web.archive.org/cdx/search/cdx?url=DOMAIN*&output=json\
+&fl=timestamp,original,statuscode,mimetype&collapse=urlkey&limit=20000"
+# then match paths against ^/\d{6,}\.htm$ and ^/sitemap\d+\.xml$
+```
+
+The signature, from the whattoeat analysis: `/NNNNNNN.htm` at the web root, 8–11 digits, **random
+prefixes — do not pattern-match on a prefix**, all serving 200 while live, captured 2025-02-07 to
+2025-04-27.
+
+**The durable indicator is `robots.txt`.** whattoeat still lists five
+`Sitemap: …/sitemapNNN.xml` lines today while those files 404 — the payload was removed or rotated
+and robots.txt was never cleaned. So the cheapest ongoing check is: *any sitemap line in robots.txt
+that 404s*. foodcheck has exactly one sitemap line and it works.
+
+Still worth crawling deliberately at mirror time — follow the 5 known pages and the sitemap rather
+than whatever the crawl finds — but this is a clean bill of health, not merely an absence of
+evidence.
 
 ## Known traps, inherited from the last migration
 
