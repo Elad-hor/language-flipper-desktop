@@ -407,6 +407,17 @@ All injected by `BaseLayout` via `site/src/components/Seo.astro`: per-page title
     `kCGEventTapDisabledByTimeout`/`ByUserInput` — which needs `_tap_keeping_listener`, since
     pynput keeps the tap only in a local. **Don't call the flip synchronously from the hotkey
     callback on macOS, and don't add blocking work to `_on_flip` assuming a thread is free.**
+
+    **Windows has the same shape on its fallback path.** `RegisterHotKey` is only a message
+    queue, so a slow flip merely delays the pump — but when the combo is already taken,
+    `_start_windows_hotkey` falls back to pynput, whose Windows backend is a `WH_KEYBOARD_LL`
+    hook (`_util/win32.py`). Windows detaches a hook whose callback overruns
+    `LowLevelHooksTimeout`, so a ~0.7s flip kills it exactly like the macOS tap. `register()`
+    therefore wraps the callback in `_dispatch_off_thread` on Windows too. Two related
+    Windows-only fixes live in `_pump_hotkey_messages`: the flip callback is wrapped (an
+    escaping exception used to end the pump thread and the hotkey with it — the macOS path was
+    always covered by its `on_press` wrapper), and `GetMessageW`'s `-1` error return is handled
+    instead of being treated as a message, falling back to pynput rather than dying quietly.
 18. **Partial clicking on macOS flips is the *injected* keys, not the hotkey — known, and
     deliberately not fixed.** The intercept can only suppress what passes through the session
     tap. `text_bridge` injects `Cmd+C`, `Cmd+V` and (on the no-selection path) `Cmd+Left` /

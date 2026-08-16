@@ -26,11 +26,42 @@ _SUPERVISOR_POLL_SECONDS = 5
 # Suppresses the hotkey before any app or language switcher sees it.
 # ---------------------------------------------------------------------------
 
+_WM_HOTKEY = 0x0312
+
+
+def _pump_hotkey_messages(next_message, dispatch, hotkey_id) -> str:
+    """
+    Run the WM_HOTKEY message pump. Returns "quit" or "error".
+
+    next_message() yields (result, message, wParam), where result is what
+    GetMessageW returned. Injected so the loop can be tested off Windows.
+
+    GetMessageW returns 0 for WM_QUIT, -1 on failure, nonzero otherwise — which
+    is why MSDN warns against `while GetMessage(...)`. The old code used
+    `!= 0`, so an error kept the loop running over a MSG that was never filled
+    in.
+    """
+    while True:
+        result, message, wparam = next_message()
+        if result == 0:
+            return "quit"
+        if result == -1:
+            return "error"
+        if message == _WM_HOTKEY and wparam == hotkey_id:
+            try:
+                dispatch()
+            except Exception as e:
+                # One bad flip must not cost the user their hotkey. An
+                # exception here used to escape the thread and end the pump for
+                # the rest of the run, with nothing logged; the macOS path has
+                # always been covered by its on_press wrapper.
+                print(f"[hotkey] flip dispatch failed: {e}")
+
+
 def _start_windows_hotkey(callback: Callable):
     import ctypes
     import ctypes.wintypes
 
-    _WM_HOTKEY   = 0x0312
     _MOD_CONTROL = 0x0002
     _MOD_SHIFT   = 0x0004
     _MOD_NOREPEAT= 0x4000   # don't fire repeatedly while held
@@ -38,7 +69,8 @@ def _start_windows_hotkey(callback: Callable):
     _VK_Y        = ord('Y')
 
     def loop():
-        ok = ctypes.windll.user32.RegisterHotKey(
+        user32 = ctypes.windll.user32
+        ok = user32.RegisterHotKey(
             None,
             _HOTKEY_ID,
             _MOD_CONTROL | _MOD_SHIFT | _MOD_NOREPEAT,
@@ -52,13 +84,26 @@ def _start_windows_hotkey(callback: Callable):
         print("[hotkey] RegisterHotKey (Windows) — Ctrl+Shift+Y")
 
         msg = ctypes.wintypes.MSG()
-        while ctypes.windll.user32.GetMessageW(ctypes.byref(msg), None, 0, 0) != 0:
-            if msg.message == _WM_HOTKEY and msg.wParam == _HOTKEY_ID:
-                callback()
-            ctypes.windll.user32.TranslateMessage(ctypes.byref(msg))
-            ctypes.windll.user32.DispatchMessageW(ctypes.byref(msg))
 
-        ctypes.windll.user32.UnregisterHotKey(None, _HOTKEY_ID)
+        def next_message():
+            result = user32.GetMessageW(ctypes.byref(msg), None, 0, 0)
+            if result not in (0, -1):
+                # WM_HOTKEY is a thread message (RegisterHotKey was given a
+                # NULL window), so dispatching it goes nowhere — doing it here
+                # rather than after the handler changes nothing.
+                user32.TranslateMessage(ctypes.byref(msg))
+                user32.DispatchMessageW(ctypes.byref(msg))
+            return result, msg.message, msg.wParam
+
+        why = _pump_hotkey_messages(next_message, callback, _HOTKEY_ID)
+        user32.UnregisterHotKey(None, _HOTKEY_ID)
+
+        if why == "error":
+            # Losing the pump means losing the hotkey, so fall back to the
+            # other mechanism rather than dying quietly.
+            err = ctypes.windll.kernel32.GetLastError()
+            print(f"[hotkey] GetMessageW failed (err={err}) — falling back to pynput")
+            _start_pynput(callback)
 
     t = threading.Thread(target=loop, daemon=True)
     t.start()
@@ -358,7 +403,14 @@ def _start_xdg_portal(callback: Callable):
 
 def register(callback: Callable):
     if _PLATFORM == "Windows":
-        return _start_windows_hotkey(callback)
+        # Off-thread here too. RegisterHotKey itself is only a message queue,
+        # so a slow flip merely delays the pump — but _start_windows_hotkey
+        # falls back to pynput when the combo is already taken, and pynput's
+        # Windows backend is a WH_KEYBOARD_LL hook (_util/win32.py). Windows
+        # detaches a hook whose callback overruns LowLevelHooksTimeout, and a
+        # flip takes ~0.7s, so on that path the hotkey would die exactly the
+        # way the macOS tap did.
+        return _start_windows_hotkey(_dispatch_off_thread(callback))
 
     if _PLATFORM == "Linux":
         handle = _start_xdg_portal(callback)
