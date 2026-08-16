@@ -117,6 +117,52 @@ unmount fails with "resource busy" when Finder/Spotlight holds the volume, and *
 produced** when that happens. It also runs PyInstaller with `--clean --noconfirm`, matching
 Windows.
 
+### CI release (no Mac or Windows machine needed)
+
+`.github/workflows/release.yml` builds both installers on rented runners — a `macos-latest`
+for the DMG, a `windows-latest` for the Inno Setup exe — so a release no longer depends on
+being at either machine. **Trigger by pushing a tag from anywhere:**
+
+```bash
+git tag release-windows-0.1.112-rc && git push origin release-windows-0.1.112-rc
+```
+
+| Tag | Result |
+|---|---|
+| `release-0.1.112` | both platforms |
+| `release-windows-0.1.112` | Windows only |
+| `release-mac-0.1.112` | Mac only |
+| any of the above + `-rc` | published as a **prerelease** |
+
+Or: Actions → Build and release → Run workflow (phone-friendly).
+
+**Use `-rc` for anything a runner builds for the first time.** `updater._find_update` and
+`site/src/lib/releases.ts` both skip draft/prerelease entries, so an rc is downloadable from
+the releases page but reaches no user and does not move the site's download buttons. Test it,
+then clear the prerelease flag to ship it.
+
+The job order mirrors the local scripts: run the tests, bump every version file
+(`tools/set_version.py`), commit to `main`, build, publish `vX.Y.Z-mac` / `vX.Y.Z-windows`.
+
+**Two things the CI path must keep doing:**
+
+1. **Windows Python comes from chocolatey (`choco install python313`), never
+   `actions/setup-python`** — Key Past Bug #8. A `python-build-standalone` interpreter hides
+   `vcruntime140.dll` in its own folder where `LoadLibrary` can't find it from PyInstaller's
+   `_MEI` temp folder, and the frozen exe then dies on every launch. "It built" is not proof;
+   only launching it is.
+2. **The publish job pushes an empty commit itself** rather than relying on
+   `rebuild-site-on-release.yml`. A release created with `GITHUB_TOKEN` raises no `release`
+   event by design, so that workflow never fires for a CI release. Cloudflare Workers Builds
+   reacts to the push webhook, which a token-authored push still sends.
+
+`tools/set_version.py` replaces the per-platform text surgery (GNU sed / BSD sed / PowerShell
+regex — Key Past Bug #4) with one implementation that raises when a pattern stops matching, so
+a restructured file fails the release instead of shipping a half-bumped build. Tested by
+`tests/test_set_version.py`.
+
+The local `release_mac.sh` / `release_windows.bat` still work and are unchanged.
+
 ### Release tag format
 - Mac: `v0.1.70-mac` (asset: `Language.Flipper.dmg`)
 - Windows: `v0.1.70-windows` (asset: `Language-Flipper-Setup.exe`)
