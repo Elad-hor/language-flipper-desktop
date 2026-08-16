@@ -344,8 +344,13 @@ the site is a Worker serving **Static Assets**, configured by `site/wrangler.jso
 - **`compatibility_date` must not exceed the workerd build in the installed wrangler**, or `wrangler dev`
   refuses to start.
 - The domain is attached by **zone routes** (`languageflipper.com/*`, `www.languageflipper.com/*`), NOT a
-  Custom Domain. That is deliberate: the A record still points at Hostinger (`185.224.137.92`, proxied),
-  so **rollback is deleting the two routes** — instant, no DNS propagation.
+  Custom Domain. That was deliberate: the A record still points at Hostinger (`185.224.137.92`, proxied),
+  so rollback was deleting the two routes — instant, no DNS propagation.
+  **That rollback expires 2026-08-24**, when the Hostinger plan ends and the origin goes with it. After
+  that date deleting the routes takes the site DOWN rather than rolling it back, and the A record should
+  be repointed (Custom Domain, or a placeholder like `192.0.2.1`) so it stops aiming at an IP Hostinger
+  will reassign. See `site/MIGRATION.md` §7. The domain itself is registered at **Cloudflare** (expires
+  2027-05-05) with Cloudflare nameservers, so neither it nor DNS depends on the hosting plan.
 
 ### Two Cloudflare traps that cost hours
 

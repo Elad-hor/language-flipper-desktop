@@ -189,6 +189,22 @@ it before deleting root-level files.
 
 ## 7. Rolling back
 
+> **EXPIRES 2026-08-24.** The Hostinger plan ends that day and is not being renewed,
+> which takes the origin with it. **After that date, deleting the routes does not roll
+> back — it takes the site down**, because `185.224.137.92` no longer serves anything of
+> ours. Do not follow the instructions below after 2026-08-24.
+>
+> Two follow-ups once the plan lapses:
+> * **Repoint the A record.** It still aims at an IP that Hostinger will reassign to
+>   another customer. The routes intercept everything today, so nothing reaches the
+>   origin — but a route that is later removed, edited or mis-scoped would send traffic
+>   to a stranger's server under this domain and its certificate. Either attach the
+>   Worker as a **Custom Domain** (the reason for preferring routes is gone once there is
+>   nothing to roll back to) or park the record on a placeholder such as `192.0.2.1`.
+> * Nothing else of ours lives there: no database, no mailbox, no cron. The domain is
+>   registered at **Cloudflare** (expires 2027-05-05) and DNS is on Cloudflare
+>   nameservers, so neither depends on the hosting plan.
+
 Delete the two routes: **Workers → language-flipper-desktop → Settings → Domains
 & Routes**. The `languageflipper.com` A record was never touched — it still points
 at Hostinger (`185.224.137.92`, proxied) — so Hostinger resumes serving
