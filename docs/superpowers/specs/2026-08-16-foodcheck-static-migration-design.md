@@ -38,6 +38,13 @@ when the plan lapses. Full `wget` mirror plus screenshots of all 5 pages at desk
 widths, committed as reference material. Once captured, the rebuild can happen calmly, even after
 the 24th.
 
+**Crawl slowly — seconds between requests, not a default `wget` mirror.** `185.224.137.92` is a
+shared host with a PHP resource limit that the whattoeat session tripped at ~4 req/s on 2026-08-13;
+whattoeat has been returning 500 for every uncached page ever since and had not recovered three
+days later. foodcheck is currently healthy, so it can be crawled live rather than reconstructed
+from Wayback — but hammering it would destroy the very thing being copied, with no way to undo it
+and eight days on the clock. `wget --wait=3 --random-wait --limit-rate`, 5 pages plus assets.
+
 ## Architecture
 
 Same shape as `site/`, which is proven: Astro static output, a Cloudflare Worker serving the
@@ -75,10 +82,25 @@ correct, contact-form failure modes self-describing. Same pattern as
 2. Mailgun sending-domain setup for `mg.foodcheck.co.il`
 3. The destination address for form submissions
 
-## The DNS zone as it stands (dumped from ns1.dns-parking.com, 2026-08-16)
+## DNS status — the MAIL rescue is done, the WEBSITE is not
 
-Recreate **all of these in Cloudflare first**, verify, and only then change the nameservers at
-InterSpace. Done in that order there is no gap and mail never stops.
+**Done 2026-08-16 by the session handling whattoeat.co.il**, at Elad's request, because it already
+held the Cloudflare token and had just run the procedure end to end:
+
+* Zone `6bcb9e7661ff0417478945ed32b4bdc1` created, nameservers **imani / tadeo.ns.cloudflare.com**
+* 11 records rebuilt from a snapshot taken off `ns1.dns-parking.com` first, all DNS-only, 9-check
+  old-vs-new diff all matching
+* **Waiting on Elad to change the nameservers at InterSpace**
+
+**That rescues email only.** The apex A still points at `185.224.137.92`, so the *site* still dies
+on 2026-08-24 exactly as before. Repointing or parking it is this spec's problem, not theirs.
+
+When the delegation lands, check **both** nameservers took — see the half-delegation trap below.
+
+The table below is the zone as dumped from the old nameserver, kept as the reference the rebuild
+was verified against.
+
+## The zone as dumped from ns1.dns-parking.com, 2026-08-16
 
 | Name | Type | Value | Proxy | Keep |
 |---|---|---|---|---|
