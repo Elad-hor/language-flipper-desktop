@@ -117,10 +117,32 @@ unmount fails with "resource busy" when Finder/Spotlight holds the volume, and *
 produced** when that happens. It also runs PyInstaller with `--clean --noconfirm`, matching
 Windows.
 
-### CI release (no Mac or Windows machine needed)
+### CI release — UNFINISHED, do not rely on it (as of 2026-08-16)
+
+> **Status: the Windows job has never produced an installer.** Use `release_windows.bat` /
+> `release_mac.sh` for real releases until this says otherwise.
+>
+> What works: the `prepare` job — runs the test suite, bumps all three version files via
+> `tools/set_version.py`, commits and pushes. Verified over four runs.
+>
+> Where it stops: installing Python on the runner.
+> * `choco install python313` **reported success while installing nothing** — three runs wasted
+>   hunting for a `python.exe` that was never there (`C:\Py313` was empty). Don't retry choco.
+> * Running the python.org installer directly then failed with **MSI exit 1603**, cause not yet
+>   established. Next step is passing `/log` and dumping the MSI log into a `::error::`
+>   annotation — job logs need admin rights to read, so annotations are the only public channel
+>   out of a failing job. `::notice::`/`::error::` workflow commands become annotations,
+>   readable via `/commits/{sha}/check-runs` + `/check-runs/{id}/annotations`.
+> * The `build-mac` job has **never run** — it is gated behind the same `prepare` job but was
+>   always skipped because only `-windows` tags were pushed. It is entirely unverified, and
+>   `create-dmg` styling its window through AppleScript on a headless runner is the obvious
+>   thing to check first.
+>
+> Nothing has ever been published by it. Every attempt used `-rc`, which both the updater and
+> the site skip.
 
 `.github/workflows/release.yml` builds both installers on rented runners — a `macos-latest`
-for the DMG, a `windows-latest` for the Inno Setup exe — so a release no longer depends on
+for the DMG, a `windows-latest` for the Inno Setup exe — so a release would no longer depend on
 being at either machine. **Trigger by pushing a tag from anywhere:**
 
 ```bash
@@ -146,11 +168,13 @@ The job order mirrors the local scripts: run the tests, bump every version file
 
 **Two things the CI path must keep doing:**
 
-1. **Windows Python comes from chocolatey (`choco install python313`), never
-   `actions/setup-python`** — Key Past Bug #8. A `python-build-standalone` interpreter hides
+1. **Windows Python must be the official python.org build** — Key Past Bug #8, and the reason
+   the job currently doesn't work. A `python-build-standalone` interpreter hides
    `vcruntime140.dll` in its own folder where `LoadLibrary` can't find it from PyInstaller's
-   `_MEI` temp folder, and the frozen exe then dies on every launch. "It built" is not proof;
-   only launching it is.
+   `_MEI` temp folder, and the frozen exe then dies on every launch; the python.org installer
+   registers it in System32 instead. `actions/setup-python` does not guarantee that build.
+   Chocolatey was tried and is a dead end — it reports success and installs nothing.
+   "It built" is not proof; only launching the exe is.
 2. **The publish job pushes an empty commit itself** rather than relying on
    `rebuild-site-on-release.yml`. A release created with `GITHUB_TOKEN` raises no `release`
    event by design, so that workflow never fires for a CI release. Cloudflare Workers Builds
