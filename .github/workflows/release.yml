@@ -176,17 +176,28 @@ jobs:
         # not, so a failure here would otherwise be a bare "exit code 1".
         shell: pwsh
         run: |
-          $candidates = @(
-            "C:\Py313\python.exe",
-            "C:\Py313\tools\python.exe",
-            "C:\Python313\python.exe",
-            "C:\Python313\tools\python.exe"
+          # Search rather than guess: rc2 proved C:\Py313 exists while none of
+          # the four paths I predicted held python.exe, so the package nests it
+          # somewhere of its own choosing.
+          $roots = @(
+            "C:\Py313",
+            "C:\Python313",
+            "C:\Program Files\Python313",
+            "$env:LOCALAPPDATA\Programs\Python"
           )
-          $exe = $candidates | Where-Object { Test-Path $_ } | Select-Object -First 1
+          $exe = $null
+          foreach ($root in $roots) {
+            if (-not (Test-Path $root)) { continue }
+            $hit = Get-ChildItem -Path $root -Filter python.exe -Recurse -Depth 3 `
+                     -ErrorAction SilentlyContinue |
+                   Where-Object { $_.DirectoryName -notmatch 'Scripts|venv|Lib' } |
+                   Select-Object -First 1
+            if ($hit) { $exe = $hit.FullName; break }
+          }
           if (-not $exe) {
-            $listing = (Get-ChildItem C:\ -Directory -ErrorAction SilentlyContinue |
-                        Select-Object -ExpandProperty Name) -join ', '
-            Write-Output "::error::no interpreter at any of: $($candidates -join ' ; ') -- C:\ contains: $listing"
+            $tree = (Get-ChildItem C:\Py313 -Recurse -Depth 2 -ErrorAction SilentlyContinue |
+                     Select-Object -First 50 -ExpandProperty FullName) -join '%0A'
+            Write-Output "::error::no python.exe under $($roots -join ' ; ')%0AC:\Py313 contains:%0A$tree"
             exit 1
           }
           $version = & $exe -c "import sys; print(sys.version.split()[0])"
