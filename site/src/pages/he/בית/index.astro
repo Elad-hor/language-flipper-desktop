@@ -12,8 +12,8 @@ import { softwareApplication } from '../../../schema';
 const lang = 'he' as const;
 ---
 <BaseLayout
-  title="Language Flipper | תיקון גיבריש מקלדת עברית-אנגלית"
-  description="עייפתם לכתוב גיבריש? Language Flipper מתקן טעויות מקלדת עברית-אנגלית ברגע. הורידו עכשיו וקבלו 40 פליפים חינם!"
+    title="תיקון גיבריש והיפוך אנגלית לעברית במקלדת | Language Flipper"
+    description="כתבתם גיבריש? Language Flipper הופך טקסט מאנגלית לעברית ומעברית לאנגלית בלחיצה אחת — תיקון מיידי של טעויות מקלדת. למק ולווינדוס, 40 פליפים חינם."
   lang={lang}
   schema={softwareApplication(lang)}
   preloadImage="/assets/language-Flipper-hero.webp"
@@ -44,12 +44,73 @@ const lang = 'he' as const;
       </div>
     </section>
 
+    <!-- Search-intent section. Every phrasing here is one people actually type
+         into Google for this problem, taken from Search Console rather than
+         guessed. The gibberish line is not a gimmick: "dhcrha kgcrh," is a real
+         recorded query - it is "גיבריש לעברית" typed on an English keyboard, by
+         somebody looking for the fix while having the problem. -->
+    <section class="he-intent">
+      <div class="container he-intent-inner">
+        <h2 class="he-intent-h2">מחפשים איך להפוך אנגלית לעברית?</h2>
+        <HeadingLine align="center" />
+
+        <p class="he-intent-lead">
+          הגעתם למקום הנכון. <strong>Language Flipper</strong> עושה בדיוק את זה —
+          <strong>היפוך טקסט מאנגלית לעברית</strong> ומעברית לאנגלית, בלחיצה אחת,
+          בכל תוכנה שבה אתם כותבים.
+        </p>
+
+        <div class="he-intent-grid">
+          <div class="he-intent-card">
+            <h3>כתבתם גיבריש?</h3>
+            <p>
+              <em>akuo</em> במקום <em>שלום</em>, <em>vtkuo</em> במקום <em>הכול</em>.
+              סמנו את הטקסט, הקישו <strong>CTRL + SHIFT + Y</strong>, והוא חוזר לעברית תקינה.
+              גם בכיוון ההפוך — מעברית לאנגלית.
+            </p>
+          </div>
+          <div class="he-intent-card">
+            <h3>מקלדת אנגלית־עברית מתחלפת?</h3>
+            <p>
+              הכלי מזהה שהטקסט נכתב בשפה הלא נכונה ומחליף גם את פריסת המקלדת,
+              כדי שההמשך כבר ייכתב נכון. בלי להקליד מחדש ובלי להעתיק לאתר חיצוני.
+            </p>
+          </div>
+          <div class="he-intent-card">
+            <h3>הפוך על הפוך — בלי התקנה מסובכת</h3>
+            <p>
+              תוכנה קטנה למק ולווינדוס שרצה ברקע. אין העתקה לאתר זר, אין חשבון,
+              והטקסט שלכם לא עוזב את המחשב.
+            </p>
+          </div>
+        </div>
+
+        <p class="he-intent-gib">
+          חיפשתם <code>dhcrha kgcrh,</code> וקיבלתם ג׳יבריש? זה בדיוק מה שכתוב שם —
+          <strong>גיבריש לעברית</strong>. אנחנו מבינים אתכם.
+        </p>
+      </div>
+    </section>
+
     <GetTheFeeling lang={lang} />
   </main>
   <Footer lang={lang} />
 </BaseLayout>
 
 <style>
+  /* ── search-intent section ── */
+  .he-intent { background: var(--lf-bg-deep, #1D005B); padding: 64px 0 72px; text-align: center; }
+  .he-intent-inner { max-width: 1040px; margin: 0 auto; padding: 0 20px; }
+  .he-intent-h2 { font-size: clamp(26px, 4vw, 38px); line-height: 1.2; margin: 0 0 6px; color: #fff; }
+  .he-intent-lead { font-size: clamp(16px, 2vw, 19px); line-height: 1.75; color: #E4DDF7; max-width: 760px; margin: 18px auto 34px; }
+  .he-intent-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 18px; text-align: start; }
+  .he-intent-card { background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.14); border-radius: 14px; padding: 22px 20px; }
+  .he-intent-card h3 { font-size: 19px; margin: 0 0 10px; color: #fff; }
+  .he-intent-card p { font-size: 16px; line-height: 1.7; color: #D9D2EE; margin: 0; }
+  .he-intent-card em { font-style: normal; background: rgba(255,255,255,.12); padding: 1px 6px; border-radius: 5px; }
+  .he-intent-gib { margin: 34px auto 0; max-width: 720px; font-size: 16px; line-height: 1.75; color: #C9C0E6; }
+  .he-intent-gib code { direction: ltr; unicode-bidi: isolate; background: rgba(255,255,255,.12); padding: 2px 8px; border-radius: 6px; font-size: 15px; }
+
   /* Elementor gradient spacer sections: 180deg transparent → #1D005B */
   .gradient-spacer {
     background: linear-gradient(180deg, #21252900 0%, #1D005B 100%);
