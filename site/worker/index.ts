@@ -29,7 +29,20 @@ const CONTACT_ROUTES = new Set(['/contact', '/contact.php']);
 
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
-    const { pathname } = new URL(request.url);
+    const url = new URL(request.url);
+    const { pathname } = url;
+
+    // One canonical origin. www, non-www and http each served the site in full,
+    // so Google treated them as three competing websites and split the ranking
+    // between them. Scheme and host are corrected in a single hop, so
+    // http://www never costs two redirects.
+    const wrongHost = url.hostname.startsWith('www.');
+    const wrongScheme = url.protocol === 'http:';
+    if (wrongHost || wrongScheme) {
+      if (wrongHost) url.hostname = url.hostname.slice(4);
+      if (wrongScheme) url.protocol = 'https:';
+      return Response.redirect(url.toString(), 301);
+    }
 
     if (CONTACT_ROUTES.has(pathname)) {
       return handleContact(request, env);

@@ -25,7 +25,12 @@
     // Astro's output. Static files are served from here before the Worker is
     // invoked, so in practice only /contact and /contact.php reach the code.
     "directory": "./dist",
-    "binding": "ASSETS"
+    "binding": "ASSETS",
+    // Assets normally win before the Worker runs, which meant www. and http://
+    // served pages directly and no code could redirect them. With this, every
+    // request enters the Worker, which canonicalises the host and then hands
+    // off to ASSETS.fetch — same files, one origin.
+    "run_worker_first": true
   },
 
   // Non-secret contact-form settings MUST live here, not in the dashboard.
