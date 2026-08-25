@@ -344,12 +344,19 @@ the site is a Worker serving **Static Assets**, configured by `site/wrangler.jso
 - **`compatibility_date` must not exceed the workerd build in the installed wrangler**, or `wrangler dev`
   refuses to start.
 - The domain is attached by **zone routes** (`languageflipper.com/*`, `www.languageflipper.com/*`), NOT a
-  Custom Domain. That was deliberate: the A record still points at Hostinger (`185.224.137.92`, proxied),
-  so rollback was deleting the two routes — instant, no DNS propagation.
-  **That rollback expires 2026-08-24**, when the Hostinger plan ends and the origin goes with it. After
-  that date deleting the routes takes the site DOWN rather than rolling it back, and the A record should
-  be repointed (Custom Domain, or a placeholder like `192.0.2.1`) so it stops aiming at an IP Hostinger
-  will reassign. See `site/MIGRATION.md` §7. The domain itself is registered at **Cloudflare** (expires
+  Custom Domain. That was deliberate: the A record pointed at Hostinger (`185.224.137.92`, proxied), so
+  rollback was deleting the two routes — instant, no DNS propagation.
+
+  **That rollback is gone, and the A record was repointed on 2026-08-25.** The Hostinger plan lapsed on
+  the 24th; the old IP now answers `403` to a Host-spoofed request, i.e. something else is serving there.
+  A dangling record aimed at a recycled IP is the classic subdomain-takeover shape: nothing reaches it
+  while the routes stand, but a route later deleted or mis-scoped would have sent visitors to a stranger's
+  server **under this domain and its certificate**. The record is now `192.0.2.1` (TEST-NET-1, reserved and
+  never routable), still proxied, so that failure mode fails closed instead.
+
+  Deleting the routes now takes the site DOWN rather than rolling it back — there is no origin any more.
+  The cleaner end state is attaching the Worker as a Custom Domain, which removes the origin dependency
+  entirely; the placeholder is the 30-second version. See `site/MIGRATION.md` §7. The domain itself is registered at **Cloudflare** (expires
   2027-05-05) with Cloudflare nameservers, so neither it nor DNS depends on the hosting plan.
 
 ### Two Cloudflare traps that cost hours
