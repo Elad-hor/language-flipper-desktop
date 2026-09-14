@@ -34,7 +34,15 @@ from datetime import date, timedelta
 from pathlib import Path
 
 SCOPES = ["https://www.googleapis.com/auth/webmasters.readonly"]
-DEFAULT_CREDS = Path.home() / ".config" / "gsc" / "language-flipper.json"
+
+# Checked in order. The ~/.gcp one is where the key already lived — found
+# 2026-09-14, set up about a month earlier. Note that ~/.gcp/keywords/*.json
+# are NOT credentials despite sitting next door; they are saved GSC query
+# snapshots, and pointing the loader at one gives a confusing MalformedError.
+CRED_CANDIDATES = [
+    Path.home() / ".config" / "gsc" / "language-flipper.json",
+    Path.home() / ".gcp" / "claude-reporter.json",
+]
 
 # A GSC property is either a URL prefix or a domain property, and they are
 # different strings. We try the domain form first because that is what covers
@@ -55,13 +63,19 @@ def _service():
     from google.oauth2 import service_account
     from googleapiclient.discovery import build
 
-    path = Path(os.environ.get("GSC_CREDENTIALS", DEFAULT_CREDS)).expanduser()
-    if not path.exists():
-        _die(
-            f"no service-account key at {path}\n"
-            f"       set GSC_CREDENTIALS=/path/to/key.json, or put the file there.\n"
-            f"       See the header of this file for what else has to be true."
-        )
+    env = os.environ.get("GSC_CREDENTIALS")
+    if env:
+        path = Path(env).expanduser()
+        if not path.exists():
+            _die(f"GSC_CREDENTIALS points at {path}, which does not exist")
+    else:
+        path = next((p for p in CRED_CANDIDATES if p.exists()), None)
+        if path is None:
+            _die(
+                "no service-account key found. Looked in:\n       "
+                + "\n       ".join(str(p) for p in CRED_CANDIDATES)
+                + "\n       Set GSC_CREDENTIALS=/path/to/key.json to override."
+            )
     try:
         creds = service_account.Credentials.from_service_account_file(str(path), scopes=SCOPES)
     except Exception as exc:
