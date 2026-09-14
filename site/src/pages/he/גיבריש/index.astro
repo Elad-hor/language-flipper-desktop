@@ -1,0 +1,132 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Header from '../../../components/Header.astro';
+import Footer from '../../../components/Footer.astro';
+import TryItWidget from '../../../components/TryItWidget.astro';
+import DownloadRow from '../../../components/DownloadRow.astro';
+import HeadingLine from '../../../components/HeadingLine.astro';
+import { type Lang } from '../../../i18n/ui';
+import { softwareApplication, breadcrumb } from '../../../schema';
+import { GIBBERISH_PAIRS } from '../../../lib/gibberish';
+
+const lang: Lang = 'he';
+
+// The literal gibberish belongs in the title, not only the body. Search
+// Console records `dhcrha` at position 8.8 and `dhcrha kgcrh,` alongside it —
+// people paste the nonsense they are staring at straight into Google, and a
+// page containing that exact string matches in a way a description never will.
+const title = "dhcrha = גיבריש | תיקון גיבריש לעברית אונליין, חינם";
+const description =
+  "הדביקו את הגיבריש וקבלו עברית. akuo הופך ל־שלום, dhcrha הופך ל־גיבריש. " +
+  "תיקון טקסט שהוקלד במקלדת הלא נכונה — בחינם, בדפדפן, בלי הורדה.";
+---
+<BaseLayout
+  title={title}
+  description={description}
+  lang={lang}
+  schema={[
+    softwareApplication(lang),
+    breadcrumb(
+      { name: 'בית', url: encodeURI('https://languageflipper.com/he/בית/') },
+      { name: 'גיבריש', url: encodeURI('https://languageflipper.com/he/גיבריש/') },
+    ),
+  ]}
+>
+  <Header lang={lang} />
+
+  <main id="content">
+
+    <section class="gb-hero">
+      <div class="container">
+        <h1 class="gb-h1">
+          <span class="gb-gib">dhcrha</span>
+          <span class="gb-arrow" aria-hidden="true">←</span>
+          <span class="gb-he">גיבריש</span>
+        </h1>
+        <p class="gb-sub">
+          כתבתם משהו והמקלדת הייתה באנגלית? הדביקו את הטקסט למטה ותקבלו אותו בעברית.
+          בלי הורדה, בלי הרשמה, והכול קורה בדפדפן שלכם.
+        </p>
+      </div>
+    </section>
+
+    <section class="gb-widget" id="demo">
+      <div class="container">
+        <TryItWidget />
+      </div>
+    </section>
+
+    <section class="gb-table-section">
+      <div class="container">
+        <h2 class="gb-h2">מילים נפוצות ואיך הן נראות בגיבריש</h2>
+        <HeadingLine align="center" />
+        <p class="gb-table-intro">
+          כל שורה כאן היא מה שקורה כשמקלידים את המילה בעברית בזמן שהמקלדת עדיין באנגלית.
+          אם חיפשתם אחת מהן בגוגל — הגעתם למקום הנכון.
+        </p>
+        <div class="gb-scroll">
+          <table class="gb-table">
+            <thead>
+              <tr><th scope="col">מה שרציתם לכתוב</th><th scope="col">מה שיצא</th></tr>
+            </thead>
+            <tbody>
+              {GIBBERISH_PAIRS.map((p) => (
+                <tr>
+                  <td class="gb-td-he">{p.he}</td>
+                  <td class="gb-td-gib" dir="ltr">{p.gib}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="gb-why">
+      <div class="container">
+        <h2 class="gb-h2">למה זה קורה בכלל?</h2>
+        <HeadingLine align="center" />
+        <p class="gb-why-p">
+          המקלדת לא באמת משנה את המקשים — היא רק משנה איזו אות יוצאת מכל מקש.
+          כשמקלידים <span class="gb-inline-he">שלום</span> והמקלדת באנגלית, המקשים שנלחצו
+          הם בדיוק אותם מקשים, ולכן יוצא <span class="gb-inline-gib" dir="ltr">akuo</span>.
+          הטקסט לא נהרס — הוא פשוט נכתב באלפבית הלא נכון, ואפשר להחזיר אותו במדויק.
+        </p>
+        <p class="gb-why-p">
+          הכלי למעלה עושה את זה לטקסט שמדביקים. האפליקציה עושה את זה בכל תוכנה,
+          על הטקסט שכבר כתבתם, בלחיצה אחת — בלי להעתיק ולהדביק.
+        </p>
+      </div>
+    </section>
+
+    <DownloadRow lang={lang} />
+  </main>
+
+  <Footer lang={lang} />
+</BaseLayout>
+
+<style>
+  .gb-hero { padding: 64px 0 34px; text-align: center; }
+  .gb-h1 {
+    display: flex; align-items: center; justify-content: center;
+    gap: 16px; flex-wrap: wrap; margin: 0 0 18px;
+    font-size: clamp(34px, 7vw, 62px); font-weight: 700; line-height: 1.1;
+  }
+  .gb-gib { font-family: ui-monospace, Menlo, Consolas, monospace; direction: ltr; opacity: .65; }
+  .gb-arrow { color: var(--lf-magenta); font-size: .8em; }
+  .gb-he { color: var(--lf-gold); }
+  .gb-sub { max-width: 56ch; margin: 0 auto; font-size: clamp(16px, 2.2vw, 19px); line-height: 1.6; }
+  .gb-widget { padding: 8px 0 56px; }
+  .gb-table-section, .gb-why { padding: 56px 0; }
+  .gb-h2 { text-align: center; font-size: clamp(24px, 4vw, 34px); font-weight: 700; margin: 0 0 4px; }
+  .gb-table-intro { max-width: 60ch; margin: 18px auto 26px; text-align: center; line-height: 1.6; }
+  .gb-scroll { overflow-x: auto; max-width: 620px; margin: 0 auto; }
+  .gb-table { width: 100%; border-collapse: collapse; }
+  .gb-table th, .gb-table td { padding: 11px 18px; border-bottom: 1px solid rgba(255,255,255,.14); }
+  .gb-table th { font-size: 13px; letter-spacing: .06em; text-transform: uppercase; opacity: .7; text-align: right; }
+  .gb-td-he { font-size: 18px; font-weight: 600; }
+  .gb-td-gib { font-family: ui-monospace, Menlo, Consolas, monospace; opacity: .8; text-align: left; }
+  .gb-why-p { max-width: 62ch; margin: 0 auto 16px; line-height: 1.7; text-align: center; }
+  .gb-inline-he { color: var(--lf-gold); font-weight: 600; }
+  .gb-inline-gib { font-family: ui-monospace, Menlo, Consolas, monospace; color: var(--lf-magenta); }
+</style>

@@ -8,6 +8,7 @@ export const routePairs: ReadonlyArray<{ en: string; he: string | null }> = [
   { en: '/contact-us/', he: '/he/צור-קשר/' },
   { en: '/terms-of-service/', he: '/he/תנאי-שימוש/' },
   { en: '/privacy-policy/', he: '/he/פרטיות/' },
+  { en: '/gibberish/', he: '/he/גיבריש/' },
   { en: '/solutions/', he: null }, // EN only — no Hebrew mirror
 ];
 
