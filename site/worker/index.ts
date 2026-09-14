@@ -27,6 +27,9 @@ export interface Env extends ContactEnv {
 // window where a cached page or an in-flight submission hits a 404.
 const CONTACT_ROUTES = new Set(['/contact', '/contact.php']);
 
+// Hosts that `wrangler dev` binds to. Only used to skip the https redirect.
+const LOCAL_HOSTS = new Set(['localhost', '127.0.0.1', '[::1]', '0.0.0.0']);
+
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);
@@ -36,8 +39,15 @@ export default {
     // so Google treated them as three competing websites and split the ranking
     // between them. Scheme and host are corrected in a single hop, so
     // http://www never costs two redirects.
+    //
+    // Local dev is exempt from the scheme half: `wrangler dev` serves plain
+    // http on localhost and has no TLS listener, so redirecting to https there
+    // sent every request into a loop and took the whole verification harness
+    // (capture/scripts/verify-*.mjs) down with it. Production never sees these
+    // hostnames, so the canonical rule is unaffected.
+    const isLocal = LOCAL_HOSTS.has(url.hostname);
     const wrongHost = url.hostname.startsWith('www.');
-    const wrongScheme = url.protocol === 'http:';
+    const wrongScheme = url.protocol === 'http:' && !isLocal;
     if (wrongHost || wrongScheme) {
       if (wrongHost) url.hostname = url.hostname.slice(4);
       if (wrongScheme) url.protocol = 'https:';

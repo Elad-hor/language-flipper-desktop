@@ -106,8 +106,11 @@ The build machine uses `uv` for development but PyInstaller MUST be run with the
 
 **The website updates itself on release — do NOT hand-edit download URLs.** `DownloadRow.astro`
 gets its hrefs from `site/src/lib/releases.ts`, which resolves them from the releases API at
-build time, and `deploy.yml` triggers on `release: published`. Verified 2026-08-12: publishing
-`v0.1.105-mac` had the live button updated ~20s later with no manual step. Do not reintroduce a
+build time, and `deploy.yml` triggers on `release: published`.
+
+**That resolution needs the `GITHUB_TOKEN` build secret in Cloudflare, and silently served a
+44-version-stale link for a month without it — see Key Past Bug #20.** It is set (2026-09-14);
+if the download buttons ever freeze again, check it first. Do not reintroduce a
 hardcoded `macHref`/`winHref`, and do not use GitHub's `/releases/latest/download/<asset>`
 shortcut — `latest` is one pointer across all releases and the `-mac`/`-windows` tags interleave,
 so it 404s (same trap as Key Past Bug #5).
@@ -395,6 +398,11 @@ submissions to the Hebrew page where `ContactForm.astro` reveals the banner on `
 - **Download URLs are resolved from the GitHub releases API at build time** (`site/src/lib/releases.ts`).
   Never hardcode them again, and never use `/releases/latest/download/<asset>` — `latest` is one pointer
   across all releases and the `-mac`/`-windows` tags interleave, so it 404s (Key Past Bug #5).
+  **Requires the `GITHUB_TOKEN` build secret** (Settings → *Build* → Variables and Secrets — the build
+  screen, not the runtime one; see the two Cloudflare traps above). Without it the build is
+  unauthenticated, shares GitHub's 60-requests/hour-per-IP budget with every other Cloudflare build,
+  and gets a 403. The resolver now **fails the build** rather than falling back — Key Past Bug #20.
+  `LF_ALLOW_STALE_DOWNLOADS=1` restores the old pinned-URL behaviour for offline work; never set it in CI.
   `.github/workflows/rebuild-site-on-release.yml` pushes an empty commit when a release is published,
   because Workers Builds only builds on push and the release scripts push *before* creating the release.
 
@@ -514,3 +522,23 @@ All injected by `BaseLayout` via `site/src/components/Seo.astro`: per-page title
     `gh release create`, so the app's startup update check runs while the new version doesn't exist yet
     and then sleeps for the full interval. `release_mac.sh` sets `LF_SKIP_RELAUNCH=1` and relaunches after
     publishing instead.
+
+20. **The site's download links went stale for a month, silently** — `releases.ts` asked GitHub
+    for the newest release at build time and, on any failure, quietly substituted pinned
+    `FALLBACK` constants. Cloudflare Workers Builds does not provide `GITHUB_TOKEN` (that is a
+    GitHub Actions variable), so the call was unauthenticated, sharing GitHub's 60/hour-per-IP
+    limit with every other customer on the same build runners — a 403 every time. The live Mac
+    button served **v0.1.67 while v0.1.111 was current**. What hid it: the pinned Windows
+    fallback *happened* to equal the true newest Windows release, so only one of two buttons was
+    wrong and neither looked broken. Same shape as #2 — a bare catch making a broken thing
+    indistinguishable from a working one. Fixed 2026-09-14: the token is set, and the resolver
+    now retries transient errors then **throws**, failing the build. A red build is free
+    (Cloudflare keeps serving the last good deploy); a silently stale download link is not.
+    **Don't reintroduce a silent fallback here.**
+
+21. **`wrangler dev` serves plain http, so a blanket https redirect loops it** — the canonical-origin
+    redirect in `worker/index.ts` sent `http://localhost:8787` to `https://localhost:8787`, where
+    wrangler has no TLS listener. Every local request redirect-looped and **the whole
+    `capture/scripts/verify-*.mjs` harness returned 0/0 passed** — it read as the scripts being
+    broken, not the worker. `LOCAL_HOSTS` now exempts localhost from the scheme half only;
+    production never sees those hostnames, so the canonical rule is unchanged.
