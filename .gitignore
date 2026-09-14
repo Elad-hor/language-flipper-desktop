@@ -5,3 +5,9 @@ lf-desktop-full.png
 site/deploy/
 __pycache__/
 *.pyc
+
+# Search Console service-account keys — never commit these
+*service-account*.json
+*-gsc*.json
+gsc-*.json
+.config/gsc/
