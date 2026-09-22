@@ -17,7 +17,14 @@ from tempfile import TemporaryDirectory
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from tools.downloads import last_snapshot, save_snapshot, summarize  # noqa: E402
+from tools.downloads import (  # noqa: E402
+    GITHUB_AT_TRACKING_START,
+    compare,
+    last_snapshot,
+    parse_ga4,
+    save_snapshot,
+    summarize,
+)
 
 
 def _rel(tag, published, assets, prerelease=False, draft=False):
@@ -66,6 +73,36 @@ class SummarizeTest(unittest.TestCase):
     def test_unknown_assets_are_ignored(self):
         s = summarize([_rel("v0.1.1", "2026-04-22", [("checksums.txt", 99)])])
         self.assertEqual(s["total"], 0)
+
+
+def _ga_row(event, rng, count):
+    return {"dimensionValues": [{"value": event}, {"value": rng}], "metricValues": [{"value": str(count)}]}
+
+
+class Ga4Test(unittest.TestCase):
+    # Shape confirmed against the live Data API: two named date ranges make
+    # GA4 append a dateRange dimension carrying each range's name.
+    RESP = {"rows": [
+        _ga_row("download_mac", "since_start", 5),
+        _ga_row("download_windows", "since_start", 9),
+        _ga_row("download_windows", "last_7_days", 2),
+        _ga_row("page_view", "since_start", 400),
+    ]}
+
+    def test_parse_maps_events_to_platforms_per_range(self):
+        got = parse_ga4(self.RESP)
+        self.assertEqual(got["since_start"], {"mac": 5, "windows": 9})
+        self.assertEqual(got["last_7_days"], {"mac": 0, "windows": 2})
+
+    def test_no_rows_means_zero_not_missing(self):
+        # GA4 omits rows entirely for events that never fired.
+        self.assertEqual(parse_ga4({})["since_start"], {"mac": 0, "windows": 0})
+
+    def test_compare_uses_github_growth_since_tracking_began(self):
+        totals = {p: n + 10 for p, n in GITHUB_AT_TRACKING_START.items()}
+        c = compare(totals, parse_ga4(self.RESP))
+        self.assertEqual(c["github_since_start"], {"mac": 10, "windows": 10})
+        self.assertEqual(c["other"], {"mac": 5, "windows": 1})
 
 
 class HistoryTest(unittest.TestCase):

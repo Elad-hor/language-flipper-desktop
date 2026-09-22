@@ -416,10 +416,12 @@ All injected by `BaseLayout` via `site/src/components/Seo.astro`: per-page title
 
 ### Download counts — two sources, neither is "users"
 
-- **`python3 tools/downloads.py`** — GitHub's per-asset `download_count`, split Mac/Windows, plus the
-  change since the last run (history in `~/.config/lf-downloads/history.jsonl`, because GitHub keeps
-  only a running total with no dates). It includes the app's own auto-updates: `updater.py` downloads
-  the same `browser_download_url` the site links to.
+- **`~/.venvs/lf-seo/bin/python tools/downloads.py`** — GitHub's per-asset `download_count`, split
+  Mac/Windows, plus the change since the last run (history in `~/.config/lf-downloads/history.jsonl`,
+  because GitHub keeps only a running total with no dates). It includes the app's own auto-updates:
+  `updater.py` downloads the same `browser_download_url` the site links to. It also reads the GA4
+  events below (property `537954027`, via `gsc.key_path()` — that key is admin on GA4 too) and sets
+  them against GitHub's growth since they went live. Plain `python3` prints the GitHub half only.
 - **GA4 events `download_mac` / `download_windows`** (params `app_version`, `site_lang`) — fired by a
   delegated click listener in `Seo.astro` on any link to `/releases/download/…(dmg|exe)` that actually
   started the file. Site-originated only, with dates and pages. Skips the phone card click

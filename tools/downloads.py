@@ -1,10 +1,14 @@
 #!/usr/bin/env python3
 """
-How many times the app has been downloaded, from GitHub's own counters.
+How many times the app has been downloaded: GitHub's counters, plus the
+site's own download clicks from GA4.
 
-    python3 tools/downloads.py            # totals, current versions, change since last run
-    python3 tools/downloads.py --all      # plus every release
-    python3 tools/downloads.py --json     # machine-readable
+    ~/.venvs/lf-seo/bin/python tools/downloads.py         # everything below
+    ~/.venvs/lf-seo/bin/python tools/downloads.py --all   # plus every release
+    ~/.venvs/lf-seo/bin/python tools/downloads.py --json  # machine-readable
+
+Plain `python3` works too and prints the GitHub half; the GA4 half needs
+google-auth, which lives in that venv.
 
 Every installer is a GitHub release asset, so every download goes through
 GitHub's per-asset `download_count` — the site's buttons and the app's own
@@ -17,11 +21,15 @@ updater alike (updater.py fetches `browser_download_url`, the same link). So:
     answer, which is what the history file is for.
 
 Site-originated downloads are counted separately in GA4 as `download_mac` /
-`download_windows` (site/src/components/Seo.astro). GitHub's total minus
-GA4's is roughly the auto-updates.
+`download_windows` (site/src/components/Seo.astro), read here through the
+same service-account key tools/gsc.py uses (it is admin on the GA4 property).
+GitHub's growth since those events went live, minus GA4's count, is roughly
+auto-updates — plus direct links and site visitors whose ad blocker drops
+GA4, so treat it as an upper bound on updates, not a measurement.
 
-Stdlib only. GITHUB_TOKEN is used if set; one run is a single request, well
-inside the 60/hour unauthenticated limit, so it is optional.
+The GitHub half is stdlib only. GITHUB_TOKEN is used if set; one run is a
+single request, well inside the 60/hour unauthenticated limit, so it is
+optional.
 """
 
 import argparse
@@ -36,6 +44,14 @@ REPO = "Elad-hor/language-flipper-desktop"
 API = f"https://api.github.com/repos/{REPO}/releases?per_page=100&page={{page}}"
 
 HISTORY_PATH = Path.home() / ".config" / "lf-downloads" / "history.jsonl"
+
+GA4_PROPERTY = "properties/537954027"  # "language flipper", web stream G-2CP4BEC4B8
+GA4_EVENTS = {"download_mac": "mac", "download_windows": "windows"}
+# The GA4 download events went live 2026-09-22 ~10:05 UTC (86dc039). GitHub's
+# running totals at that moment, so GitHub's growth since can be set against
+# GA4's count — GA4 knows nothing before it.
+TRACKING_START = "2026-09-22"
+GITHUB_AT_TRACKING_START = {"mac": 67, "windows": 112}
 
 PLATFORMS = ("mac", "windows")
 
@@ -99,6 +115,63 @@ def summarize(releases):
     }
 
 
+def parse_ga4(resp):
+    """runReport rows -> {range_name: {platform: count}}. With two named date
+    ranges GA4 appends a `dateRange` dimension carrying the range's name."""
+    out = {"since_start": {p: 0 for p in PLATFORMS}, "last_7_days": {p: 0 for p in PLATFORMS}}
+    for row in resp.get("rows", []):
+        event, rng = (d["value"] for d in row["dimensionValues"])
+        plat = GA4_EVENTS.get(event)
+        if plat and rng in out:
+            out[rng][plat] += int(row["metricValues"][0]["value"])
+    return out
+
+
+def fetch_site_downloads():
+    """GA4 download events since tracking began and over the last 7 days.
+    Raises if google-auth or the key is missing — the caller reports it and
+    still prints the GitHub half."""
+    from google.auth.transport.requests import AuthorizedSession
+    from google.oauth2 import service_account
+
+    sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+    from tools.gsc import key_path
+
+    creds = service_account.Credentials.from_service_account_file(
+        str(key_path()), scopes=["https://www.googleapis.com/auth/analytics.readonly"]
+    )
+    body = {
+        "dateRanges": [
+            {"startDate": TRACKING_START, "endDate": "today", "name": "since_start"},
+            {"startDate": "7daysAgo", "endDate": "today", "name": "last_7_days"},
+        ],
+        "dimensions": [{"name": "eventName"}],
+        "metrics": [{"name": "eventCount"}],
+        "dimensionFilter": {
+            "filter": {"fieldName": "eventName", "inListFilter": {"values": list(GA4_EVENTS)}}
+        },
+    }
+    r = AuthorizedSession(creds).post(
+        f"https://analyticsdata.googleapis.com/v1beta/{GA4_PROPERTY}:runReport",
+        json=body,
+        timeout=20,
+    )
+    if r.status_code != 200:
+        raise RuntimeError(f"GA4 answered {r.status_code}: {r.text[:200]}")
+    return parse_ga4(r.json())
+
+
+def compare(totals, site):
+    """GitHub growth since GA4 tracking began vs. GA4's site count."""
+    github = {p: totals[p] - GITHUB_AT_TRACKING_START[p] for p in PLATFORMS}
+    via_site = site["since_start"]
+    return {
+        "github_since_start": github,
+        "site_since_start": via_site,
+        "other": {p: github[p] - via_site[p] for p in PLATFORMS},
+    }
+
+
 def fetch_releases():
     headers = {"Accept": "application/vnd.github+json", "User-Agent": "lf-downloads"}
     token = os.environ.get("GITHUB_TOKEN")
@@ -142,7 +215,29 @@ def _delta(now, before, plat):
     return f"  (+{now - before['totals'].get(plat, 0)})"
 
 
-def render(summary, before, show_all):
+def render_site(summary, site):
+    if isinstance(site, Exception):
+        return [
+            "",
+            f"Site downloads (GA4): unavailable — {type(site).__name__}: {site}",
+            "  Run with ~/.venvs/lf-seo/bin/python for this half.",
+        ]
+    c = compare(summary["totals"], site)
+    week = site["last_7_days"]
+    out = ["", f"Site downloads (GA4 button clicks, since {TRACKING_START}; GA4 runs a few hours behind)"]
+    for plat, label in (("mac", "Mac"), ("windows", "Windows")):
+        out.append(f"  {label:<8} {c['site_since_start'][plat]:>6}   last 7 days: {week[plat]}")
+    gh, other = c["github_since_start"], c["other"]
+    out += [
+        "",
+        f"Since {TRACKING_START}: GitHub +{sum(gh.values())}, site {sum(c['site_since_start'].values())}"
+        f"  ->  {sum(other.values())} came some other way",
+        "  (auto-updates, direct links, or site visitors with an ad blocker)",
+    ]
+    return out
+
+
+def render(summary, before, show_all, site=None):
     t = summary["totals"]
     since = f"  — change since {before['at'][:16].replace('T', ' ')} UTC" if before else ""
     prev_total = sum(before["totals"].values()) if before else 0
@@ -167,6 +262,8 @@ def render(summary, before, show_all):
             out.append(
                 f"  {r['published']}  {r['tag']:<18} {r['platform']:<8} {r['downloads']:>5}"
             )
+    if site is not None:
+        out += render_site(summary, site)
     out += [
         "",
         "Counts downloads, not people: auto-updates download the installer again.",
@@ -191,11 +288,18 @@ def main(argv=None):
         print(f"error: could not read releases from GitHub: {e}", file=sys.stderr)
         return 1
 
+    try:
+        site = fetch_site_downloads()
+    except Exception as e:  # GitHub numbers are still worth printing
+        site = e
+
     before = last_snapshot()
     if args.json:
-        print(json.dumps({**summary, "previous": before}, indent=2))
+        extra = {"error": f"{type(site).__name__}: {site}"} if isinstance(site, Exception) else {
+            **site, **compare(summary["totals"], site)}
+        print(json.dumps({**summary, "previous": before, "site": extra}, indent=2))
     else:
-        print(render(summary, before, args.all))
+        print(render(summary, before, args.all, site))
     if not args.no_save:
         save_snapshot(summary)
     return 0

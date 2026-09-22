@@ -59,23 +59,34 @@ def _die(msg, code=1):
     sys.exit(code)
 
 
-def _service():
-    from google.oauth2 import service_account
-    from googleapiclient.discovery import build
-
+def key_path():
+    """The service-account key file. The same key is admin on GA4 too, so
+    tools/downloads.py uses this as well. Raises FileNotFoundError with the
+    places it looked."""
     env = os.environ.get("GSC_CREDENTIALS")
     if env:
         path = Path(env).expanduser()
         if not path.exists():
-            _die(f"GSC_CREDENTIALS points at {path}, which does not exist")
-    else:
-        path = next((p for p in CRED_CANDIDATES if p.exists()), None)
-        if path is None:
-            _die(
-                "no service-account key found. Looked in:\n       "
-                + "\n       ".join(str(p) for p in CRED_CANDIDATES)
-                + "\n       Set GSC_CREDENTIALS=/path/to/key.json to override."
-            )
+            raise FileNotFoundError(f"GSC_CREDENTIALS points at {path}, which does not exist")
+        return path
+    path = next((p for p in CRED_CANDIDATES if p.exists()), None)
+    if path is None:
+        raise FileNotFoundError(
+            "no service-account key found. Looked in:\n       "
+            + "\n       ".join(str(p) for p in CRED_CANDIDATES)
+            + "\n       Set GSC_CREDENTIALS=/path/to/key.json to override."
+        )
+    return path
+
+
+def _service():
+    from google.oauth2 import service_account
+    from googleapiclient.discovery import build
+
+    try:
+        path = key_path()
+    except FileNotFoundError as exc:
+        _die(str(exc))
     try:
         creds = service_account.Credentials.from_service_account_file(str(path), scopes=SCOPES)
     except Exception as exc:
