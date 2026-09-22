@@ -414,6 +414,20 @@ All injected by `BaseLayout` via `site/src/components/Seo.astro`: per-page title
 **JSON-LD** built by `site/src/schema.ts`. Also `@astrojs/sitemap` → `/sitemap-index.xml`,
 `site/public/robots.txt`, `llms.txt`, `favicon.svg`.
 
+### Download counts — two sources, neither is "users"
+
+- **`python3 tools/downloads.py`** — GitHub's per-asset `download_count`, split Mac/Windows, plus the
+  change since the last run (history in `~/.config/lf-downloads/history.jsonl`, because GitHub keeps
+  only a running total with no dates). It includes the app's own auto-updates: `updater.py` downloads
+  the same `browser_download_url` the site links to.
+- **GA4 events `download_mac` / `download_windows`** (params `app_version`, `site_lang`) — fired by a
+  delegated click listener in `Seo.astro` on any link to `/releases/download/…(dmg|exe)` that actually
+  started the file. Site-originated only, with dates and pages. Skips the phone card click
+  InstallModal cancels; counts its "download anyway". Tested by
+  `site/capture/scripts/verify-download-events.mjs`.
+- GitHub total minus GA4 ≈ auto-updates. **Nothing measures active users:** `flip_log.py` records
+  every flip, but only to a local file on the user's machine; the app sends nothing anywhere.
+
 ### Components worth knowing
 
 - **Try-It widget:** `site/src/components/TryItWidget.astro` — inlined char map is a copy of
@@ -426,7 +440,7 @@ All injected by `BaseLayout` via `site/src/components/Seo.astro`: per-page title
 - `verify-worker.mjs` — builds, runs the Worker locally, checks pages, the ported 301s, exact cache
   headers and the contact routes (28 assertions).
 - `verify-install-help.mjs` — 57 assertions; point it at localhost, workers.dev or the live domain.
-- `verify-contact.mjs`, `responsive-audit.mjs`, `verify-reduced-motion.mjs`.
+- `verify-contact.mjs`, `responsive-audit.mjs`, `verify-reduced-motion.mjs`, `verify-download-events.mjs`.
 - Scripts spawn servers as **foreground children** — the sandbox reaps backgrounded ones, so never
   background `npm run preview` or `wrangler dev`.
 

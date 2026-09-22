@@ -97,6 +97,25 @@ const ogLocale = lang === 'he' ? 'he_IL' : 'en_US';
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
       gtag('config', '${GA4_MEASUREMENT_ID}');
+
+      // Downloads: any click on a release-asset link that actually starts the
+      // file, as download_mac / download_windows (one name per platform, so
+      // they read straight off the Events report with no custom dimension).
+      // Delegated on document, so it runs after InstallModal's own listener —
+      // on phones that one cancels the card click (nothing can install there)
+      // and those must not count; its "download anyway" link still does.
+      document.addEventListener('click', function (e) {
+        if (e.defaultPrevented || !e.target.closest) return;
+        var a = e.target.closest('a[href*="/releases/download/"]');
+        if (!a) return;
+        var m = a.href.match(/\\/download\\/v([0-9.]+)[^/]*\\/[^/?#]+\\.(dmg|exe)(?:[?#]|$)/i);
+        if (!m) return;
+        gtag('event', m[2].toLowerCase() === 'dmg' ? 'download_mac' : 'download_windows', {
+          app_version: m[1],
+          site_lang: document.documentElement.lang,
+          transport_type: 'beacon'
+        });
+      });
     `}></script>
   </Fragment>
 )}
