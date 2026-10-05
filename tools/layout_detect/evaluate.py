@@ -27,9 +27,8 @@ import urllib.request
 from collections import defaultdict
 from pathlib import Path
 
-from .detect import Detector
-from .layouts import ALPHABET, convert, source_layout
-from .model import TrigramModel
+from flipper_daemon.keymaps import ALPHABET, convert, source_layout
+from flipper_daemon.langdetect import Detector, TrigramModel
 
 LANGS = ("en", "he", "ru")
 CACHE = Path.home() / ".cache" / "lf-layout-detect"

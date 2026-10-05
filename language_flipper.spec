@@ -12,6 +12,7 @@ a = Analysis(
     binaries=[],
     datas=[
         ("flipper_daemon/layouts/en_he_map.json", "flipper_daemon/layouts"),
+        ("flipper_daemon/layouts/lang_models.json.gz", "flipper_daemon/layouts"),
         ("assets/icon.png",   "assets"),
         ("assets/icon_32.png","assets"),
         ("assets/icon_16.png","assets"),

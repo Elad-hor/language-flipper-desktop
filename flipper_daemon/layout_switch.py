@@ -9,6 +9,7 @@ import platform
 _LAYOUTS = {
     "en_us": "00000409",   # Windows LANGID
     "he_il": "0000040d",
+    "ru_ru": "00000419",
 }
 
 # macOS input source identifiers — listed in priority order
@@ -27,6 +28,12 @@ _MAC_SOURCES = {
         "com.apple.keylayout.Hebrew-PC",
         "com.apple.keylayout.Hebrew-QWERTY",
         "com.apple.keylayout.Hebrew-Left-Hand",
+    ],
+    # Russian - PC first: it's the ЙЦУКЕН layout keymaps.RU describes.
+    "ru_ru": [
+        "com.apple.keylayout.RussianWin",
+        "com.apple.keylayout.Russian",
+        "com.apple.keylayout.Russian-Phonetic",
     ],
 }
 

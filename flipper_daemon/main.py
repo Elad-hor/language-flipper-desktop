@@ -6,10 +6,10 @@ from PIL import Image, ImageDraw
 
 import platform as _platform_mod
 
-from .flipper import flip_text, detect_layout
+from .flip_engine import FlipEngine
 from .text_bridge import read_and_replace
 from . import hotkey as hotkey_mod
-from . import storage, gumroad, paywall, updater, layout_switch, flip_log
+from . import storage, gumroad, paywall, updater, layout_switch, flip_log, installed_layouts
 
 if _platform_mod.system() == "Darwin":
     from . import login_item, onboarding
@@ -21,14 +21,10 @@ _in_flight_lock = threading.Lock()
 _tray_icon = None
 _pending_update = None  # (version_str, download_url) when an update is available
 
-# Captures flip direction inside the flipped_fn closure so main can act on it
-_last_flip_info: dict = {"source": None, "chars": 0}
+_engine = FlipEngine(installed_layouts.get)
 
-
-def _flip_and_track(text: str) -> str:
-    _last_flip_info["source"] = detect_layout(text)
-    _last_flip_info["chars"] = len(text)
-    return flip_text(text)
+# flip_log and layout_switch still speak the pre-Russian layout names.
+_SWITCH_ID = {"en": "en_us", "he": "he_il", "ru": "ru_ru"}
 
 
 def _on_flip():
@@ -41,20 +37,31 @@ def _on_flip():
         if not paywall.check_and_maybe_block():
             return
 
-        replaced = read_and_replace(_flip_and_track)
+        caps_on = layout_switch.caps_lock_is_on()
+        result = {}
 
-        if replaced:
-            storage.increment_lifetime_flips()
-            source = _last_flip_info.get("source")
-            if source:
-                if layout_switch.caps_lock_is_on():
-                    # Caps Lock ON means Hebrew layout was producing English uppercase.
-                    # Turn it off so the user can keep typing in Hebrew; skip layout switch.
-                    layout_switch.turn_off_caps_lock()
-                else:
-                    target = "he_il" if source == "en_us" else "en_us"
-                    layout_switch.switch_to(target)
-                flip_log.log_flip(source, _last_flip_info.get("chars", 0))
+        def flipped_fn(text: str) -> str:
+            r = _engine.flip(text, caps_on)
+            result["flip"], result["chars"] = r, len(text)
+            return r.text if r else text
+
+        replaced = read_and_replace(flipped_fn)
+        flip = result.get("flip")
+
+        if replaced and flip:
+            _engine.commit()
+            # A press that only moves to the next guess fixes our mistake, not
+            # the user's — it doesn't cost a free flip.
+            if not flip.is_cycle:
+                storage.increment_lifetime_flips()
+            if caps_on:
+                # Caps Lock ON at hotkey time: the capitals were an accident in
+                # whatever layout. Turn it off; the text can't tell us which
+                # layout the user was in, so don't switch (Key Past Bug #13).
+                layout_switch.turn_off_caps_lock()
+            else:
+                layout_switch.switch_to(_SWITCH_ID[flip.target])
+            flip_log.log_flip(_SWITCH_ID[flip.source], result.get("chars", 0))
             _refresh_tray_menu()
 
     finally:
@@ -220,6 +227,7 @@ def run():
         _t.Thread(target=onboarding.run_if_needed, daemon=True).start()
 
     updater.start(_on_update_available)
+    installed_layouts.warm_up()
 
     hotkey_handle = hotkey_mod.register(_on_flip)
 
