@@ -8,6 +8,7 @@ Linux  → AT-SPI, falls back to clipboard via pyautogui.
 """
 
 import platform
+import threading
 import time
 
 _PLATFORM = platform.system()
@@ -17,6 +18,89 @@ DEBUG = False
 def _dbg(msg):
     if DEBUG:
         print(f"[text_bridge] {msg}")
+
+
+# ---------------------------------------------------------------------------
+# Deferred clipboard restore (all clipboard paths)
+# ---------------------------------------------------------------------------
+
+# How long after Ctrl+V / Cmd+V the user's old clipboard is put back. This used
+# to be a blocking 0.1s, and new Outlook (WebView2) reads the clipboard
+# asynchronously *after* that — so it pasted the user's previously copied text
+# instead of the flip. The restore now runs on a timer, so the flip itself is
+# not slowed down, and only if the clipboard still holds what we left there.
+_RESTORE_DELAY_SECONDS = 1.5
+
+_restore_lock = threading.Lock()
+_restore_timer = None
+_restore_text = None
+_restore_left = None
+
+
+def _begin_clipboard_session(pyperclip) -> str:
+    """
+    Return what the user's clipboard should hold once this flip is done.
+
+    If a previous flip's restore is still pending, the clipboard still holds
+    *our* flipped text. Restore now rather than on the timer: the copy checks
+    below detect "nothing was copied" by comparing against the clipboard, and
+    a second flip (e.g. flipping back) copies exactly that flipped text. The
+    user pressed the hotkey again having seen the first result, so its paste
+    has long been consumed.
+    """
+    global _restore_timer, _restore_text, _restore_left
+    with _restore_lock:
+        if _restore_timer is not None:
+            _restore_timer.cancel()
+            text, left = _restore_text, _restore_left
+            _restore_timer = _restore_text = _restore_left = None
+            if str(pyperclip.paste() or "") == left:
+                pyperclip.copy(text)
+        return str(pyperclip.paste() or "")
+
+
+def _restore_clipboard_later(pyperclip, text: str):
+    """Put `text` back on the clipboard after _RESTORE_DELAY_SECONDS, unless
+    something else has been copied in the meantime."""
+    global _restore_timer, _restore_text, _restore_left
+    try:
+        left = str(pyperclip.paste() or "")
+    except Exception:
+        return
+    if left == text:
+        return
+
+    def run():
+        global _restore_timer, _restore_text, _restore_left
+        # Holding the lock across the copy makes a flip that starts now wait
+        # for the restore, instead of reading our flipped text as "saved".
+        with _restore_lock:
+            if _restore_timer is not timer:
+                return
+            _restore_timer = _restore_text = _restore_left = None
+            try:
+                if str(pyperclip.paste() or "") == left:
+                    pyperclip.copy(text)
+            except Exception as e:
+                _dbg(f"clipboard restore failed: {e}")
+
+    timer = threading.Timer(_RESTORE_DELAY_SECONDS, run)
+    timer.daemon = True
+    with _restore_lock:
+        if _restore_timer is not None:
+            _restore_timer.cancel()
+        _restore_timer = timer
+        _restore_text = text
+        _restore_left = left
+    timer.start()
+
+
+def _cancel_pending_restore_for_tests():
+    global _restore_timer, _restore_text, _restore_left
+    with _restore_lock:
+        if _restore_timer is not None:
+            _restore_timer.cancel()
+        _restore_timer = _restore_text = _restore_left = None
 
 
 # ---------------------------------------------------------------------------
@@ -204,7 +288,12 @@ def _mac_replace(flipped_fn, pid: int, app_name: str) -> bool:
 def _mac_clipboard_replace(flipped_fn, pid: int) -> bool:
     try:
         import pyperclip
+        restore_to = _begin_clipboard_session(pyperclip)
+    except Exception as e:
+        _dbg(f"clipboard: exception — {e}")
+        return False
 
+    try:
         saved = str(pyperclip.paste() or "")
         _dbg(f"clipboard: saved = {repr(saved[:40])}")
 
@@ -230,19 +319,18 @@ def _mac_clipboard_replace(flipped_fn, pid: int) -> bool:
         flipped = flipped_fn(selected)
         if flipped == selected:
             _dbg("clipboard: nothing to flip")
-            pyperclip.copy(saved)
             return False
 
         pyperclip.copy(flipped)
         _clipboard_paste_to_pid(pid)
-        time.sleep(0.1)
-        pyperclip.copy(saved)
         _dbg("clipboard: done")
         return True
 
     except Exception as e:
         _dbg(f"clipboard: exception — {e}")
         return False
+    finally:
+        _restore_clipboard_later(pyperclip, restore_to)
 
 
 # ---------------------------------------------------------------------------
@@ -309,6 +397,12 @@ def _atspi_replace(flipped_fn) -> bool:
 def _linux_clipboard_replace(flipped_fn) -> bool:
     try:
         import pyperclip, pyautogui
+        restore_to = _begin_clipboard_session(pyperclip)
+    except Exception as e:
+        _dbg(f"linux clipboard: exception — {e}")
+        return False
+
+    try:
         saved = str(pyperclip.paste() or "")
         pyautogui.hotkey("ctrl", "c")
         time.sleep(0.15)
@@ -326,16 +420,15 @@ def _linux_clipboard_replace(flipped_fn) -> bool:
             return False
         flipped = flipped_fn(selected)
         if flipped == selected:
-            pyperclip.copy(saved)
             return False
         pyperclip.copy(flipped)
         pyautogui.hotkey("ctrl", "v")
-        time.sleep(0.1)
-        pyperclip.copy(saved)
         return True
     except Exception as e:
         _dbg(f"linux clipboard: exception — {e}")
         return False
+    finally:
+        _restore_clipboard_later(pyperclip, restore_to)
 
 
 # ---------------------------------------------------------------------------
@@ -411,6 +504,12 @@ def _windows_replace(flipped_fn) -> bool:
         _release_modifiers()
         time.sleep(0.05)
 
+        restore_to = _begin_clipboard_session(pyperclip)
+    except Exception as e:
+        _dbg(f"windows clipboard: exception — {e}")
+        return False
+
+    try:
         saved = str(pyperclip.paste() or "")
         _dbg(f"windows clipboard: saved = {repr(saved[:40])}")
 
@@ -434,21 +533,20 @@ def _windows_replace(flipped_fn) -> bool:
 
         flipped = flipped_fn(selected)
         if flipped == selected:
-            pyperclip.copy(saved)
             _dbg("windows clipboard: nothing to flip")
             return False
 
         pyperclip.copy(flipped)
         _release_modifiers()
         _win_ctrl_v()
-        time.sleep(0.1)
-        pyperclip.copy(saved)
         _dbg("windows clipboard: done")
         return True
 
     except Exception as e:
         _dbg(f"windows clipboard: exception — {e}")
         return False
+    finally:
+        _restore_clipboard_later(pyperclip, restore_to)
 
 
 # ---------------------------------------------------------------------------
