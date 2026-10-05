@@ -20,6 +20,11 @@ _in_flight = False
 _in_flight_lock = threading.Lock()
 _tray_icon = None
 _pending_update = None  # (version_str, download_url) when an update is available
+# None, "downloading" or "failed" — shown in the tray. Clicking the update used
+# to give no sign of life for the whole 19 MB download and swallowed any
+# failure, so a broken update looked exactly like a dead menu item.
+_update_state = None
+_DOWNLOAD_PAGE = "https://languageflipper.com/"
 
 _engine = FlipEngine(installed_layouts.get)
 
@@ -102,10 +107,13 @@ def _build_menu() -> pystray.Menu:
 
     if _pending_update:
         version, _ = _pending_update
-        items += [
-            pystray.MenuItem(f"⬆ Update available (v{version}) — click to install", _do_update),
-            pystray.Menu.SEPARATOR,
-        ]
+        if _update_state == "downloading":
+            item = pystray.MenuItem(f"⬇ Downloading update (v{version})…", None, enabled=False)
+        elif _update_state == "failed":
+            item = pystray.MenuItem("Update failed — click to download from the website", _open_download_page)
+        else:
+            item = pystray.MenuItem(f"⬆ Update available (v{version}) — click to install", _do_update)
+        items += [item, pystray.Menu.SEPARATOR]
 
     if not is_premium:
         items += [
@@ -185,15 +193,26 @@ def _toggle_login_item(_icon=None, _item=None):
 
 
 def _on_update_available(version: str, url: str):
-    global _pending_update
+    global _pending_update, _update_state
     _pending_update = (version, url)
+    _update_state = None  # a new version gets a fresh try after a failure
     _refresh_tray_menu()
 
 
+def _open_download_page(_icon=None, _item=None):
+    import webbrowser
+    webbrowser.open(_DOWNLOAD_PAGE)
+
+
 def _do_update(_icon=None, _item=None):
-    import subprocess
+    global _update_state
+    if _update_state == "downloading":
+        return
+    _update_state = "downloading"
+    _refresh_tray_menu()
 
     def _run():
+        global _update_state
         try:
             _, url = _pending_update
             updater.download_and_run(url)
@@ -202,8 +221,11 @@ def _do_update(_icon=None, _item=None):
             # The installer + relaunch are scheduled via a background cmd (see updater.py).
             if _tray_icon:
                 _tray_icon.stop()
-        except Exception:
-            pass
+        except Exception as e:
+            # download_and_run has already logged the cause to lf-update.log.
+            print(f"[update] failed: {e}")
+            _update_state = "failed"
+            _refresh_tray_menu()
     threading.Thread(target=_run, daemon=True).start()
 
 
