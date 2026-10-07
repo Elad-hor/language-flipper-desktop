@@ -22,7 +22,7 @@ import time
 from dataclasses import dataclass, field
 
 from . import langdetect
-from .flipper import detect_layout, flip_text
+from .flipper import detect_layout, flip_mixed, flip_text, is_mixed
 from .keymaps import convert, source_layout
 
 CYCLE_SECONDS = 15
@@ -102,6 +102,10 @@ class FlipEngine:
         self._last = pending
 
     def _flip_two_layouts(self, text):
+        if is_mixed(text):
+            mixed = flip_mixed(text, self._detector())
+            if mixed:
+                return FlipResult(*mixed)
         out = flip_text(text)
         if out == text:
             return None

@@ -96,6 +96,9 @@ class Detector:
         self.dictionaries = dictionaries or {}
         self.dict_bonus = dict_bonus
 
+    def score(self, text, lang):
+        return self._score(text, lang)
+
     def _score(self, text, lang):
         model = self.models.get(lang)
         s = model.score(text) if model else float("-inf")

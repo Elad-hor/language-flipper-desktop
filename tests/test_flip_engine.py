@@ -81,6 +81,40 @@ class TwoLayoutsUnchangedTest(unittest.TestCase):
         self.assertEqual(eng.flip("שלום").target, "en")
 
 
+class MixedLineTest(unittest.TestCase):
+    """A line that is partly right and partly mistyped. flip_text decides one
+    direction for the whole line by letter majority, so it either flipped the
+    correct part (when it was the longer one) or dragged the correct part's
+    punctuation along (`,` → `ת`)."""
+
+    def setUp(self):
+        self.eng, _ = engine(TWO)
+
+    def test_short_caps_lock_part_after_hebrew(self):
+        # Hebrew layout + Caps Lock types English capitals.
+        r = self.eng.flip("אני בדרך הביתה AKUO", caps_lock=True)
+        self.assertEqual(r.text, "אני בדרך הביתה שלום")
+        self.assertEqual(r.target, "he")
+
+    def test_hebrew_comma_survives(self):
+        gib = flip_text("אני בדרך הביתה")
+        r = self.eng.flip("שלום, " + gib)
+        self.assertEqual(r.text, "שלום, אני בדרך הביתה")
+
+    def test_mistyped_part_first(self):
+        r = self.eng.flip(flip_text("שלום") + " מה נשמע")
+        self.assertEqual(r.text, "שלום מה נשמע")
+
+    def test_mistyped_hebrew_inside_english(self):
+        r = self.eng.flip("hello " + flip_text("hello"))
+        self.assertEqual(r.text, "hello hello")
+        self.assertEqual(r.target, "en")
+
+    def test_real_english_word_in_hebrew_is_kept(self):
+        r = self.eng.flip("פתחתי את Chrome " + flip_text("שלום"))
+        self.assertEqual(r.text, "פתחתי את Chrome שלום")
+
+
 class ThreeLayoutsTest(unittest.TestCase):
     def test_picks_russian(self):
         eng, _ = engine()
